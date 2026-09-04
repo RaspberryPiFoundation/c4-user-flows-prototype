@@ -1,0 +1,217 @@
+@import './tokens.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-primary);
+  color: var(--rpf-text);
+  font-size: var(--fs-1);
+  line-height: var(--lh-15);
+  background: var(--rpf-off-white);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--rpf-link-text);
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Respect users who prefer reduced motion (WCAG 2.3.3). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------- App shell ---------------- */
+/* Deliberately neutral chrome. This site is a hub for prototypes, not an
+   imitation of any one product, so it does not fake a Code Club or Code
+   Classroom navigation bar — individual flows can do that themselves. */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.global-nav {
+  height: 49px;
+  background: var(--rpf-black);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  color: var(--rpf-white);
+  font-size: var(--fs-075);
+  gap: var(--space-2);
+}
+.global-nav .brand {
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.global-nav .env {
+  margin-left: auto;
+  color: var(--rpf-grey-300);
+}
+
+.content {
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
+  /* Mobile-first: tight padding on small screens, roomier from 640px up. */
+  padding: var(--space-2);
+}
+
+.card {
+  background: var(--rpf-white);
+  border-radius: var(--radius-card);
+  padding: var(--space-3);
+  width: 800px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+@media (min-width: 640px) {
+  .content {
+    padding: var(--space-5) var(--space-2);
+  }
+  .card {
+    padding: var(--space-7);
+    gap: var(--space-5);
+  }
+}
+
+.footer {
+  flex-shrink: 0;
+  min-height: 62px;
+  background: var(--rpf-white);
+  border-top: 1px solid var(--rpf-grey-150);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--fs-075);
+  color: var(--rpf-text-secondary);
+  text-align: center;
+}
+
+/* ---------------- Typography helpers ---------------- */
+.title-lg {
+  font-size: var(--fs-3);
+  line-height: var(--lh-25);
+  font-weight: var(--fw-bold);
+  color: var(--rpf-black);
+  margin: 0;
+}
+.title-md {
+  font-size: var(--fs-2);
+  line-height: var(--lh-2);
+  font-weight: var(--fw-bold);
+  color: var(--rpf-black);
+  margin: 0;
+}
+.title-sm {
+  font-size: var(--fs-15);
+  line-height: var(--lh-15);
+  font-weight: var(--fw-bold);
+  color: var(--rpf-black);
+  margin: 0;
+}
+.body {
+  font-size: var(--fs-1);
+  line-height: var(--lh-15);
+  margin: 0;
+}
+.muted {
+  color: var(--rpf-text-secondary);
+}
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+hr.divider {
+  border: none;
+  border-top: 1px solid var(--rpf-grey-150);
+  margin: 0;
+  width: 100%;
+}
+
+.disclaimer-list {
+  margin: 0;
+  padding-left: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* ---------------- Themes and lanes ---------------- */
+/* A "theme" is one of the areas in the GitHub story (onboarding, importing
+   projects). A "lane" is one question within a theme, for one audience.
+   Prototypes will be listed inside their lane. */
+.theme-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.theme {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.theme-head {
+  padding-bottom: var(--space-1);
+  border-bottom: 2px solid var(--rpf-grey-150);
+}
+
+.lane-list {
+  display: grid;
+  /* Single column on mobile, side by side once there is room. */
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+}
+@media (min-width: 640px) {
+  .lane-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.lane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border: 1px solid var(--rpf-grey-150);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+}
+
+/* Placeholder shown until prototypes are added to a lane. */
+.lane-empty {
+  margin: 0;
+  color: var(--rpf-text-secondary);
+  font-size: var(--fs-075);
+  line-height: var(--lh-1);
+}
