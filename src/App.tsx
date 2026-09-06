@@ -3,6 +3,7 @@ import { Layout } from './components/Layout'
 import { ScrollToTop } from './components/ScrollToTop'
 import { NotFound } from './components/NotFound'
 import { Home } from './Home'
+import { KitGallery } from './KitGallery'
 import { PrototypeHost } from './PrototypeHost'
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/kit" element={<KitGallery />} />
           <Route path="/p/:lane/:slug/*" element={<PrototypeHost />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

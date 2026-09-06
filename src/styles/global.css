@@ -257,18 +257,6 @@ hr.divider {
   color: var(--rpf-text-secondary);
 }
 
-.chip {
-  font-size: var(--fs-075);
-  line-height: var(--lh-1);
-  font-weight: var(--fw-bold);
-  padding: var(--space-05) var(--space-1);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--rpf-grey-150);
-  background: var(--rpf-off-white);
-  color: var(--rpf-text-secondary);
-  white-space: nowrap;
-}
-
 .error-detail {
   margin: 0;
   padding: var(--space-2);
@@ -290,4 +278,73 @@ hr.divider {
   cursor: pointer;
   font-family: inherit;
   font-size: inherit;
+}
+
+/* ---------------- kit ---------------- */
+.kit-card {
+  width: 100%;
+  background: var(--rpf-white);
+  border: 1px solid var(--rpf-grey-150);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--rpf-grey-300);
+  border-radius: var(--radius-sm);
+  /* Faint diagonal hatching, so a placeholder can never be mistaken for a real
+     empty state in a screenshot or a testing session. */
+  background: repeating-linear-gradient(
+    45deg,
+    var(--rpf-off-white),
+    var(--rpf-off-white) 10px,
+    var(--rpf-white) 10px,
+    var(--rpf-white) 20px
+  );
+  color: var(--rpf-grey-500);
+  font-size: var(--fs-075);
+  line-height: var(--lh-1);
+  text-align: center;
+  padding: var(--space-1);
+}
+
+/* ---------------- Component gallery ---------------- */
+.demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--rpf-grey-150);
+}
+.demo:last-child {
+  border-bottom: none;
+}
+.demo-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-05);
+}
+/* Examples wrap so a row of buttons behaves on a narrow screen. */
+.demo-stage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+/* Form inputs and other block-level examples get their own line. */
+.demo-stage > * {
+  max-width: 100%;
+}
+
+/* Components that are full width in real use — alerts, progress bars — read
+   wrong side by side, so their examples stack. */
+.demo-stage-stacked {
+  flex-direction: column;
+  align-items: stretch;
 }

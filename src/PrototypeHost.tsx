@@ -2,6 +2,7 @@ import { Suspense, lazy, useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { NotFound } from './components/NotFound'
+import { Tag } from './kit'
 import { findPrototype } from './prototypes/registry'
 
 /**
@@ -30,7 +31,7 @@ export function PrototypeHost() {
       <div className="prototype-banner">
         <Link to="/">← All prototypes</Link>
         <span className="prototype-banner-title">{prototype.meta.title}</span>
-        <span className="chip">{prototype.meta.status.replace(/-/g, ' ')}</span>
+        <Tag text={prototype.meta.status.replace(/-/g, ' ')} />
       </div>
       <ErrorBoundary label={label}>
         <Suspense fallback={<div className="card">Loading…</div>}>

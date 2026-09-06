@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Alert } from './components/Alert'
+import { Alert } from './kit'
 import { THEMES, type Lane, type Theme } from './lanes'
 import { prototypesInLane } from './prototypes/registry'
 
@@ -59,7 +59,7 @@ export function Home() {
         </p>
       </div>
 
-      <Alert variant="info" title="These are early prototypes">
+      <Alert type="information" title="These are early prototypes">
         <ul className="disclaimer-list">
           <li>Nothing you enter is saved, and nothing here is a commitment to build.</li>
           <li>Never enter real account details, passwords, or real information about a young person.</li>
