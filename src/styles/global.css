@@ -1127,3 +1127,25 @@ hr.divider {
 .cc-tile-green { background: hsl(123, 43%, 48%); }
 .cc-tile-pink { background: #e0508f; }
 .cc-tile-yellow { background: #f5c518; }
+
+/* ---------------- Prototype notes ---------------- */
+.prototype-notes {
+  width: 800px;
+  max-width: 100%;
+  margin-top: var(--space-3);
+}
+.prototype-notes-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+/* Markdown shown as written. Rendering it properly is not worth a dependency
+   here — the point is that the thinking is one click from the prototype. */
+.prototype-notes-text {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: var(--font-primary);
+  font-size: var(--fs-1);
+  line-height: var(--lh-15);
+  color: var(--rpf-text-secondary);
+}

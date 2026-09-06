@@ -18,12 +18,23 @@ export interface Prototype {
   meta: PrototypeMeta
   /** Lazily imported so one prototype's code isn't loaded to view another. */
   load: () => Promise<{ default: ComponentType }>
+  /**
+   * Raw notes.md, shown on the prototype's own page. Loaded eagerly because
+   * it is a few paragraphs of text, and because a prototype whose thinking is
+   * one click away is the whole reason for doing this in a repo.
+   */
+  notes?: string
 }
 
 const metaModules = import.meta.glob<{ meta: PrototypeMeta }>('./*/*/meta.ts', {
   eager: true,
 })
 const componentLoaders = import.meta.glob<{ default: ComponentType }>('./*/*/prototype.tsx')
+const noteFiles = import.meta.glob<string>('./*/*/notes.md', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+})
 
 const KNOWN_LANES = new Set(THEMES.flatMap((theme) => theme.lanes.map((lane) => lane.id)))
 
@@ -58,7 +69,13 @@ export const PROTOTYPES: Prototype[] = Object.entries(metaModules)
     }
     return true
   })
-  .map(({ lane, slug, meta, load }) => ({ lane, slug, meta, load: load! }))
+  .map(({ lane, slug, meta, load }) => ({
+    lane,
+    slug,
+    meta,
+    load: load!,
+    notes: noteFiles[`./${lane}/${slug}/notes.md`],
+  }))
   .sort((a, b) => a.meta.title.localeCompare(b.meta.title))
 
 export function prototypesInLane(laneId: string): Prototype[] {

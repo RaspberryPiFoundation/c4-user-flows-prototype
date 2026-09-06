@@ -26,10 +26,25 @@ notes, not on this page.
 
 ## Adding a prototype
 
-Drop a folder into `src/prototypes/<lane>/<your-slug>/` containing a `meta.ts`
-and a `prototype.tsx`. It is discovered automatically and appears on the
-landing page in its lane — **no shared file needs to change**, which is what
-lets several people build at once without conflicting.
+In Claude Code, run:
+
+```
+/new-prototype
+```
+
+It asks which lane, what you are trying and what you believe, then scaffolds
+the folder and opens it. Or copy `src/prototypes/_template/` by hand.
+
+Either way the prototype is discovered automatically and appears on the landing
+page in its lane — **no shared file needs to change**, which is what lets
+several people build at once without conflicting.
+
+Two worked examples to copy from, one per audience:
+
+- `onboarding-mentor/reference-manage-club-route`
+- `onboarding-yp/reference-school-code-join`
+
+Both are real click-throughs. See [`src/prototypes/README.md`](src/prototypes/README.md).
 
 The lane and slug come from the folder path, so they can never disagree with
 where the file actually lives.
@@ -90,6 +105,8 @@ not control — so keep the meta tag in place.
 | --- | --- |
 | `src/lanes.ts` | The flow questions — themes and lanes |
 | `src/prototypes/` | One folder per prototype. **This is where you work** |
+| `src/prototypes/_template/` | Copy this to start. A working two-screen journey |
+| `.claude/skills/new-prototype/` | The `/new-prototype` skill |
 | `src/prototypes/registry.ts` | Auto-discovers prototypes. Nothing to edit |
 | `src/kit/` | Everything you build screens from — see its own README |
 | `src/screens/` | Reusable screens from the real products — see its own README |

@@ -2,7 +2,7 @@ import { Suspense, lazy, useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { NotFound } from './components/NotFound'
-import { Tag } from './kit'
+import { Accordion, Tag } from './kit'
 import { findPrototype } from './prototypes/registry'
 
 /**
@@ -38,6 +38,28 @@ export function PrototypeHost() {
           <Prototype />
         </Suspense>
       </ErrorBoundary>
+
+      <div className="prototype-notes">
+        <Accordion
+          id={`notes-${lane}-${slug}`}
+          className=""
+          title="Why this, and what to watch for"
+          content={
+            <div className="prototype-notes-body">
+              <p className="body muted">
+                <strong>{prototype.meta.owner}</strong> · {prototype.meta.hypothesis}
+              </p>
+              {prototype.notes ? (
+                <pre className="prototype-notes-text">{prototype.notes}</pre>
+              ) : (
+                <p className="body muted">
+                  No notes.md yet. A prototype without notes is a screenshot.
+                </p>
+              )}
+            </div>
+          }
+        />
+      </div>
     </div>
   )
 }
