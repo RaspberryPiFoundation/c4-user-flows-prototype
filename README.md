@@ -53,6 +53,11 @@ keys are needed.
 One-time repo setup: **Settings → Pages → Build and deployment → Source:
 GitHub Actions**.
 
+The site is shared by link, not meant to be found by search, so `index.html`
+carries a `noindex, nofollow` robots tag. A `robots.txt` would not work here —
+GitHub Pages only serves one at the domain root, which this project site does
+not control — so keep the meta tag in place.
+
 ## Where things live
 
 | Path | Purpose |
