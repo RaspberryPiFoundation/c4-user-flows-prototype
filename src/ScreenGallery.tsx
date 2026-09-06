@@ -5,6 +5,8 @@ import {
   EducatorClassPage,
   EducatorProjectPage,
   MentorSignIn,
+  ProjectEditor,
+  ProjectPage,
   RoleChooser,
   SchoolCodeEntry,
   StudentSignIn,
@@ -13,6 +15,8 @@ import {
   educatorClassPageMeta,
   educatorProjectPageMeta,
   mentorSignInMeta,
+  projectEditorMeta,
+  projectPageMeta,
   roleChooserMeta,
   schoolCodeEntryMeta,
   studentSignInMeta,
@@ -70,6 +74,8 @@ export function ScreenGallery() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showErrors, setShowErrors] = useState(false)
+  const [stepIndex, setStepIndex] = useState(0)
+  const [panel, setPanel] = useState<'instructions' | 'save'>('instructions')
 
   const err = (message: string) => (showErrors ? message : undefined)
   const westlands = SCHOOLS[0]
@@ -201,6 +207,25 @@ export function ScreenGallery() {
             school={westlands}
             classes={classesInSchool(westlands.id)}
             onOpenClass={noop}
+          />
+        </Frame>
+
+        <Frame name="Project page" meta={projectPageMeta} account="Log In">
+          <ProjectPage project={PROJECTS[2]} onStart={noop} />
+        </Frame>
+
+        <Frame name="Project editor" meta={projectEditorMeta} account="Log In">
+          <ProjectEditor
+            project={PROJECTS[2]}
+            stepIndex={stepIndex}
+            onStepChange={setStepIndex}
+            panel={panel}
+            onPanelChange={setPanel}
+            signedIn={false}
+            onLogIn={noop}
+            onSignUp={noop}
+            onDownload={noop}
+            onUpload={noop}
           />
         </Frame>
 

@@ -34,3 +34,9 @@ export {
 export { SchoolCodeEntry, meta as schoolCodeEntryMeta } from './pi-accounts/SchoolCodeEntry'
 export { StudentSignIn, meta as studentSignInMeta } from './pi-accounts/StudentSignIn'
 export { MentorSignIn, meta as mentorSignInMeta } from './pi-accounts/MentorSignIn'
+export { ProjectPage, meta as projectPageMeta } from './ccp/ProjectPage'
+export {
+  ProjectEditor,
+  meta as projectEditorMeta,
+  type EditorPanel,
+} from './ccp/ProjectEditor'

@@ -34,6 +34,8 @@ chrome.
 | `EducatorProjectPage` | Code Classroom | Yes | Yes |
 | `YoungPersonSchoolHome` | Code Classroom | Yes | Yes |
 | `YoungPersonClassPage` | Code Classroom | Yes | Yes |
+| `ProjectPage` | Code Club Projects | Yes | Yes |
+| `ProjectEditor` | Code Club Projects | Yes | Yes |
 
 "Verified" means someone has looked at the real screen. `MentorSignIn` is
 behind a login, so its details are probably wrong; correct it if you know
@@ -64,6 +66,23 @@ Two structural facts worth designing around:
 - **A mentor only sees work that has been SAVED.** "Only students who have
   saved their project will appear here." Walking round a room, a mentor cannot
   tell who has started and got stuck from who has not started at all.
+
+## Saving is where the two identity systems collide
+
+`ProjectEditor`'s save panel is the most important screen in this folder for
+the import lane, and it is the real copy from the live editor:
+
+> Log in to save your progress. With a Raspberry Pi Account you can save your
+> code and project steps progress.
+
+A young person in a club holding only a Code Classroom student account **cannot
+save here**. Their options are to self-register a standalone Pi account their
+mentor cannot see, or to download the files and carry them somewhere else.
+Pass `signedIn={false}` to show it — that is the default state for a club
+member, not an edge case.
+
+`ProjectPage` takes an optional `onImport`. Nothing like it exists on the live
+site, so a prototype showing it is **proposing** something. Say so in your notes.
 
 ## Why the copy is not softened
 
