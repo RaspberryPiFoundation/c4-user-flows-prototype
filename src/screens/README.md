@@ -82,7 +82,13 @@ Pass `signedIn={false}` to show it — that is the default state for a club
 member, not an edge case.
 
 `ProjectPage` takes an optional `onImport`. Nothing like it exists on the live
-site, so a prototype showing it is **proposing** something. Say so in your notes.
+site or in the Projects site designs, so a prototype showing it is
+**proposing** something. Say so in your notes.
+
+Worth noticing before you add anything to that page: the whole design drives at
+one action, "Start project", repeated top and bottom. And there is no mention
+of a class, a school or a mentor anywhere on it — a young person arriving here
+has no idea Code Classroom exists.
 
 ## Why the copy is not softened
 

@@ -211,7 +211,7 @@ export function ScreenGallery() {
         </Frame>
 
         <Frame name="Project page" meta={projectPageMeta} account="Log In">
-          <ProjectPage project={PROJECTS[2]} onStart={noop} />
+          <ProjectPage project={PROJECTS[0]} onStart={noop} />
         </Frame>
 
         <Frame name="Project editor" meta={projectEditorMeta} account="Log In">

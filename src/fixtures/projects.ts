@@ -13,6 +13,26 @@ export const PROJECTS: Project[] = [
     title: 'Space Talk',
     language: 'Scratch',
     ages: '7–11',
+    level: 1,
+    intro: [
+      "Create a space scene with characters that 'emote' to share their thoughts or feelings.",
+      '',
+      'In Scratch, characters and objects are called **sprites**, and they appear on the **Stage**.',
+      '',
+      'You will:',
+      '',
+      '- Add sprites and a **backdrop** to set up your project',
+      '- Click on sprites to make them communicate using `Looks` and `Sound` code blocks',
+      '- Use the **Paint editor** to change a **costume**',
+    ].join('\n'),
+    landingTask: {
+      title: 'Play',
+      body: [
+        'Click on each sprite to see what they do.',
+        '',
+        'What happens if you click on one sprite and then quickly click on another sprite?',
+      ].join('\n'),
+    },
     steps: [
       {
         title: 'What you will make',
@@ -50,6 +70,19 @@ export const PROJECTS: Project[] = [
     title: 'Rock Band',
     language: 'Scratch',
     ages: '7–11',
+    level: 1,
+    intro: [
+      'Build a set of **instruments** you can play with your keyboard.',
+      '',
+      'You will:',
+      '',
+      '- Add instrument **sprites** to the Stage',
+      '- Use `Sound` blocks to play a note when a key is pressed',
+    ].join('\n'),
+    landingTask: {
+      title: 'Play',
+      body: 'Press some keys. Which ones already make a sound?',
+    },
     steps: [
       {
         title: 'What you will make',
@@ -67,6 +100,19 @@ export const PROJECTS: Project[] = [
     title: 'Chatbot',
     language: 'Python',
     ages: '9–13',
+    level: 2,
+    intro: [
+      'Write a program that **asks questions and replies** based on the answers.',
+      '',
+      'You will:',
+      '',
+      '- Use `input()` to collect an answer',
+      '- Use `if` to decide what to say back',
+    ].join('\n'),
+    landingTask: {
+      title: 'Try it',
+      body: 'Run the starter program. What does it ask you?',
+    },
     steps: [
       {
         title: 'What you will make',
@@ -99,6 +145,15 @@ export const PROJECTS: Project[] = [
     title: 'Find the Bug',
     language: 'Python',
     ages: '10–14',
+    level: 2,
+    intro: [
+      'This program is **meant** to count down from 5. It does not.',
+      '',
+      'You will:',
+      '',
+      '- Read code that does not work yet',
+      '- Find the missing line and fix it',
+    ].join('\n'),
     steps: [
       {
         title: 'What you will do',

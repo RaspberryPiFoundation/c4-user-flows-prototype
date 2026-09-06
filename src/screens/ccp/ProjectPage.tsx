@@ -1,20 +1,22 @@
-import { Button, Card, Placeholder, Tag } from '../../kit'
+import { Button, Placeholder } from '../../kit'
 import type { Project } from '../../fixtures'
 import type { ScreenMeta } from '../types'
+import { Markdown } from './Markdown'
 
 export const meta: ScreenMeta = {
   surface: 'ccp',
   existsToday: true,
   verified: true,
-  note: 'Where a young person or mentor lands on a project before opening it. The starting point for every import flow.',
+  note: 'Where a young person or mentor lands on a project. A hero with the level and Start project, then "What you will make". The starting point for every import flow.',
 }
 
 interface Props {
   project: Project
   onStart: () => void
   /**
-   * Only shown when there is somewhere to import to. Nothing like this exists
-   * on the live site — a prototype that shows it is proposing something.
+   * Only pass this if your prototype is PROPOSING an import affordance. There
+   * is nothing like it on the live site or in the designs, so a screen showing
+   * it is making a suggestion — say so in your notes.
    */
   onImport?: () => void
 }
@@ -22,39 +24,59 @@ interface Props {
 /**
  * A Code Club Project, before you open the editor.
  *
- * This is where the import lane starts: a young person or mentor arrives here,
- * usually from a search or a link, and wants to get making. Any "add this to
- * my class" affordance is a PROPOSAL — pass `onImport` to show one, and say so
- * in your notes.
+ * Built from the Projects site designs. Two things about it matter for the
+ * import lane:
+ *
+ * - The whole page drives at one action: "Start project", repeated top and
+ *   bottom. Anything else competing with it is a real design cost.
+ * - There is no mention of a class, a school or a mentor anywhere. A young
+ *   person arriving here has no idea Code Classroom exists.
  */
 export function ProjectPage({ project, onStart, onImport }: Props) {
   return (
-    <div className="section-stack">
-      <div className="cc-actions">
-        <Tag text={project.language} variant="information" />
-        <Tag text={`Ages ${project.ages}`} />
-        <Tag text={`${project.steps.length} steps`} />
+    <div className="ccp-page">
+      <div className="ccp-hero">
+        <div className="ccp-hero-text">
+          <span className="ccp-level">
+            {project.language}: Level {project.level}
+          </span>
+          <h1 className="title-lg">{project.title}</h1>
+          <div className="cc-actions">
+            <Button type="primary" text="Start project" onClick={onStart} />
+            {onImport && <Button type="secondary" text="Add to a class" onClick={onImport} />}
+          </div>
+        </div>
+        <div className="ccp-hero-art">
+          <Placeholder label="Project illustration" height={150} />
+        </div>
       </div>
 
-      <h1 className="title-lg">{project.title}</h1>
+      <div className="ccp-body">
+        <h2 className="title-md">What you will make</h2>
+        <Markdown source={project.intro} />
 
-      <div className="cc-columns">
-        <div className="section-stack">
-          <Placeholder label="Project thumbnail" height={140} />
+        {project.landingTask && (
+          <section className="ccp-task" aria-labelledby="landing-task">
+            <div className="ccp-task-head">
+              <h3 className="title-sm" id="landing-task">
+                {project.landingTask.title}
+              </h3>
+              {/* Tickable, so a young person can keep their place. Decorative
+                  here — a prototype that needs it working can make it real. */}
+              <span className="ccp-task-tick" aria-hidden="true">
+                ✓
+              </span>
+            </div>
+            <div className="ccp-task-body">
+              <Markdown source={project.landingTask.body} />
+              <Placeholder label="Project preview" height={120} />
+            </div>
+          </section>
+        )}
+
+        <div className="ccp-start-again">
           <Button type="primary" text="Start project" onClick={onStart} />
-          {onImport && <Button type="secondary" text="Add to a class" onClick={onImport} />}
         </div>
-
-        <Card>
-          <h2 className="title-sm">What you will make</h2>
-          <p className="body muted">{project.steps[0]?.body.split('\n')[0]}</p>
-          <h2 className="title-sm">Steps</h2>
-          <ol className="cc-steps">
-            {project.steps.map((step) => (
-              <li key={step.title}>{step.title}</li>
-            ))}
-          </ol>
-        </Card>
       </div>
     </div>
   )

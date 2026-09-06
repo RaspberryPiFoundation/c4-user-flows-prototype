@@ -109,8 +109,20 @@ export interface Project {
   id: string
   title: string
   language: 'Scratch' | 'Python' | 'HTML'
+  /** Shown on the landing page as "Scratch: Level 1". */
+  level: number
   /** Rough age range the project is written for. */
   ages: string
+  /**
+   * The "What you will make" copy on the landing page. Markdown, because that
+   * is how projects are authored.
+   */
+  intro: string
+  /**
+   * A "have a go" panel on the landing page — Play, Test, Tip. Highlighted and
+   * tickable, so a young person can work through it before starting.
+   */
+  landingTask?: { title: string; body: string }
   steps: ProjectStep[]
   starterCode: string
 }
