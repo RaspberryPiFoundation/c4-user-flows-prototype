@@ -42,6 +42,7 @@ export function SchoolCodeEntry({ value, onChange, onContinue, error }: Props) {
           id="school-code"
           name="school-code"
           label="School code"
+          fullWidth
           hint="For example, 12-34-56. Your teacher will be able to tell you your school code."
           value={value}
           error={error ? ' ' : undefined}

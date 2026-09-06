@@ -51,6 +51,7 @@ export function MentorSignIn({
           id="mentor-email"
           name="mentor-email"
           label="Email address"
+          fullWidth
           type="email"
           value={email}
           error={error ? ' ' : undefined}
@@ -59,6 +60,7 @@ export function MentorSignIn({
         <PasswordInput
           id="mentor-password"
           label="Password"
+          fullWidth
           value={password}
           error={error ? ' ' : undefined}
           forgotPasswordHref="#/screens"

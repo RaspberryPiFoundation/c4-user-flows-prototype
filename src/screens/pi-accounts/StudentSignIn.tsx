@@ -78,6 +78,7 @@ export function StudentSignIn({
           id="student-username"
           name="student-username"
           label="Student username"
+          fullWidth
           hint="For example, student123"
           value={username}
           error={error ? ' ' : undefined}
@@ -87,6 +88,7 @@ export function StudentSignIn({
         <PasswordInput
           id="student-password"
           label="Password"
+          fullWidth
           hint="If you have forgotten your password, ask your teacher to reset it for you"
           value={password}
           error={error ? ' ' : undefined}

@@ -610,3 +610,31 @@ hr.divider {
   height: 1px;
   background: var(--rpf-grey-300);
 }
+
+/* ---------------- Design system workaround: PasswordInput ---------------- */
+/* @raspberrypifoundation/design-system-react 2.10.4
+ *
+ * PasswordInput is drawn as two halves that should read as one control: the
+ * input supplies the left border (it deliberately has no right border), and
+ * the "Show" button's ::before supplies the right border and the rounded right
+ * corners.
+ *
+ * In this version's bundled CSS, the generic `.rpf-button:before` rule appears
+ * AFTER `.rpf-input-password__button:before` at equal specificity, so it wins
+ * and resets the border colour to transparent. The result is an input that
+ * looks sliced off, with "Show" floating outside it.
+ *
+ * These two rules restore the intended appearance by raising specificity. They
+ * touch nothing but PasswordInput. Remove them if the design system fixes the
+ * ordering — worth reporting upstream rather than carrying forever.
+ */
+.rpf-input-password__container .rpf-input-password__button {
+  background-color: var(--rpf-input-background-color);
+}
+.rpf-input-password__container .rpf-input-password__button::before {
+  border-color: var(--rpf-input-color);
+  background-color: var(--rpf-input-background-color);
+}
+.rpf-input-password__container .rpf-input-password__button--error::before {
+  border-color: var(--rpf-input-color-error);
+}

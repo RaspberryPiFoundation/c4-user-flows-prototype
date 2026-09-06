@@ -39,7 +39,7 @@ The table is the shortlist you will actually reach for.
 | Component | For |
 | --- | --- |
 | `TextInput` | Single-line text. Needs `id`, `name`, `label` |
-| `PasswordInput` | Password, with show/hide and an optional forgot-password link |
+| `PasswordInput` | Password, with show/hide and an optional forgot-password link. Pass `fullWidth` inside a card, or it stays 240px |
 | `TextareaInput` | Multi-line text. Controlled — needs `value` |
 | `SelectInput` | Dropdown. `options` is `{ key, value }[]` |
 | `SearchInput` | Search box with a button. Needs `onClick` and `onChange` |
@@ -66,6 +66,17 @@ The table is the shortlist you will actually reach for.
 | `Table`, `TableHeaderCell`, `TableBodyCell` | `headerRow` plus `bodyRows` |
 | `Card` | *Ours.* A white panel — the standard container for a block of content |
 | `Placeholder` | *Ours.* A labelled grey box standing in for imagery we have not designed |
+
+## Known design system issues
+
+- **`PasswordInput` right border** (design system 2.10.4). The input and the
+  "Show" button are drawn as two halves of one control, but the bundle's
+  generic `.rpf-button:before` rule comes after the password button's own rule
+  at equal specificity and blanks the border, so the field looks sliced off.
+  `global.css` carries a scoped override. Worth reporting upstream — remove the
+  override when it is fixed.
+- **`CheckboxInput`** forwards its documented `isChecked` prop to the DOM and
+  warns. Use `checked` + `onChange`.
 
 ## Why `Placeholder` matters
 
