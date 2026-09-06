@@ -27,6 +27,9 @@ export const SCHOOLS: School[] = [
     country: 'Kenya',
     kind: 'code-club-only',
     mentorIds: ['pi-mentor-jo', 'pi-mentor-thabo'],
+    venue: 'Westlands Library, Ojijo Road, Nairobi',
+    schedule: 'Every Thursday, 16:00 - 17:30 (EAT)',
+    online: false,
   },
   {
     id: 'school-galway',
@@ -35,6 +38,9 @@ export const SCHOOLS: School[] = [
     country: 'Ireland',
     kind: 'code-club-only',
     mentorIds: ['pi-mentor-jo'],
+    venue: 'Galway Education Centre, Cluain Mhuire, Galway',
+    schedule: 'Every two weeks on Saturday, 10:00 - 12:00 (GMT)',
+    online: true,
   },
   {
     id: 'school-aidans',

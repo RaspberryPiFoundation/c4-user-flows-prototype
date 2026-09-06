@@ -38,6 +38,13 @@ export {
 export { SchoolCodeEntry, meta as schoolCodeEntryMeta } from './pi-accounts/SchoolCodeEntry'
 export { StudentSignIn, meta as studentSignInMeta } from './pi-accounts/StudentSignIn'
 export { MentorSignIn, meta as mentorSignInMeta } from './pi-accounts/MentorSignIn'
+export { MentorDashboard, meta as mentorDashboardMeta } from './code-club/MentorDashboard'
+export {
+  ManageClub,
+  liveManageClubItems,
+  meta as manageClubMeta,
+  type ManageClubItem,
+} from './code-club/ManageClub'
 export { ProjectPage, meta as projectPageMeta } from './ccp/ProjectPage'
 export {
   ProjectEditor,

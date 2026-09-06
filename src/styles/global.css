@@ -983,3 +983,147 @@ hr.divider {
   border-bottom: 1px solid var(--rpf-grey-150);
   background: var(--rpf-off-white);
 }
+
+/* ---------------- codeclub.org dashboard ---------------- */
+/* Pale green page with a white sidebar card, per the Code Club designs. */
+.cc-dash {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+@media (min-width: 800px) {
+  .cc-dash {
+    grid-template-columns: 240px 1fr;
+  }
+}
+.cc-dash-side {
+  background: var(--rpf-white);
+  border-radius: var(--radius-card);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-self: start;
+}
+.cc-dash-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+.cc-dash-nav-item {
+  color: var(--rpf-text);
+}
+.cc-dash-nav-item.active {
+  font-weight: var(--fw-bold);
+}
+.cc-dash-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.cc-dash-title {
+  text-align: center;
+}
+
+.cc-club-card {
+  background: var(--rpf-white);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.cc-club-head {
+  background: hsl(123, 43%, 48%);
+  color: var(--rpf-white);
+  font-weight: var(--fw-bold);
+  padding: var(--space-2) var(--space-3);
+}
+.cc-club-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+@media (min-width: 640px) {
+  .cc-club-body {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.cc-club-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  border-top: 1px solid var(--rpf-grey-150);
+}
+
+.cc-empty {
+  border: 1px dashed var(--rpf-grey-300);
+  border-radius: var(--radius-sm);
+  padding: var(--space-5) var(--space-3);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* ---------------- Manage Club menu ---------------- */
+.cc-manage {
+  display: flex;
+  flex-direction: column;
+}
+.cc-manage-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: hsl(123, 43%, 48%);
+  color: var(--rpf-white);
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+}
+.cc-manage-card {
+  background: var(--rpf-white);
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.cc-manage-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.cc-manage-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) 0;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--rpf-grey-150);
+  font-family: inherit;
+  font-size: var(--fs-1);
+  text-align: left;
+  cursor: pointer;
+}
+.cc-manage-label {
+  flex: 1;
+  font-weight: var(--fw-bold);
+}
+.cc-manage-arrow {
+  color: var(--rpf-text-secondary);
+}
+/* Decorative colour tiles standing in for the icons. */
+.cc-tile {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+}
+.cc-tile-purple { background: #6a3fc0; }
+.cc-tile-blue { background: #2a9fd8; }
+.cc-tile-orange { background: #ef7d57; }
+.cc-tile-green { background: hsl(123, 43%, 48%); }
+.cc-tile-pink { background: #e0508f; }
+.cc-tile-yellow { background: #f5c518; }

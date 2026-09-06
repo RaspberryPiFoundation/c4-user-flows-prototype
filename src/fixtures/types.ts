@@ -80,6 +80,13 @@ export interface School {
   kind: 'code-club-only' | 'school'
   /** Pi accounts of the adults who run it. Teachers, in the school case. */
   mentorIds: string[]
+  /**
+   * Only meaningful for a Code Club — a real school does not advertise a venue
+   * or a session time on codeclub.org.
+   */
+  venue?: string
+  schedule?: string
+  online?: boolean
 }
 
 export interface ClassGroup {

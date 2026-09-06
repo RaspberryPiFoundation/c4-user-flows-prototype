@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { Alert, Tag } from './kit'
 import {
   ClassroomProjectEditor,
+  ManageClub,
+  MentorDashboard,
   EducatorClassPage,
   EducatorProjectPage,
   MentorSignIn,
@@ -14,6 +16,9 @@ import {
   YoungPersonClassPage,
   YoungPersonSchoolHome,
   classroomProjectEditorMeta,
+  liveManageClubItems,
+  manageClubMeta,
+  mentorDashboardMeta,
   educatorClassPageMeta,
   educatorProjectPageMeta,
   mentorSignInMeta,
@@ -80,6 +85,7 @@ export function ScreenGallery() {
   const [panel, setPanel] = useState<'instructions' | 'save'>('instructions')
   const [ccStep, setCcStep] = useState(0)
   const [ready, setReady] = useState(false)
+  const [dismissed, setDismissed] = useState<string[]>([])
 
   const err = (message: string) => (showErrors ? message : undefined)
   const westlands = SCHOOLS[0]
@@ -123,6 +129,30 @@ export function ScreenGallery() {
       </div>
 
       <div className="theme-list">
+        <Frame name="Mentor dashboard" meta={mentorDashboardMeta} account="Your Account">
+          <MentorDashboard
+            clubsManaged={SCHOOLS.filter((s) => s.kind === 'code-club-only')}
+            pendingRequests={[
+              'Pending volunteer request from Amina Yusuf @ Westlands Library Code Club',
+              'Pending volunteer request from Sean Daly @ Galway Community Code Club',
+            ].filter((r) => !dismissed.includes(r))}
+            onDismissRequest={(r) => setDismissed((d) => [...d, r])}
+            onCreateEvent={noop}
+            onManageClub={noop}
+            onViewPublicProfile={noop}
+            onStartAClub={noop}
+            onFindAClub={noop}
+          />
+        </Frame>
+
+        <Frame name="Manage club" meta={manageClubMeta} account="Your Account">
+          <ManageClub
+            clubName={westlands.name}
+            items={liveManageClubItems(noop)}
+            onBack={noop}
+          />
+        </Frame>
+
         <Frame name="Role chooser" meta={roleChooserMeta}>
           <RoleChooser
             onTeacher={noop}

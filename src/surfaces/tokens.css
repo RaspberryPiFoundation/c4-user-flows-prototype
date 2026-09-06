@@ -20,10 +20,11 @@
   --surface-nav-border: var(--rpf-grey-150);
 }
 
-/* codeclub.org — raspberry, the Code Club brand colour. */
+/* codeclub.org — raspberry accent on the pale green page the dashboard
+   designs use. Green is Code Club's own colour; raspberry is the Foundation's. */
 .surface-code-club {
   --surface-accent: hsl(342, 71%, 47%);
-  --surface-page: var(--rpf-off-white);
+  --surface-page: hsl(123, 41%, 95%);
 }
 
 /* projects.raspberrypi.org — white header on the live site. Teal accent is an

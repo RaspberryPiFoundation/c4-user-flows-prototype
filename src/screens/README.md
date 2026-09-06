@@ -26,6 +26,8 @@ chrome.
 
 | Screen | Surface | Exists today | Verified |
 | --- | --- | --- | --- |
+| `MentorDashboard` | Code Club | Yes | Yes |
+| `ManageClub` | Code Club | Yes | Yes |
 | `RoleChooser` | Code Classroom | Yes | Yes |
 | `SchoolCodeEntry` | Pi Accounts, badged Code Classroom | Yes | Yes |
 | `StudentSignIn` | Pi Accounts, badged Code Classroom | Yes | Yes |
@@ -67,6 +69,30 @@ Two structural facts worth designing around:
 - **A mentor only sees work that has been SAVED.** "Only students who have
   saved their project will appear here." Walking round a room, a mentor cannot
   tell who has started and got stuck from who has not started at all.
+
+## Where mentor onboarding actually starts
+
+`MentorDashboard` and `ManageClub` are the codeclub.org screens a mentor
+already uses, so they are the realistic places to surface Code Classroom.
+
+`ManageClub` takes `items` with **no default**, so a prototype has to say what
+the menu contains rather than inherit an assumption. `liveManageClubItems()`
+gives you the six rows that exist today — start from those and add, and mark
+anything you add as `proposed`.
+
+Before adding a row, notice what it would sit among: Events, Volunteers Lists,
+Pending volunteers, Subscriber Lists, and two profile options. All club
+administration, none of it teaching, and two clicks deep from the dashboard.
+Cheapest is not automatically best.
+
+## A terminology finding on these screens
+
+The live Code Club dashboard says **"View Dojo Profile"** and **"Edit Dojo
+Profile"**, and volunteer requests read "@ Name of Dojo". Dojo is CoderDojo's
+word, surfacing in Code Club's own product. Worth knowing that mentors are
+already reading language from a neighbouring programme before we judge how much
+the Code Classroom "school" and "teacher" wording will bother them — it may be
+more tolerated than we assume, or it may compound.
 
 ## The same editor, two different products
 
