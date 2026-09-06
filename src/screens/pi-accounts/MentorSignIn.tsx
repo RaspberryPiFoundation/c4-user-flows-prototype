@@ -54,7 +54,6 @@ export function MentorSignIn({
           fullWidth
           type="email"
           value={email}
-          error={error ? ' ' : undefined}
           onChange={(e) => onEmailChange(e.target.value)}
         />
         <PasswordInput
@@ -62,7 +61,6 @@ export function MentorSignIn({
           label="Password"
           fullWidth
           value={password}
-          error={error ? ' ' : undefined}
           forgotPasswordHref="#/screens"
           onChange={(e) => onPasswordChange(e.target.value)}
         />

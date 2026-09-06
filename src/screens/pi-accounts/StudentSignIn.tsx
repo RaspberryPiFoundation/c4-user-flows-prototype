@@ -81,7 +81,6 @@ export function StudentSignIn({
           fullWidth
           hint="For example, student123"
           value={username}
-          error={error ? ' ' : undefined}
           onChange={(e) => onUsernameChange(e.target.value)}
         />
 
@@ -91,7 +90,6 @@ export function StudentSignIn({
           fullWidth
           hint="If you have forgotten your password, ask your teacher to reset it for you"
           value={password}
-          error={error ? ' ' : undefined}
           onChange={(e) => onPasswordChange(e.target.value)}
         />
 

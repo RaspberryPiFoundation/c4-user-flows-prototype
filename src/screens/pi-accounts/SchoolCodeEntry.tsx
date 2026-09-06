@@ -45,7 +45,6 @@ export function SchoolCodeEntry({ value, onChange, onContinue, error }: Props) {
           fullWidth
           hint="For example, 12-34-56. Your teacher will be able to tell you your school code."
           value={value}
-          error={error ? ' ' : undefined}
           onChange={(e) => onChange(e.target.value)}
         />
         <div className="login-card-actions end">

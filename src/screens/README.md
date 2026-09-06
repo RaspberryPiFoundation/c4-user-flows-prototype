@@ -39,6 +39,13 @@ chrome.
 behind a login, so its details are probably wrong; correct it if you know
 better.
 
+## Error states
+
+Errors use the design system `Alert`, wrapped in `role="alert"` so they are
+announced. The screens do not also mark the individual field — if a variant
+wants that, pass a short message to the input's own `error` prop as well as
+showing the alert.
+
 ## Code Classroom has no navigation
 
 You move around Code Classroom entirely by breadcrumb — "Your school /

@@ -11,15 +11,8 @@
   --rpf-grey-300: #babcc5;
   --rpf-grey-500: #616575;
 
-  --alert-info: #1e398a;
-  --alert-info-bg: #fbfcfe;
   --alert-error: #9e0a0a;
   --alert-error-bg: #fdf6f6;
-  --alert-success: #1b6b2e;
-  --alert-success-bg: #f4faf5;
-
-  --input-bg: #ffffff;
-  --input-border: #212121;
 
   /* Typography */
   --font-primary: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -47,5 +40,4 @@
   --radius-sm: 8px;
   --radius-card: 16px;
   --button-radius: 80px;
-  --button-border-width: 2px;
 }
