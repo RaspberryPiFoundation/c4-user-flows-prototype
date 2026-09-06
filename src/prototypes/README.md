@@ -36,6 +36,22 @@ daily problem.
 `notes.md` is the part that makes this repo worth having in six months. A
 prototype without notes is a screenshot.
 
+## Showing a prototype to someone
+
+Hit **Full screen** in the banner. The workbench chrome disappears and only the
+prototype is left, filling the window. `Esc` or the button in the corner brings
+it back.
+
+It lives in the URL, so you can send someone a link that opens clean:
+
+```
+#/p/onboarding-yp/reference-school-code-join?full=1
+```
+
+Worth doing before any testing session, along with turning autofill off. Nobody
+being tested should be looking at a bar saying "prototype workbench" or a
+dropdown of invented people.
+
 ## Who you are, and autofill
 
 The bar at the top does two things: signs someone in, and **fills their details

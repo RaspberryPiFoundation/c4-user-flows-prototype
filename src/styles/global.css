@@ -1161,3 +1161,53 @@ hr.divider {
   font-size: var(--fs-075);
   line-height: var(--lh-15);
 }
+
+/* ---------------- Full screen prototype ---------------- */
+/* Hides everything that belongs to the workbench rather than the prototype, so
+   a person being tested sees only the thing being tested. */
+body.full-screen-prototype .tool-bar,
+body.full-screen-prototype .identity-bar,
+body.full-screen-prototype .footer,
+body.full-screen-prototype .prototype-banner,
+body.full-screen-prototype .prototype-notes {
+  display: none;
+}
+/* Let the prototype have the whole width — a testing session should see it at
+   the size it would really be. */
+body.full-screen-prototype .content {
+  padding: 0;
+}
+body.full-screen-prototype .surface {
+  border: none;
+  border-radius: 0;
+  min-height: 100vh;
+}
+
+.prototype-full-toggle {
+  margin-left: auto;
+}
+
+/* Deliberately quiet and out of the way, but never hidden — there has to be a
+   way back that does not require knowing about Esc. */
+.prototype-exit-full {
+  position: fixed;
+  right: var(--space-2);
+  bottom: var(--space-2);
+  z-index: 10;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--button-radius);
+  border: 1px solid var(--rpf-grey-300);
+  /* Solid, not translucent. A see-through control sitting over page content is
+     unreadable and looks like a rendering fault. Quiet is fine; ghostly is not. */
+  background: var(--rpf-white);
+  color: var(--rpf-grey-500);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  font-family: inherit;
+  font-size: var(--fs-075);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.prototype-exit-full:hover,
+.prototype-exit-full:focus-visible {
+  color: var(--rpf-text);
+}
