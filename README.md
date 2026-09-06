@@ -86,6 +86,9 @@ npm run dev      # http://localhost:5173
 npm run build    # type-check + production build
 ```
 
+New to this? [`SETUP.md`](SETUP.md) walks through it from installing Node, and
+assumes no previous experience of running code.
+
 ## Deployment
 
 Pushing to `main` triggers [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml),
@@ -108,6 +111,9 @@ not control — so keep the meta tag in place.
 | `src/prototypes/` | One folder per prototype. **This is where you work** |
 | `src/prototypes/_template/` | Copy this to start. A working two-screen journey |
 | `.claude/skills/new-prototype/` | The `/new-prototype` skill |
+| `SETUP.md` | Getting set up, from scratch |
+| `CLAUDE.md` | The rules, for anyone's Claude |
+| `DESIGNS.md` | Where each screen's design came from |
 | `src/prototypes/registry.ts` | Auto-discovers prototypes. Nothing to edit |
 | `src/kit/` | Everything you build screens from — see its own README |
 | `src/screens/` | Reusable screens from the real products — see its own README |
