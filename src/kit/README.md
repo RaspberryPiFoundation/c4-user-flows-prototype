@@ -14,15 +14,19 @@ the gallery. It shows every component in its states, with the code next to it.
 - **Import from here first.** If a component exists, use it — do not generate a
   new one from a Figma frame. That is how you end up with six different buttons.
 - **Use tokens, never literals.** `var(--rpf-text)`, not `#212121`.
-- **Do not edit this folder.** A component only your prototype needs belongs in
-  your prototype folder. If three prototypes end up copying the same thing, that
-  is when it earns a place in here.
+- **Do not edit this folder.** You should never need to: the design system is
+  star-exported, so there is no list to add to. A component only your prototype
+  needs belongs in your prototype folder. If three prototypes end up copying the
+  same thing, that is when it earns a place in here.
 
 ## What's available
 
-Most of this is re-exported unchanged from
-`@raspberrypifoundation/design-system-react`, so the props are the real ones and
-nothing is hidden behind a wrapper.
+**Everything in `@raspberrypifoundation/design-system-react`**, re-exported
+wholesale and unwrapped, so the props are the real ones and nothing is hidden.
+If the design system has it, you can import it from here — even if it is not in
+the table below. Check its own types for props.
+
+The table is the shortlist you will actually reach for.
 
 ### Actions
 

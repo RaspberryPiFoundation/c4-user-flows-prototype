@@ -1,64 +1,20 @@
 // One import for everything you need to build a screen:
 //
-//   import { Button, TextInput, Card } from '../../kit'
+//   import { Button, TextInput, Placeholder } from '../../kit'
 //
-// Most of this is re-exported straight from the Raspberry Pi Foundation design
-// system. It is deliberately NOT wrapped — wrappers drift from the real
-// components and hide props. If you need something the design system provides,
-// add it to the re-export list rather than building your own.
+// Almost all of this IS the Raspberry Pi Foundation design system, re-exported
+// wholesale and unwrapped. Wrapping would hide props and drift from the real
+// components; the star export means anything the design system adds is
+// available here immediately, with no list to keep up to date and no shared
+// file for you to edit.
 //
-// Only add a component of our own here if every prototype would want it. A
+// Only add a component of our own below if every prototype would want it. A
 // component only your prototype needs belongs in your prototype folder.
 //
-// See README.md in this folder for what each component is for, and the
-// gallery at #/kit for what they all look like.
+// See README.md in this folder for what is available, and the gallery at
+// #/kit for what it all looks like.
 
-export {
-  Accordion,
-  Alert,
-  Button,
-  CheckboxInput,
-  Fieldset,
-  InputField,
-  InputLabel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuTitle,
-  Modal,
-  PasswordInput,
-  ProgressBar,
-  RadioInput,
-  SearchInput,
-  SelectInput,
-  Switch,
-  Table,
-  TableBodyCell,
-  TableHeaderCell,
-  Tag,
-  TextareaInput,
-  TextInput,
-} from '@raspberrypifoundation/design-system-react'
-
-export type {
-  AlertProps,
-  ButtonProps,
-  CheckboxInputProps,
-  FieldSetProps,
-  InputFieldProps,
-  InputLabelProps,
-  MenuItemProps,
-  MenuProps,
-  ProgressBarProps,
-  RadioInputProps,
-  SearchInputProps,
-  SelectInputProps,
-  SwitchProps,
-  TableProps,
-  TagProps,
-  TextareaInputProps,
-  TextInputProps,
-} from '@raspberrypifoundation/design-system-react'
+export * from '@raspberrypifoundation/design-system-react'
 
 // Ours, because the design system has no equivalent.
 export { Card } from './Card'
