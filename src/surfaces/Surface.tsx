@@ -15,6 +15,11 @@ interface SurfaceProps {
    * otherwise would hide a real handoff.
    */
   badge?: string
+  /**
+   * Override the surface's default layout. Code Classroom's sign-in is a
+   * centred card on a coloured page even though the signed-in app is not.
+   */
+  layout?: 'app' | 'centred'
 }
 
 /**
@@ -25,9 +30,10 @@ interface SurfaceProps {
  * screen physically cannot pick up Code Club's colours by accident — and so a
  * flow that crosses products looks like it crosses products.
  */
-export function Surface({ id, children, nav, activeNav, badge }: SurfaceProps) {
+export function Surface({ id, children, nav, activeNav, badge, layout }: SurfaceProps) {
   const surface = SURFACES[id]
   const navItems = nav ?? surface.nav
+  const effectiveLayout = layout ?? surface.layout
 
   return (
     <div className={`surface surface-${id}`}>
@@ -39,7 +45,7 @@ export function Surface({ id, children, nav, activeNav, badge }: SurfaceProps) {
         </span>
       </div>
 
-      {navItems.length > 0 && (
+      {effectiveLayout !== 'centred' && navItems.length > 0 && (
         <nav className="surface-nav" aria-label={`${surface.name} navigation`}>
           {navItems.map((item) => (
             <span
@@ -52,7 +58,7 @@ export function Surface({ id, children, nav, activeNav, badge }: SurfaceProps) {
         </nav>
       )}
 
-      <div className={surface.layout === 'centred' ? 'surface-body centred' : 'surface-body'}>
+      <div className={effectiveLayout === 'centred' ? 'surface-body centred' : 'surface-body'}>
         {children}
       </div>
 

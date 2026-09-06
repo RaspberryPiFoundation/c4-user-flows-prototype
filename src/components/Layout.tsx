@@ -14,7 +14,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <span>© Raspberry Pi Foundation</span>
         <span>
           Internal prototype · <a href="#/kit">Component gallery</a> ·{' '}
-          <a href="#/surfaces">Surfaces</a> · <a href="#/debug">Fixture data</a> ·{' '}
+          <a href="#/screens">Screens</a> · <a href="#/surfaces">Surfaces</a> · <a href="#/debug">Fixture data</a> ·{' '}
           <a href="https://github.com/RaspberryPiFoundation/c4-user-flows-prototype">
             View the repo on GitHub
           </a>

@@ -47,6 +47,9 @@ else's prototype.
 | --- | --- |
 | `#/` | Landing page, listing every prototype by lane |
 | `#/kit` | Component gallery — everything you can build from |
+| `#/screens` | Base screens from the real products, with their error states |
+| `#/surfaces` | The five product chromes these flows cross |
+| `#/debug` | All the fake data |
 | `#/p/<lane>/<slug>` | One prototype, linkable and shareable |
 
 Routing is hash-based so deep links work on GitHub Pages with no server config.
@@ -89,6 +92,10 @@ not control — so keep the meta tag in place.
 | `src/prototypes/` | One folder per prototype. **This is where you work** |
 | `src/prototypes/registry.ts` | Auto-discovers prototypes. Nothing to edit |
 | `src/kit/` | Everything you build screens from — see its own README |
+| `src/screens/` | Reusable screens from the real products — see its own README |
+| `src/surfaces/` | Product chrome and per-product design tokens |
+| `src/fixtures/` | Fake clubs, schools, classes, people and projects |
+| `src/session/` | The fake two-identity sign-in state |
 | `src/Home.tsx` | The landing page |
 | `src/KitGallery.tsx` | The `#/kit` component gallery |
 | `src/PrototypeHost.tsx` | Renders one prototype, with an error boundary |
