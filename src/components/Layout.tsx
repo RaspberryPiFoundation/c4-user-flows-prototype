@@ -19,7 +19,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <footer className="footer">
         <span>
           <a href="#/">All prototypes</a> · <a href="#/screens">Screens</a> ·{' '}
-          <a href="#/kit">Components</a> · <a href="#/surfaces">Surfaces</a> ·{' '}
+          <a href="#/kit">Components</a> ·{' '}
           <a href="#/debug">Fixture data</a>
         </span>
         <span>

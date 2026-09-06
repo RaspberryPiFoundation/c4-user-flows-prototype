@@ -6,9 +6,11 @@
  * existing screen" from "this is net new". It is never shown in the UI — a
  * tester seeing a "proposed" badge would react to the badge.
  */
+import type { SurfaceId } from '../surfaces'
+
 export interface ScreenMeta {
   /** Which product this screen belongs to. */
-  surface: 'code-club' | 'ccp' | 'classroom' | 'pi-accounts' | 'editor'
+  surface: SurfaceId
   /** Extra branding on the chrome, where one product's page is badged another. */
   badge?: string
   layout?: 'app' | 'centred'

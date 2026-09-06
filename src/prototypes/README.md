@@ -102,7 +102,7 @@ that is when a helper earns its place.
 
 ## Worth reading first
 
-- `#/screens` — the eleven base screens, with their error and empty states
+- `#/screens` — the base screens, in their product chrome, with their error and empty states
 - `#/kit` — everything you build from
 - `#/debug` — the fake clubs, classes, people and projects
 - [`src/screens/README.md`](../screens/README.md) — what the screens assume, and

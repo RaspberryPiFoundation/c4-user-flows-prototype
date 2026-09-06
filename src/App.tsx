@@ -7,7 +7,6 @@ import { Home } from './Home'
 import { KitGallery } from './KitGallery'
 import { PrototypeHost } from './PrototypeHost'
 import { ScreenGallery } from './ScreenGallery'
-import { SurfaceGallery } from './SurfaceGallery'
 import { SessionProvider } from './session'
 
 export default function App() {
@@ -22,7 +21,6 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/kit" element={<KitGallery />} />
             <Route path="/debug" element={<Debug />} />
-            <Route path="/surfaces" element={<SurfaceGallery />} />
             <Route path="/screens" element={<ScreenGallery />} />
             <Route path="/p/:lane/:slug/*" element={<PrototypeHost />} />
             <Route path="*" element={<NotFound />} />

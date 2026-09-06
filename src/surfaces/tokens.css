@@ -48,9 +48,3 @@
   --surface-page: hsl(340, 65%, 34%);
   --surface-bar: var(--rpf-off-white);
 }
-
-/* editor.raspberrypi.org */
-.surface-editor {
-  --surface-accent: #232d9a;
-  --surface-page: var(--rpf-white);
-}

@@ -63,7 +63,6 @@ else's prototype.
 | `#/` | Landing page, listing every prototype by lane |
 | `#/kit` | Component gallery — everything you can build from |
 | `#/screens` | Base screens from the real products, with their error states |
-| `#/surfaces` | The five product chromes these flows cross |
 | `#/debug` | All the fake data |
 | `#/p/<lane>/<slug>` | One prototype, linkable and shareable |
 | `#/p/<lane>/<slug>?full=1` | The same prototype with no workbench chrome |
@@ -112,7 +111,7 @@ not control — so keep the meta tag in place.
 | `src/prototypes/registry.ts` | Auto-discovers prototypes. Nothing to edit |
 | `src/kit/` | Everything you build screens from — see its own README |
 | `src/screens/` | Reusable screens from the real products — see its own README |
-| `src/surfaces/` | Product chrome and per-product design tokens |
+| `src/surfaces/` | Product chrome and per-product design tokens for the four products |
 | `src/fixtures/` | Fake clubs, schools, classes, people and projects |
 | `src/session/` | The fake two-identity sign-in state |
 | `src/Home.tsx` | The landing page |

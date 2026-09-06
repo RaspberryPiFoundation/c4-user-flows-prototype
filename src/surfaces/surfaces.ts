@@ -10,8 +10,12 @@
 // Chrome is grey-box: the right name, the right accent, and roughly the right
 // navigation. It is not pixel-accurate, and it is not meant to be until a
 // testing session shows fidelity is getting in the way.
+//
+// There is no separate "editor" surface. The code editor is always embedded in
+// another product — Code Club Projects or Code Classroom — and never stands on
+// its own, so it takes the chrome of whichever it is inside.
 
-export type SurfaceId = 'code-club' | 'ccp' | 'classroom' | 'pi-accounts' | 'editor'
+export type SurfaceId = 'code-club' | 'ccp' | 'classroom' | 'pi-accounts'
 
 export interface SurfaceInfo {
   id: SurfaceId
@@ -68,14 +72,6 @@ export const SURFACES: Record<SurfaceId, SurfaceInfo> = {
     nav: [],
     layout: 'centred',
     note: 'Signing in and up. Note: the Code Classroom student login is hosted HERE, wearing Code Classroom branding.',
-  },
-  editor: {
-    id: 'editor',
-    name: 'Code Editor',
-    host: 'editor.raspberrypi.org',
-    nav: [],
-    layout: 'app',
-    note: 'Where a project is actually made. Steps on one side, code on the other.',
   },
 }
 
