@@ -76,7 +76,11 @@ export function liveManageClubItems(onSelect: (label: string) => void): ManageCl
     { label: 'Volunteers Lists', tone: 'blue', onSelect: () => onSelect('Volunteers Lists') },
     { label: 'Pending volunteers', tone: 'orange', onSelect: () => onSelect('Pending volunteers') },
     { label: 'Subscriber Lists', tone: 'green', onSelect: () => onSelect('Subscriber Lists') },
-    { label: 'View Dojo Profile', tone: 'pink', onSelect: () => onSelect('View Dojo Profile') },
-    { label: 'Edit Dojo Profile', tone: 'yellow', onSelect: () => onSelect('Edit Dojo Profile') },
+    // The live product says "Dojo" here — CoderDojo's word, in Code Club's own
+    // dashboard. Corrected to "Club" deliberately: it is a copy bug rather than
+    // a tension worth putting in front of a mentor, and leaving it in would
+    // just collect feedback nobody needs.
+    { label: 'View Club Profile', tone: 'pink', onSelect: () => onSelect('View Club Profile') },
+    { label: 'Edit Club Profile', tone: 'yellow', onSelect: () => onSelect('Edit Club Profile') },
   ]
 }

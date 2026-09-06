@@ -85,14 +85,20 @@ Pending volunteers, Subscriber Lists, and two profile options. All club
 administration, none of it teaching, and two clicks deep from the dashboard.
 Cheapest is not automatically best.
 
-## A terminology finding on these screens
+## One place we deliberately do not match the live product
 
 The live Code Club dashboard says **"View Dojo Profile"** and **"Edit Dojo
-Profile"**, and volunteer requests read "@ Name of Dojo". Dojo is CoderDojo's
-word, surfacing in Code Club's own product. Worth knowing that mentors are
-already reading language from a neighbouring programme before we judge how much
-the Code Classroom "school" and "teacher" wording will bother them — it may be
-more tolerated than we assume, or it may compound.
+Profile"** — CoderDojo's word inside Code Club's own product. These screens say
+**"Club"** instead.
+
+This is the one intentional departure from the "copy is the real copy" rule,
+and the distinction matters. "Teacher", "student" and "school code" are Code
+Classroom's real language creating a real tension for clubs, so we keep them
+and let testing show what happens. "Dojo" is just wrong, it is Code Club's own
+product to fix, and leaving it in would only collect feedback nobody needs.
+
+If you are comparing a prototype against the live site and spot the difference,
+that is why.
 
 ## The same editor, two different products
 
