@@ -63,7 +63,8 @@ See `#/debug` for everyone available.
 
 ## 5. Show them
 
-Run `npm run dev`, open `#/p/<lane>/<slug>`, and tell them the URL. Point out
+Run `npm run dev`, open `#/p/<lane>/<slug>`, and tell them the URL. Mention
+that `?full=1&autofill=0` is the version to send someone for a testing session. Point out
 that it is already on the landing page in its lane, and that no shared file
 changed.
 

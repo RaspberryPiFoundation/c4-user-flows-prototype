@@ -42,15 +42,23 @@ Hit **Full screen** in the banner. The workbench chrome disappears and only the
 prototype is left, filling the window. `Esc` or the button in the corner brings
 it back.
 
-It lives in the URL, so you can send someone a link that opens clean:
+Everything about how a prototype is shown lives in the URL, so a link is all
+you need to send:
+
+| | |
+| --- | --- |
+| `?full=1` | Hide the workbench chrome. Just the prototype, full window |
+| `?autofill=0` | Do not fill in sign-in screens |
+
+For a testing session, both:
 
 ```
-#/p/onboarding-yp/reference-school-code-join?full=1
+#/p/onboarding-yp/reference-school-code-join?full=1&autofill=0
 ```
 
-Worth doing before any testing session, along with turning autofill off. Nobody
-being tested should be looking at a bar saying "prototype workbench" or a
-dropdown of invented people.
+That opens clean, with nothing pre-typed — so you can watch someone read a
+six-digit code off a board and type it, which is usually the thing you are
+there to see.
 
 ## Who your prototype is about
 
@@ -81,9 +89,9 @@ person from a bar at the top, and every author would have had to write a flow
 that coped with eleven students across three clubs. The first one written did
 not. Hence: the author decides, in one place.
 
-**Turn autofill off before a real testing session** — the checkbox is in the bar
-at the top. Watching a young person type a six-digit code off a board is often
-the thing you are there to see.
+**Turn autofill off before a real testing session** with `?autofill=0`.
+Watching a young person type a six-digit code off a board is often the thing you
+are there to see.
 
 ## Wiring screens together
 

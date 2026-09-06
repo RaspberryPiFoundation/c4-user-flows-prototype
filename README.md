@@ -66,7 +66,8 @@ else's prototype.
 | `#/surfaces` | The five product chromes these flows cross |
 | `#/debug` | All the fake data |
 | `#/p/<lane>/<slug>` | One prototype, linkable and shareable |
-| `#/p/<lane>/<slug>?full=1` | The same prototype with no workbench chrome, for testing sessions |
+| `#/p/<lane>/<slug>?full=1` | The same prototype with no workbench chrome |
+| `#/p/<lane>/<slug>?full=1&autofill=0` | Ready for a testing session: no chrome, nothing pre-typed |
 
 Routing is hash-based so deep links work on GitHub Pages with no server config.
 

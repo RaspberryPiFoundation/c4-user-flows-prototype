@@ -6,6 +6,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { classroomStudent, piAccount, school } from '../fixtures'
 import type { ClassroomStudent, PiAccount } from '../fixtures'
 
@@ -32,13 +33,13 @@ interface Session {
 
   /**
    * Details for this prototype's cast, so a sign-in screen can be filled in
-   * rather than retyped at every demo. Empty when autofill is off — which is
-   * what you want in a real testing session, where watching someone type the
-   * code IS the thing being tested.
+   * rather than retyped at every demo.
+   *
+   * Empty when `?autofill=0` is in the URL — which is what you want in a real
+   * testing session, where watching someone type the code IS the thing being
+   * tested. Put it in the link you send them, alongside `?full=1`.
    */
   autofill: { schoolCode: string; username: string; password: string }
-  autofillEnabled: boolean
-  setAutofillEnabled: (enabled: boolean) => void
 
   /**
    * Put the prototype's cast in place. Called by the workbench when a
@@ -53,31 +54,13 @@ interface Session {
 
 const SessionContext = createContext<Session | null>(null)
 
-// sessionStorage so a refresh mid-flow keeps your place. Only the autofill
-// preference is worth persisting — who is signed in comes from the prototype.
-const STORAGE_KEY = 'c4-prototype-autofill'
-
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [piAccountId, setPiAccountId] = useState<string | null>(null)
   const [classroomStudentId, setClassroomStudentId] = useState<string | null>(null)
   /** The cast, whether or not it is signed in — this is what autofill reads. */
   const [castStudentId, setCastStudentId] = useState<string | null>(null)
-  const [autofillEnabled, setAutofillState] = useState<boolean>(() => {
-    try {
-      return sessionStorage.getItem(STORAGE_KEY) !== 'off'
-    } catch {
-      return true
-    }
-  })
-
-  const setAutofillEnabled = useCallback((enabled: boolean) => {
-    setAutofillState(enabled)
-    try {
-      sessionStorage.setItem(STORAGE_KEY, enabled ? 'on' : 'off')
-    } catch {
-      // Private browsing can refuse writes. Not worth failing over.
-    }
-  }, [])
+  const [params] = useSearchParams()
+  const autofillEnabled = params.get('autofill') !== '0'
 
   const applyCast = useCallback(
     (cast: { piAccount?: string; classroomStudent?: string } | undefined, ownsSignIn: boolean) => {
@@ -115,8 +98,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
               password: 'not-a-real-password',
             }
           : { schoolCode: '', username: '', password: '' },
-      autofillEnabled,
-      setAutofillEnabled,
       applyCast,
       signInPiAccount,
       signInClassroomStudent,
@@ -126,7 +107,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     classroomStudentId,
     castStudentId,
     autofillEnabled,
-    setAutofillEnabled,
     applyCast,
     signInPiAccount,
     signInClassroomStudent,

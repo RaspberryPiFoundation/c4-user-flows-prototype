@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { IdentityBar } from './IdentityBar'
 
 /**
  * Chrome for the prototype hub itself.
@@ -16,7 +15,6 @@ export function Layout({ children }: { children: ReactNode }) {
         <span className="tool-bar-label">Prototype workbench</span>
         <span className="tool-bar-note">Nothing here is a real product</span>
       </div>
-      <IdentityBar />
       <main className="content">{children}</main>
       <footer className="footer">
         <span>
