@@ -36,6 +36,28 @@ daily problem.
 `notes.md` is the part that makes this repo worth having in six months. A
 prototype without notes is a screenshot.
 
+## Who you are, and autofill
+
+The bar at the top does two things: signs someone in, and **fills their details
+into any sign-in screen you meet**, so a demo does not start with retyping a
+six-digit code.
+
+Picking someone and being signed in are separate on purpose:
+
+- **picked** — who you told the workbench you are. Survives signing out.
+- **signed in** — who the fiction currently has signed in.
+
+A flow that signs people in itself calls `startSignedOut()` on mount: the
+fiction starts empty, but the autofill still knows who you picked. Set
+`ownsSignIn: true` in your `meta.ts` and the bar says so rather than looking
+like it is in charge when it is not.
+
+Read `autofill` from `useSession()` and seed your fields from it — see
+`onboarding-yp/reference-school-code-join`.
+
+**Turn autofill off before a real testing session.** Watching a young person
+type a six-digit code off a board is often the thing you are there to see.
+
 ## Wiring screens together
 
 Plain `useState`, as in `_template`. There is no flow engine and there is not

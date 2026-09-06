@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Alert, Card } from '../../../kit'
-import { SCHOOLS, classesInSchool, schoolBySchoolCode } from '../../../fixtures'
+import { CLASSROOM_STUDENTS, SCHOOLS, classesInSchool, schoolBySchoolCode } from '../../../fixtures'
 import {
   RoleChooser,
   SchoolCodeEntry,
@@ -19,16 +19,28 @@ type Step = 'role' | 'code' | 'signin' | 'home'
 const CLUB = SCHOOLS[0]
 
 export default function SchoolCodeJoin() {
-  const { classroomStudent, signInClassroomStudent, reset } = useSession()
+  const { autofill, classroomStudent, signInClassroomStudent, startSignedOut } = useSession()
   const [step, setStep] = useState<Step>('role')
   const [code, setCode] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string>()
 
+  // Start signed out — that is the whole question in this lane. `startSignedOut`
+  // keeps whoever you picked at the top, so the fields below can still be
+  // filled in for you.
   useEffect(() => {
-    reset()
-  }, [reset])
+    startSignedOut()
+  }, [startSignedOut])
+
+  // Fill in the school code and username for whoever is picked at the top, so
+  // a demo does not begin with retyping six digits. Turn autofill off in the
+  // bar when you want to watch someone actually type it.
+  useEffect(() => {
+    setCode(autofill.schoolCode)
+    setUsername(autofill.username)
+    setPassword(autofill.password)
+  }, [autofill.schoolCode, autofill.username, autofill.password])
 
   if (step === 'role') {
     return (
@@ -86,15 +98,19 @@ export default function SchoolCodeJoin() {
             setError('A club member will not have a school Google account. This route is a dead end for clubs.')
           }
           onLogIn={() => {
-            // Any username in the club is accepted; the password is not checked,
-            // because nothing here is real.
-            const match = CLUB.id === 'school-westlands' ? 'cs-amara' : undefined
-            if (username.trim() && match) {
-              signInClassroomStudent(match)
+            // Matches on username alone. The password is never checked, because
+            // nothing here is real and nobody should type a real one into it.
+            const match = CLASSROOM_STUDENTS.find(
+              (s) => s.username === username.trim() && s.schoolId === CLUB.id,
+            )
+            if (match) {
+              signInClassroomStudent(match.id)
               setStep('home')
               setError(undefined)
             } else {
-              setError('Enter a username. Try amara.k — your mentor would have given you one.')
+              setError(
+                `We do not recognise that username. Your mentor would have given you one — ${CLUB.name} uses names like amara.k.`,
+              )
             }
           }}
           error={error}

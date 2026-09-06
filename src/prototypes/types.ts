@@ -24,4 +24,13 @@ export interface PrototypeMeta {
   /** What you think is true, that this prototype is meant to test. */
   hypothesis: string
   status: PrototypeStatus
+  /**
+   * True if this prototype signs people in as part of the flow — an onboarding
+   * variant, typically. The workbench then says so and stops pretending the
+   * dropdowns at the top are in charge, because they are not.
+   *
+   * Whoever you pick up there is still used to fill the sign-in fields in for
+   * you, so you are not retyping a six-digit code at every demo.
+   */
+  ownsSignIn?: boolean
 }
