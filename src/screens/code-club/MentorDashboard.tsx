@@ -90,10 +90,10 @@ export function MentorDashboard({
                 <p className="body">
                   <strong>Nearest 4.5 miles</strong>
                 </p>
-                <p className="body muted">{club.venue}</p>
+                <p className="body muted">{club.venue ?? 'No venue set'}</p>
               </div>
               <div>
-                <p className="body muted">{club.schedule}</p>
+                <p className="body muted">{club.schedule ?? 'No sessions scheduled'}</p>
                 <p className="body muted">{club.online ? 'Online Sessions' : 'In-person Sessions'}</p>
               </div>
             </div>

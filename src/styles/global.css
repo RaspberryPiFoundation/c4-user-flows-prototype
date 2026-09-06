@@ -823,15 +823,6 @@ hr.divider {
   gap: var(--space-05);
 }
 
-.cc-steps {
-  margin: 0;
-  padding-left: var(--space-3);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-05);
-  color: var(--rpf-text-secondary);
-  font-size: var(--fs-075);
-}
 
 /* ---------------- Code Club Projects landing page ---------------- */
 .ccp-page {

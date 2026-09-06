@@ -106,7 +106,6 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     piAccountId,
     classroomStudentId,
     castStudentId,
-    autofillEnabled,
     applyCast,
     signInPiAccount,
     signInClassroomStudent,

@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Alert, Button, Card } from '../../../kit'
-import { SCHOOLS } from '../../../fixtures'
+import { schoolsForMentor } from '../../../fixtures'
 import { ManageClub, MentorDashboard, liveManageClubItems } from '../../../screens'
+import { meta } from './meta'
 import { Surface } from '../../../surfaces'
 
 // A mentor, signed in on codeclub.org. Unambiguous — unlike the young person
@@ -12,7 +13,9 @@ type Step = 'dashboard' | 'manage' | 'setup'
 export default function ManageClubRoute() {
   const [step, setStep] = useState<Step>('dashboard')
 
-  const club = SCHOOLS[0]
+  // Derived from the cast in meta.ts, not hardcoded — change the cast and
+  // this follows. Jo runs two clubs, so this takes the first of hers.
+  const club = schoolsForMentor(meta.cast?.piAccount ?? '')[0]
 
   if (step === 'setup') {
     return (

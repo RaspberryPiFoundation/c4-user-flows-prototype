@@ -24,25 +24,43 @@ them guess the ids.
 ## 2. Create the folder
 
 Copy `src/prototypes/_template/` to `src/prototypes/<lane>/<slug>/` and fill in
-`meta.ts` and the first section of `notes.md`. Set `status: 'sketch'`.
+`meta.ts` and the first section of `notes.md`. Leave `status` as `'sketch'` —
+it is not shown anywhere, it is only there for pulling a testing shortlist
+together later.
 
 **Touch nothing else.** The registry discovers the folder on its own. If you
 find yourself editing a file outside the new folder, stop — that is the one
 rule this repo has.
 
-## 3. Set the starting identity
+## 3. Set the cast
 
-This is the decision that matters most, so make it explicitly rather than
-leaving the template's default.
+Who the prototype is about goes in `meta.ts`, and everything else follows from
+it. This is the decision that matters most, so make it explicitly.
 
-- **Mentor flows:** `signInPiAccount('pi-mentor-jo')`. Unambiguous.
+```ts
+cast: { piAccount: 'pi-mentor-jo' },        // a mentor
+cast: { classroomStudent: 'cs-amara' },     // a young person in Code Classroom
+```
+
+- **Mentor flows:** unambiguous — a mentor holds a Pi account.
 - **Young person flows:** ask. A club member usually has a Code Classroom
-  student account (`signInClassroomStudent('cs-amara')`) and **no** Pi account.
-  If the flow starts before they have signed in — which is the whole question
-  in `onboarding-yp` — start signed out with `reset()`.
-- Remember the two identities are independent. Being signed in to one says
-  nothing about the other, and Code Club Projects and Code Classroom do not
-  share accounts.
+  student account and **no** Pi account. If the flow starts before they have
+  signed in — which is the whole question in `onboarding-yp` — add
+  `ownsSignIn: true` and the flow starts signed out, with autofill still
+  knowing who they are.
+- The two identities are independent. Being signed in to one says nothing about
+  the other; Code Club Projects and Code Classroom do not share accounts.
+
+**In the flow, derive everything from the cast. Never hardcode a club.**
+
+```ts
+const STUDENT = CLASSROOM_STUDENTS.find((s) => s.id === meta.cast?.classroomStudent)!
+const CLUB = school(STUDENT.schoolId)!
+```
+
+Get this wrong and changing the cast produces a flow that fills in one club's
+code and then rejects that club's usernames. See
+`onboarding-yp/reference-school-code-join` for the pattern.
 
 See `#/debug` for everyone available.
 

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ManageClub, MentorDashboard, liveManageClubItems } from '../../screens'
-import { SCHOOLS } from '../../fixtures'
+import { schoolsForMentor } from '../../fixtures'
+import { meta } from './meta'
 import { Surface } from '../../surfaces'
 
 // WHO IS THIS FOR?
@@ -27,7 +28,9 @@ type Step = 'dashboard' | 'manage'
 
 export default function Template() {
   const [step, setStep] = useState<Step>('dashboard')
-  const club = SCHOOLS[0]
+  // Derived from the cast in meta.ts, not hardcoded — change the cast and
+  // this follows. Jo runs two clubs, so this takes the first of hers.
+  const club = schoolsForMentor(meta.cast?.piAccount ?? '')[0]
 
   // Plain useState, deliberately. There is no flow engine in this repo and
   // there is not going to be one — a switch you can read beats an abstraction

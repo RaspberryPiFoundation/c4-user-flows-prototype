@@ -49,6 +49,11 @@ export const SCHOOLS: School[] = [
     country: 'United Kingdom',
     kind: 'school',
     mentorIds: ['pi-mentor-nadia'],
+    // It is a school, and it also runs a Code Club — so it advertises a venue
+    // and a session time on codeclub.org like any other club.
+    venue: "St Aidan's Primary School, Mill Lane, Leeds",
+    schedule: 'Every Wednesday, 15:30 - 16:30 (GMT)',
+    online: false,
   },
 ]
 
