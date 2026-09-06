@@ -1,13 +1,31 @@
+import { Link } from 'react-router-dom'
 import { Alert } from './components/Alert'
 import { THEMES, type Lane, type Theme } from './lanes'
+import { prototypesInLane } from './prototypes/registry'
 
 function LaneCard({ lane }: { lane: Lane }) {
+  const prototypes = prototypesInLane(lane.id)
+
   return (
     <section className="lane" aria-labelledby={`${lane.id}-title`}>
       <h3 className="title-sm" id={`${lane.id}-title`}>
         {lane.title}
       </h3>
-      <p className="lane-empty">No prototypes yet</p>
+
+      {prototypes.length === 0 ? (
+        <p className="lane-empty">No prototypes yet</p>
+      ) : (
+        <ul className="proto-list">
+          {prototypes.map((prototype) => (
+            <li className="proto-item" key={prototype.slug}>
+              <Link to={`/p/${prototype.lane}/${prototype.slug}`}>{prototype.meta.title}</Link>
+              <span className="proto-meta">
+                {prototype.meta.owner} · {prototype.meta.status.replace(/-/g, ' ')}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   )
 }

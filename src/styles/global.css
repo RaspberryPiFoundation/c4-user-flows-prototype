@@ -215,3 +215,79 @@ hr.divider {
   font-size: var(--fs-075);
   line-height: var(--lh-1);
 }
+
+/* ---------------- Prototype listing ---------------- */
+.proto-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.proto-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.proto-meta {
+  font-size: var(--fs-075);
+  line-height: var(--lh-1);
+  color: var(--rpf-text-secondary);
+}
+
+/* ---------------- Prototype host ---------------- */
+.prototype-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.prototype-banner {
+  width: 800px;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+.prototype-banner-title {
+  font-weight: var(--fw-bold);
+  color: var(--rpf-text-secondary);
+}
+
+.chip {
+  font-size: var(--fs-075);
+  line-height: var(--lh-1);
+  font-weight: var(--fw-bold);
+  padding: var(--space-05) var(--space-1);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--rpf-grey-150);
+  background: var(--rpf-off-white);
+  color: var(--rpf-text-secondary);
+  white-space: nowrap;
+}
+
+.error-detail {
+  margin: 0;
+  padding: var(--space-2);
+  background: var(--alert-error-bg);
+  border: 1px solid var(--alert-error);
+  border-radius: var(--radius-sm);
+  color: var(--alert-error);
+  font-size: var(--fs-075);
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--rpf-link-text);
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
