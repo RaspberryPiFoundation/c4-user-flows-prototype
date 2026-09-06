@@ -54,11 +54,12 @@ export const SURFACES: Record<SurfaceId, SurfaceInfo> = {
     id: 'classroom',
     name: 'Code Classroom',
     host: 'classroom.raspberrypi.org',
-    // An approximation — the signed-in screens are behind a login, so this is
-    // a guess until someone who can see them corrects it.
-    nav: ['Classes', 'Young people', 'Projects'],
+    // Deliberately empty. Code Classroom has NO primary navigation — you move
+    // around it by breadcrumb ("Your school / Divya's test class / Python test
+    // project"). Verified against the designs in the Code Classroom FigJam.
+    nav: [],
     layout: 'app',
-    note: 'Mentor and young-person facing. Student accounts work only here.',
+    note: 'Mentor and young-person facing. Student accounts work only here. Navigation is by breadcrumb, not a nav bar.',
   },
   'pi-accounts': {
     id: 'pi-accounts',

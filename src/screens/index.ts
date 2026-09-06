@@ -13,6 +13,24 @@
 export type { ScreenMeta } from './types'
 
 export { RoleChooser, meta as roleChooserMeta } from './classroom/RoleChooser'
+export {
+  EducatorClassPage,
+  meta as educatorClassPageMeta,
+} from './classroom/EducatorClassPage'
+export {
+  EducatorProjectPage,
+  meta as educatorProjectPageMeta,
+  type StudentWork,
+} from './classroom/EducatorProjectPage'
+export {
+  YoungPersonSchoolHome,
+  meta as youngPersonSchoolHomeMeta,
+} from './classroom/YoungPersonSchoolHome'
+export {
+  YoungPersonClassPage,
+  meta as youngPersonClassPageMeta,
+  type WorkStatus,
+} from './classroom/YoungPersonClassPage'
 export { SchoolCodeEntry, meta as schoolCodeEntryMeta } from './pi-accounts/SchoolCodeEntry'
 export { StudentSignIn, meta as studentSignInMeta } from './pi-accounts/StudentSignIn'
 export { MentorSignIn, meta as mentorSignInMeta } from './pi-accounts/MentorSignIn'

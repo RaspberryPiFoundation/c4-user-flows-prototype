@@ -638,3 +638,78 @@ hr.divider {
 .rpf-input-password__container .rpf-input-password__button--error::before {
   border-color: var(--rpf-input-color-error);
 }
+
+/* ---------------- Code Classroom page furniture ---------------- */
+/* Code Classroom has no primary navigation — you move around it entirely by
+   breadcrumb, so this carries more weight than a breadcrumb usually would. */
+.surface-breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  background: var(--surface-nav);
+  border-bottom: 1px solid var(--surface-nav-border);
+  font-size: var(--fs-075);
+}
+.surface-crumb-sep {
+  color: var(--rpf-grey-300);
+  margin-right: var(--space-1);
+}
+.surface-account {
+  color: var(--rpf-text-secondary);
+  white-space: nowrap;
+}
+
+.cc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.cc-section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.cc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--rpf-grey-150);
+}
+.cc-row:last-child {
+  border-bottom: none;
+}
+
+/* The educator project page puts guidance beside the student work list. */
+.cc-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+  align-items: start;
+}
+@media (min-width: 720px) {
+  .cc-columns {
+    grid-template-columns: 260px 1fr;
+  }
+}
+.cc-aside {
+  background: var(--rpf-off-white);
+}
+.muted.small {
+  font-size: var(--fs-075);
+}

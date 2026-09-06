@@ -2,28 +2,40 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Alert, Tag } from './kit'
 import {
+  EducatorClassPage,
+  EducatorProjectPage,
   MentorSignIn,
   RoleChooser,
   SchoolCodeEntry,
   StudentSignIn,
+  YoungPersonClassPage,
+  YoungPersonSchoolHome,
+  educatorClassPageMeta,
+  educatorProjectPageMeta,
   mentorSignInMeta,
   roleChooserMeta,
   schoolCodeEntryMeta,
   studentSignInMeta,
+  youngPersonClassPageMeta,
+  youngPersonSchoolHomeMeta,
   type ScreenMeta,
 } from './screens'
 import { SURFACES, Surface } from './surfaces'
-import { SCHOOLS } from './fixtures'
+import { CLASS_GROUPS, PROJECTS, SCHOOLS, classesInSchool, classroomStudent } from './fixtures'
 
 const noop = () => {}
 
 function Frame({
   name,
   meta,
+  breadcrumbs,
+  account,
   children,
 }: {
   name: string
   meta: ScreenMeta
+  breadcrumbs?: string[]
+  account?: string
   children: React.ReactNode
 }) {
   return (
@@ -40,7 +52,13 @@ function Frame({
       </div>
       <p className="body muted">{meta.note}</p>
       <span className="surface-host">{SURFACES[meta.surface].host}</span>
-      <Surface id={meta.surface} badge={meta.badge} layout={meta.layout}>
+      <Surface
+        id={meta.surface}
+        badge={meta.badge}
+        layout={meta.layout}
+        breadcrumbs={breadcrumbs}
+        account={account}
+      >
         {children}
       </Surface>
     </section>
@@ -55,6 +73,17 @@ export function ScreenGallery() {
 
   const err = (message: string) => (showErrors ? message : undefined)
   const westlands = SCHOOLS[0]
+  const scratchGroup = CLASS_GROUPS[0]
+  const classProjects = PROJECTS.slice(0, 2)
+  const work = scratchGroup.studentIds.slice(0, 3).map((id, index) => {
+    const student = classroomStudent(id)
+    return {
+      studentId: id,
+      name: student?.name ?? id,
+      lastEdited: '27/08/2026, 1:52 PM',
+      readyToMark: index === 0,
+    }
+  })
 
   return (
     <div className="card">
@@ -79,7 +108,7 @@ export function ScreenGallery() {
 
       <div className="debug-row">
         <button className="link-button" onClick={() => setShowErrors((s) => !s)}>
-          {showErrors ? 'Hide error states' : 'Show error states'}
+          {showErrors ? 'Hide error and empty states' : 'Show error and empty states'}
         </button>
       </div>
 
@@ -127,6 +156,68 @@ export function ScreenGallery() {
             onPasswordChange={noop}
             onLogIn={noop}
             error={err('That email address and password did not match.')}
+          />
+        </Frame>
+
+        <Frame
+          name="Class page (mentor)"
+          meta={educatorClassPageMeta}
+          breadcrumbs={['Your school', scratchGroup.name]}
+          account="Your Account"
+        >
+          <EducatorClassPage
+            classGroup={scratchGroup}
+            projects={classProjects}
+            memberCount={scratchGroup.studentIds.length}
+            onAddProject={noop}
+            onOpenProject={noop}
+            onCopyLink={noop}
+            onClassMembers={noop}
+          />
+        </Frame>
+
+        <Frame
+          name="Project page (mentor)"
+          meta={educatorProjectPageMeta}
+          breadcrumbs={['Your school', scratchGroup.name, PROJECTS[0].title]}
+          account="Your Account"
+        >
+          <EducatorProjectPage
+            project={PROJECTS[0]}
+            work={showErrors ? [] : work}
+            onViewCode={noop}
+            onHideFromStudents={noop}
+            onCopyLink={noop}
+            onOpenWork={noop}
+          />
+        </Frame>
+
+        <Frame
+          name="School home (young person)"
+          meta={youngPersonSchoolHomeMeta}
+          account="Log Out"
+        >
+          <YoungPersonSchoolHome
+            school={westlands}
+            classes={classesInSchool(westlands.id)}
+            onOpenClass={noop}
+          />
+        </Frame>
+
+        <Frame
+          name="Class page (young person)"
+          meta={youngPersonClassPageMeta}
+          breadcrumbs={['Your school', scratchGroup.name]}
+          account="Log Out"
+        >
+          <YoungPersonClassPage
+            classGroup={scratchGroup}
+            projects={[
+              { project: PROJECTS[0], status: 'ready-for-you' },
+              { project: PROJECTS[1], status: 'sent-for-feedback' },
+              { project: PROJECTS[2], status: 'complete' },
+            ]}
+            onOpenProject={noop}
           />
         </Frame>
       </div>

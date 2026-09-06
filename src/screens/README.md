@@ -30,10 +30,33 @@ chrome.
 | `SchoolCodeEntry` | Pi Accounts, badged Code Classroom | Yes | Yes |
 | `StudentSignIn` | Pi Accounts, badged Code Classroom | Yes | Yes |
 | `MentorSignIn` | Pi Accounts | Yes | **No** — built from the pattern |
+| `EducatorClassPage` | Code Classroom | Yes | Yes |
+| `EducatorProjectPage` | Code Classroom | Yes | Yes |
+| `YoungPersonSchoolHome` | Code Classroom | Yes | Yes |
+| `YoungPersonClassPage` | Code Classroom | Yes | Yes |
 
 "Verified" means someone has looked at the real screen. `MentorSignIn` is
 behind a login, so its details are probably wrong; correct it if you know
 better.
+
+## Code Classroom has no navigation
+
+You move around Code Classroom entirely by breadcrumb — "Your school /
+Divya's test class / Python test project". There is no nav bar, so
+`<Surface id="classroom" breadcrumbs={[...]} />` is how a screen says where it
+is. Get the breadcrumb wrong and a young person has no way to tell where they
+are.
+
+Two structural facts worth designing around:
+
+- **Projects are created by the adult.** "Projects are shared with students and
+  contain starter code created by a teacher." A young person cannot start one
+  of their own — which is a different model from Code Club Projects, where they
+  browse and pick, and it is exactly what the Code Classroom FigJam is asking
+  about.
+- **A mentor only sees work that has been SAVED.** "Only students who have
+  saved their project will appear here." Walking round a room, a mentor cannot
+  tell who has started and got stuck from who has not started at all.
 
 ## Why the copy is not softened
 
