@@ -1,0 +1,55 @@
+/* Per-surface design tokens.
+ *
+ * Scoped to a class rather than :root on purpose. Five products with five
+ * Figma files means five palettes; setting them globally would let a Code
+ * Classroom screen quietly inherit Code Club's colours, with no error and no
+ * signal that anything was wrong.
+ *
+ * Grey-box values: the brand accent and background are right, the fine detail
+ * is not. Brand hues come from the shared --rpf-* tokens the live sites use.
+ * Extract the rest from Figma only once fidelity starts getting in the way.
+ */
+
+.surface {
+  /* Defaults every surface can override. */
+  --surface-page: var(--rpf-off-white);
+  --surface-bar: var(--rpf-white);
+  --surface-bar-text: var(--rpf-text);
+  --surface-accent: var(--rpf-text);
+  --surface-nav: var(--rpf-white);
+  --surface-nav-border: var(--rpf-grey-150);
+}
+
+/* codeclub.org — raspberry, the Code Club brand colour. */
+.surface-code-club {
+  --surface-accent: hsl(342, 71%, 47%);
+  --surface-page: var(--rpf-off-white);
+}
+
+/* projects.raspberrypi.org — white header on the live site. Teal accent is an
+   approximation from the shared palette. */
+.surface-ccp {
+  --surface-accent: hsl(174, 81%, 27%);
+  --surface-page: var(--rpf-white);
+}
+
+/* classroom.raspberrypi.org — the sign-in is deep maroon; the signed-in app is
+   behind a login so this is a guess. */
+.surface-classroom {
+  --surface-accent: hsl(340, 78%, 36%);
+  --surface-page: var(--rpf-off-white);
+}
+
+/* my.raspberrypi.org — raspberry page with a light grey card and a navy
+   button, which is what the live school-code screen looks like. */
+.surface-pi-accounts {
+  --surface-accent: #232d9a;
+  --surface-page: hsl(340, 65%, 34%);
+  --surface-bar: var(--rpf-off-white);
+}
+
+/* editor.raspberrypi.org */
+.surface-editor {
+  --surface-accent: #232d9a;
+  --surface-page: var(--rpf-white);
+}

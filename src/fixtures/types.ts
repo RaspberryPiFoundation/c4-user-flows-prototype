@@ -64,7 +64,13 @@ export interface ClassroomStudent {
 export interface School {
   id: string
   name: string
-  /** What a young person types on the Code Classroom student login. */
+  /**
+   * What a young person types on the Code Classroom student login.
+   *
+   * Six digits in three hyphenated pairs — the live screen's own example is
+   * "12-34-56". Not a memorable word-based code, which matters: a young person
+   * has to read it off a board and type it correctly.
+   */
   schoolCode: string
   country: string
   /**

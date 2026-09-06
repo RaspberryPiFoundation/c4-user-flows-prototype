@@ -23,7 +23,7 @@ export const SCHOOLS: School[] = [
   {
     id: 'school-westlands',
     name: 'Westlands Library Code Club',
-    schoolCode: 'WLDS-2K',
+    schoolCode: '48-21-06',
     country: 'Kenya',
     kind: 'code-club-only',
     mentorIds: ['pi-mentor-jo', 'pi-mentor-thabo'],
@@ -31,7 +31,7 @@ export const SCHOOLS: School[] = [
   {
     id: 'school-galway',
     name: 'Galway Community Code Club',
-    schoolCode: 'GLWY-7P',
+    schoolCode: '71-35-92',
     country: 'Ireland',
     kind: 'code-club-only',
     mentorIds: ['pi-mentor-jo'],
@@ -39,7 +39,7 @@ export const SCHOOLS: School[] = [
   {
     id: 'school-aidans',
     name: "St Aidan's Primary School",
-    schoolCode: 'STAI-4M',
+    schoolCode: '20-64-13',
     country: 'United Kingdom',
     kind: 'school',
     mentorIds: ['pi-mentor-nadia'],

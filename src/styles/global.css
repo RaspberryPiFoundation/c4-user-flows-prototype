@@ -1,4 +1,5 @@
 @import './tokens.css';
+@import '../surfaces/tokens.css';
 
 * {
   box-sizing: border-box;
@@ -410,4 +411,136 @@ hr.divider {
 }
 .debug-list code {
   color: var(--rpf-text);
+}
+
+/* ---------------- Product surface chrome ---------------- */
+/* Grey-box chrome so a prototype screen reads as belonging to a product, and
+   so crossing products is visible. Tokens live in src/surfaces/tokens.css. */
+.surface {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 420px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--rpf-grey-150);
+  background: var(--surface-page);
+}
+
+.surface-topbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  background: var(--surface-bar);
+  color: var(--surface-bar-text);
+  border-bottom: 1px solid var(--rpf-grey-150);
+  font-size: var(--fs-075);
+  line-height: var(--lh-1);
+}
+.surface-brand {
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--rpf-text-secondary);
+}
+.surface-product {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-left: auto;
+  font-weight: var(--fw-bold);
+  color: var(--surface-accent);
+}
+/* Used where one product's page is badged as another — the Code Classroom
+   student login is a Pi Accounts page. */
+.surface-badge {
+  font-weight: var(--fw-regular);
+  color: var(--rpf-text-secondary);
+  border-left: 1px solid var(--rpf-grey-300);
+  padding-left: var(--space-1);
+}
+
+.surface-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-1) var(--space-2);
+  background: var(--surface-nav);
+  border-bottom: 1px solid var(--surface-nav-border);
+  font-size: var(--fs-075);
+}
+.surface-nav-item {
+  color: var(--rpf-text-secondary);
+}
+/* The active item is bold AND underlined, so it does not rely on colour
+   alone (WCAG 1.4.1). */
+.surface-nav-item.active {
+  color: var(--surface-accent);
+  font-weight: var(--fw-bold);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.surface-body {
+  flex: 1 0 auto;
+  padding: var(--space-3);
+}
+/* Pi Accounts and the Code Classroom sign-in are a coloured page with one
+   centred card. */
+.surface-body.centred {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-5) var(--space-2);
+}
+.surface-body.centred > * {
+  width: 420px;
+  max-width: 100%;
+}
+
+.surface-footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: space-between;
+  padding: var(--space-1) var(--space-2);
+  background: var(--rpf-white);
+  border-top: 1px solid var(--rpf-grey-150);
+  font-size: var(--fs-075);
+  line-height: var(--lh-1);
+  color: var(--rpf-text-secondary);
+}
+
+/* ---------------- Surface gallery ---------------- */
+.surface-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--rpf-grey-150);
+}
+.surface-demo:last-child {
+  border-bottom: none;
+}
+/* A fake address bar, so it is obvious which product you are looking at. */
+.surface-host {
+  align-self: flex-start;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--fs-075);
+  color: var(--rpf-grey-500);
+  background: var(--rpf-off-white);
+  border: 1px solid var(--rpf-grey-150);
+  border-radius: var(--button-radius);
+  padding: 2px var(--space-1);
+}
+
+/* Generic vertical stack for content inside a surface. */
+.section-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
