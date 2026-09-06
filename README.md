@@ -24,9 +24,32 @@ add, rename, or reorder them. Labels are deliberately short; the framing and
 context for each question belongs in the story and in each prototype's own
 notes, not on this page.
 
-Prototypes are **not wired up yet**. Every lane currently shows an empty state,
-which doubles as a visible to-do list. When prototypes are added, each will
-declare its lane and appear inside it.
+## Adding a prototype
+
+Drop a folder into `src/prototypes/<lane>/<your-slug>/` containing a `meta.ts`
+and a `prototype.tsx`. It is discovered automatically and appears on the
+landing page in its lane — **no shared file needs to change**, which is what
+lets several people build at once without conflicting.
+
+The lane and slug come from the folder path, so they can never disagree with
+where the file actually lives.
+
+### The one rule
+
+**Prototypes never modify shared code.** If a shared screen does not do what
+you need, pass a prop — or copy it into your own folder and change it there.
+Duplication is cheap here; coupling means your change silently alters someone
+else's prototype.
+
+## URLs
+
+| URL | What |
+| --- | --- |
+| `#/` | Landing page, listing every prototype by lane |
+| `#/kit` | Component gallery — everything you can build from |
+| `#/p/<lane>/<slug>` | One prototype, linkable and shareable |
+
+Routing is hash-based so deep links work on GitHub Pages with no server config.
 
 ## Ground rules
 
@@ -62,9 +85,14 @@ not control — so keep the meta tag in place.
 
 | Path | Purpose |
 | --- | --- |
-| `src/lanes.ts` | The flow questions — themes, lanes, audiences |
+| `src/lanes.ts` | The flow questions — themes and lanes |
+| `src/prototypes/` | One folder per prototype. **This is where you work** |
+| `src/prototypes/registry.ts` | Auto-discovers prototypes. Nothing to edit |
+| `src/kit/` | Everything you build screens from — see its own README |
 | `src/Home.tsx` | The landing page |
+| `src/KitGallery.tsx` | The `#/kit` component gallery |
+| `src/PrototypeHost.tsx` | Renders one prototype, with an error boundary |
+| `src/App.tsx` | Routes |
 | `src/components/Layout.tsx` | Neutral page chrome (header and footer) |
-| `src/components/Alert.tsx` | Wrapper over the design system Alert |
 | `src/styles/tokens.css` | Design tokens from the Code Club design system |
-| `src/styles/global.css` | Shell, typography, and lane card styles |
+| `src/styles/global.css` | Shell, typography, and hub page styles |

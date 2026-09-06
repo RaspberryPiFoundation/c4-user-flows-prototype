@@ -6,8 +6,7 @@ Everything you need to build a screen, from one import:
 import { Button, TextInput, Card, Placeholder } from '../../kit'
 ```
 
-**See them all rendered at [`#/kit`](../../#/kit)** — run `npm run dev` and open
-the gallery. It shows every component in its states, with the code next to it.
+**See them all rendered at `#/kit`** — run `npm run dev` and open the gallery. It shows every component in its states, with the code next to it.
 
 ## Rules
 
