@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Alert, Button, Card } from '../../../kit'
 import { SCHOOLS } from '../../../fixtures'
 import { ManageClub, MentorDashboard, liveManageClubItems } from '../../../screens'
 import { Surface } from '../../../surfaces'
-import { useSession } from '../../../session'
 
 // A mentor, signed in on codeclub.org. Unambiguous — unlike the young person
 // lanes, there is only one identity a mentor can hold.
@@ -11,12 +10,7 @@ import { useSession } from '../../../session'
 type Step = 'dashboard' | 'manage' | 'setup'
 
 export default function ManageClubRoute() {
-  const { signInPiAccount } = useSession()
   const [step, setStep] = useState<Step>('dashboard')
-
-  useEffect(() => {
-    signInPiAccount('pi-mentor-jo')
-  }, [signInPiAccount])
 
   const club = SCHOOLS[0]
 

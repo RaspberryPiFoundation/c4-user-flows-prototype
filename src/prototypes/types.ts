@@ -25,12 +25,27 @@ export interface PrototypeMeta {
   hypothesis: string
   status: PrototypeStatus
   /**
-   * True if this prototype signs people in as part of the flow — an onboarding
-   * variant, typically. The workbench then says so and stops pretending the
-   * dropdowns at the top are in charge, because they are not.
+   * Who this prototype is about.
    *
-   * Whoever you pick up there is still used to fill the sign-in fields in for
-   * you, so you are not retyping a six-digit code at every demo.
+   * A prototype is a story — "Amara, at Westlands, joins for the first time" —
+   * and the author knows who it stars. Declaring it here means the workbench
+   * signs them in for you, fills their details into sign-in screens, and can
+   * never disagree with what your flow assumes.
+   *
+   * Ids come from src/fixtures — see #/debug for everyone available. To tell
+   * the story about someone else, change it here; do not write a flow that
+   * copes with all eleven students across three clubs, because it will not.
+   */
+  cast?: {
+    /** A mentor or a self-registered young person, e.g. 'pi-mentor-jo'. */
+    piAccount?: string
+    /** A Code Classroom student account, e.g. 'cs-amara'. */
+    classroomStudent?: string
+  }
+  /**
+   * True if the flow signs people in itself — an onboarding variant, typically.
+   * The cast is then held back for autofill rather than signed in, so the
+   * fiction can start signed out while the fields are still filled in for you.
    */
   ownsSignIn?: boolean
 }

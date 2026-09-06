@@ -4,6 +4,7 @@ import { Accordion, Tag } from './kit'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { NotFound } from './components/NotFound'
 import { findPrototype } from './prototypes/registry'
+import { useSession } from './session'
 
 /**
  * Full screen hides the workbench chrome so only the prototype is left. Use it
@@ -56,6 +57,15 @@ export function PrototypeHost() {
   const { lane = '', slug = '' } = useParams()
   const prototype = findPrototype(lane, slug)
   const [isFull, setFull] = useFullScreen()
+  const { applyCast } = useSession()
+
+  // Put this prototype's cast in place whenever it loads, so a flow always
+  // starts from the state its author wrote it for.
+  const cast = prototype?.meta.cast
+  const ownsSignIn = prototype?.meta.ownsSignIn ?? false
+  useEffect(() => {
+    applyCast(cast, ownsSignIn)
+  }, [applyCast, cast, ownsSignIn])
 
   // `lazy` must not be recreated on every render, or React remounts the
   // prototype and throws away whatever state the person was part-way through.

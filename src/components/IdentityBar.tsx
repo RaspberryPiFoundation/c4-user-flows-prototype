@@ -1,67 +1,44 @@
-import { useLocation, useParams } from 'react-router-dom'
-import { CheckboxInput, SelectInput } from '../kit'
-import { CLASSROOM_STUDENTS, PI_ACCOUNTS } from '../fixtures'
-import { findPrototype } from '../prototypes/registry'
+import { CheckboxInput } from '../kit'
+import { school } from '../fixtures'
 import { useSession } from '../session'
 
-const NOBODY = ''
-
-/** Which prototype is on screen, if any — so we can say who controls sign-in. */
-function useCurrentPrototype() {
-  const { pathname } = useLocation()
-  const params = useParams()
-  if (!pathname.startsWith('/p/')) return undefined
-  const [, , lane, slug] = pathname.split('/')
-  return findPrototype(params.lane ?? lane, params.slug ?? slug)
-}
-
 /**
- * Who you are, for the purposes of a prototype.
+ * A read-only statement of who is signed in, plus the one control that is
+ * genuinely a viewing preference.
  *
- * Two dropdowns because there are two unconnected identity systems. Picking
- * someone does two things: signs them in, and fills their details into any
- * sign-in screen you meet, so demos do not involve retyping a six-digit code.
+ * There is no person picker here on purpose. Who a prototype is about is
+ * declared by the prototype (`cast` in its meta.ts), because it is the author
+ * who knows the story. When the workbench let a viewer swap the cast, every
+ * author had to write a flow that coped with every fixture combination —
+ * eleven students across three clubs — and the first flow written did not.
  *
- * A flow that signs people in itself starts signed out on purpose. It says so
- * rather than silently overriding what you picked.
+ * To see a flow as someone else, change one line in the prototype.
  */
 export function IdentityBar() {
-  const {
-    piAccount,
-    classroomStudent,
-    pickedPiAccount,
-    pickedClassroomStudent,
-    autofillEnabled,
-    setAutofillEnabled,
-    signInPiAccount,
-    signOutPiAccount,
-    signInClassroomStudent,
-    signOutClassroomStudent,
-    reset,
-  } = useSession()
+  const { piAccount, classroomStudent, autofillEnabled, setAutofillEnabled } = useSession()
 
-  const prototype = useCurrentPrototype()
-  const ownsSignIn = prototype?.meta.ownsSignIn ?? false
+  const studentSchool = classroomStudent ? school(classroomStudent.schoolId) : undefined
 
-  const describe = (
-    signedIn: { name: string } | null,
-    picked: { name: string } | null,
-  ) => {
-    if (signedIn) return signedIn.name
-    if (picked) return `${picked.name} (signed out)`
-    return 'nobody'
-  }
-
-  const summary = [
-    `Pi account: ${describe(piAccount, pickedPiAccount)}`,
-    `Code Classroom: ${describe(classroomStudent, pickedClassroomStudent)}`,
-  ].join('  ·  ')
+  const summary = piAccount || classroomStudent ? null : 'Signed out'
 
   return (
     <details className="identity-bar">
       <summary>
-        <span className="identity-bar-label">You are</span>
-        <span className="identity-bar-summary">{summary}</span>
+        <span className="identity-bar-label">Signed in as</span>
+        <span className="identity-bar-summary">
+          {summary ?? (
+            <>
+              {piAccount && <>Pi account: {piAccount.name}</>}
+              {piAccount && classroomStudent && '  ·  '}
+              {classroomStudent && (
+                <>
+                  Code Classroom: {classroomStudent.username}
+                  {studentSchool && ` at ${studentSchool.name}`}
+                </>
+              )}
+            </>
+          )}
+        </span>
       </summary>
 
       <div className="identity-bar-body">
@@ -70,54 +47,11 @@ export function IdentityBar() {
           student account works only in Code Classroom. Being signed in to one tells you nothing
           about the other — which is the gap the import flows have to deal with.
         </p>
-
-        {ownsSignIn && (
-          <p className="identity-bar-notice">
-            <strong>This prototype signs you in itself</strong>, so it starts signed out on
-            purpose. Whoever you pick here is still used to fill in the school code and username
-            for you.
-          </p>
-        )}
-
-        <div className="identity-bar-fields">
-          <SelectInput
-            id="identity-pi"
-            name="identity-pi"
-            label="Pi account"
-            hint="Self-registered. Mentors use one of these too."
-            value={pickedPiAccount?.id ?? NOBODY}
-            onChange={(e) =>
-              e.target.value === NOBODY ? signOutPiAccount() : signInPiAccount(e.target.value)
-            }
-            options={[
-              { key: NOBODY, value: 'Nobody' },
-              ...PI_ACCOUNTS.map((a) => ({
-                key: a.id,
-                value: `${a.name} (${a.kind === 'mentor' ? 'mentor' : 'young person'})`,
-              })),
-            ]}
-          />
-
-          <SelectInput
-            id="identity-classroom"
-            name="identity-classroom"
-            label="Code Classroom student"
-            hint="Created by a mentor. Username, no email."
-            value={pickedClassroomStudent?.id ?? NOBODY}
-            onChange={(e) =>
-              e.target.value === NOBODY
-                ? signOutClassroomStudent()
-                : signInClassroomStudent(e.target.value)
-            }
-            options={[
-              { key: NOBODY, value: 'Nobody' },
-              ...CLASSROOM_STUDENTS.map((s) => ({
-                key: s.id,
-                value: `${s.name} (${s.username})`,
-              })),
-            ]}
-          />
-        </div>
+        <p className="body muted">
+          Who a prototype is about is set by the prototype, in its <code>meta.ts</code>. To see a
+          flow as someone else, change <code>cast</code> there. See <a href="#/debug">#/debug</a>{' '}
+          for everyone available.
+        </p>
 
         <CheckboxInput
           id="autofill"
@@ -129,12 +63,6 @@ export function IdentityBar() {
         <p className="body muted small">
           Turn this off before a real testing session. Watching a young person type a six-digit
           code off a board is often the thing you are there to see.
-        </p>
-
-        <p className="body">
-          <button className="link-button" onClick={reset}>
-            Forget everything
-          </button>
         </p>
       </div>
     </details>

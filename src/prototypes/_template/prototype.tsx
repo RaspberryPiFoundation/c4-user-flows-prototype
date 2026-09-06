@@ -1,41 +1,32 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ManageClub, MentorDashboard, liveManageClubItems } from '../../screens'
 import { SCHOOLS } from '../../fixtures'
 import { Surface } from '../../surfaces'
-import { useSession } from '../../session'
 
-// ─────────────────────────────────────────────────────────────────────────────
-// WHO IS THIS FOR, AND WHAT ARE THEY SIGNED IN AS?
+// WHO IS THIS FOR?
 //
-// There are two unconnected identity systems, and which one your person holds
-// changes everything downstream. Decide deliberately:
+// Set `cast` in meta.ts. The workbench signs them in before your flow renders,
+// and fills their details into any sign-in screen you show.
 //
-//   signInPiAccount('pi-mentor-jo')        a mentor, or a young person with
-//                                          their own self-registered account
-//   signInClassroomStudent('cs-amara')     a young person with a mentor-created
-//                                          Code Classroom account
-//   neither                                signed out
+//   cast: { piAccount: 'pi-mentor-jo' }          a mentor
+//   cast: { classroomStudent: 'cs-amara' }       a young person in Code Classroom
+//   ownsSignIn: true                             your flow does the signing in,
+//                                                so it starts signed out
 //
 // A young person in a club usually has a classroom account and NO Pi account.
 // If your variant assumes otherwise, that assumption is part of your hypothesis
 // and belongs in notes.md.
 //
-// See #/debug for everyone you can sign in as.
-// ─────────────────────────────────────────────────────────────────────────────
+// Derive everything else from the cast — do not hardcode a club. See
+// onboarding-yp/reference-school-code-join for how.
+//
+// See #/debug for everyone available.
 
 /** The screens this flow moves between. Add to this as your flow grows. */
 type Step = 'dashboard' | 'manage'
 
 export default function Template() {
-  const { signInPiAccount } = useSession()
   const [step, setStep] = useState<Step>('dashboard')
-
-  // Start the person off signed in as a mentor. Delete this if your flow
-  // starts signed out — for a young person, that is often the whole point.
-  useEffect(() => {
-    signInPiAccount('pi-mentor-jo')
-  }, [signInPiAccount])
-
   const club = SCHOOLS[0]
 
   // Plain useState, deliberately. There is no flow engine in this repo and

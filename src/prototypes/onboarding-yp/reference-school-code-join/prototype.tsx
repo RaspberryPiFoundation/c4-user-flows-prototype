@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Alert, Card } from '../../../kit'
-import { CLASSROOM_STUDENTS, SCHOOLS, classesInSchool, schoolBySchoolCode } from '../../../fixtures'
+import { CLASSROOM_STUDENTS, classesInSchool, school, schoolBySchoolCode } from '../../../fixtures'
 import {
   RoleChooser,
   SchoolCodeEntry,
@@ -9,33 +9,27 @@ import {
 } from '../../../screens'
 import { Surface } from '../../../surfaces'
 import { useSession } from '../../../session'
+import { meta } from './meta'
 
-// Signed out, and staying that way until they sign in — which is the point.
-// A young person in a club has no Pi account and has not yet used their
-// classroom account on this device.
+// Everything about this flow comes from the one young person named in meta.ts.
+// Nothing is hardcoded to a particular club, so changing the cast changes the
+// whole story — the code, the username, the club they land in.
+const STUDENT = CLASSROOM_STUDENTS.find((s) => s.id === meta.cast?.classroomStudent)!
+const CLUB = school(STUDENT.schoolId)!
 
 type Step = 'role' | 'code' | 'signin' | 'home'
 
-const CLUB = SCHOOLS[0]
-
 export default function SchoolCodeJoin() {
-  const { autofill, classroomStudent, signInClassroomStudent, startSignedOut } = useSession()
+  const { autofill, classroomStudent, signInClassroomStudent } = useSession()
   const [step, setStep] = useState<Step>('role')
   const [code, setCode] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string>()
 
-  // Start signed out — that is the whole question in this lane. `startSignedOut`
-  // keeps whoever you picked at the top, so the fields below can still be
-  // filled in for you.
-  useEffect(() => {
-    startSignedOut()
-  }, [startSignedOut])
-
-  // Fill in the school code and username for whoever is picked at the top, so
-  // a demo does not begin with retyping six digits. Turn autofill off in the
-  // bar when you want to watch someone actually type it.
+  // Fill in this young person's code and username, so a demo does not begin
+  // with retyping six digits. Turn autofill off in the bar to watch someone
+  // actually type it — which in a testing session is the point.
   useEffect(() => {
     setCode(autofill.schoolCode)
     setUsername(autofill.username)
@@ -47,7 +41,10 @@ export default function SchoolCodeJoin() {
       <Surface id="classroom" layout="centred">
         <RoleChooser
           onTeacher={() => setError('This walkthrough follows the young person route.')}
-          onStudent={() => setStep('code')}
+          onStudent={() => {
+            setStep('code')
+            setError(undefined)
+          }}
           error={error}
         />
       </Surface>
@@ -64,8 +61,9 @@ export default function SchoolCodeJoin() {
             setError(undefined)
           }}
           onContinue={() => {
-            // Accepts the real code only. A wrong one is the interesting path:
-            // it is what a mistyped digit off a whiteboard actually produces.
+            // Any real club's code gets you in — a young person who typed a
+            // neighbouring club's code by mistake would get through to a
+            // sign-in they cannot complete, which is worth seeing.
             if (schoolBySchoolCode(code)) {
               setStep('signin')
               setError(undefined)
@@ -82,6 +80,7 @@ export default function SchoolCodeJoin() {
   }
 
   if (step === 'signin') {
+    const enteredClub = schoolBySchoolCode(code)
     return (
       <Surface id="pi-accounts" badge="Code Classroom" layout="centred">
         <StudentSignIn
@@ -95,21 +94,27 @@ export default function SchoolCodeJoin() {
             setError(undefined)
           }}
           onGoogleLogIn={() =>
-            setError('A club member will not have a school Google account. This route is a dead end for clubs.')
+            setError(
+              'A club member will not have a school Google account. This route is a dead end for clubs.',
+            )
           }
           onLogIn={() => {
-            // Matches on username alone. The password is never checked, because
-            // nothing here is real and nobody should type a real one into it.
+            // Matches on username within the club whose code was entered. The
+            // password is never checked, because nothing here is real.
             const match = CLASSROOM_STUDENTS.find(
-              (s) => s.username === username.trim() && s.schoolId === CLUB.id,
+              (s) => s.username === username.trim() && s.schoolId === enteredClub?.id,
             )
             if (match) {
               signInClassroomStudent(match.id)
               setStep('home')
               setError(undefined)
+            } else if (enteredClub && enteredClub.id !== CLUB.id) {
+              setError(
+                `That username is not at ${enteredClub.name}. The code you typed belongs to a different club.`,
+              )
             } else {
               setError(
-                `We do not recognise that username. Your mentor would have given you one — ${CLUB.name} uses names like amara.k.`,
+                `We do not recognise that username. Your mentor would have given you one — ${CLUB.name} uses names like ${STUDENT.username}.`,
               )
             }
           }}
@@ -118,6 +123,8 @@ export default function SchoolCodeJoin() {
       </Surface>
     )
   }
+
+  const landedClub = classroomStudent ? school(classroomStudent.schoolId) ?? CLUB : CLUB
 
   return (
     <Surface id="classroom" account="Log Out" breadcrumbs={['Your school']}>
@@ -129,8 +136,8 @@ export default function SchoolCodeJoin() {
           </p>
         </Alert>
         <YoungPersonSchoolHome
-          school={CLUB}
-          classes={classesInSchool(CLUB.id)}
+          school={landedClub}
+          classes={classesInSchool(landedClub.id)}
           onOpenClass={() => {}}
         />
         <Card>

@@ -14,4 +14,11 @@ export const meta: PrototypeMeta = {
 
   // sketch -> explored -> marked-for-testing -> tested -> parked
   status: 'sketch',
+
+  // Who this prototype is about. The workbench signs them in and fills their
+  // details into sign-in screens. See #/debug for everyone available.
+  cast: { piAccount: 'pi-mentor-jo' },
+
+  // Set true if your flow signs people in itself, so it starts signed out.
+  // ownsSignIn: true,
 }

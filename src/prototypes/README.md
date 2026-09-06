@@ -52,27 +52,38 @@ Worth doing before any testing session, along with turning autofill off. Nobody
 being tested should be looking at a bar saying "prototype workbench" or a
 dropdown of invented people.
 
-## Who you are, and autofill
+## Who your prototype is about
 
-The bar at the top does two things: signs someone in, and **fills their details
-into any sign-in screen you meet**, so a demo does not start with retyping a
-six-digit code.
+Set `cast` in your `meta.ts`:
 
-Picking someone and being signed in are separate on purpose:
+```ts
+cast: { classroomStudent: 'cs-siobhan' },   // a young person
+cast: { piAccount: 'pi-mentor-jo' },        // a mentor
+```
 
-- **picked** — who you told the workbench you are. Survives signing out.
-- **signed in** — who the fiction currently has signed in.
+The workbench signs them in before your flow renders, and fills their school
+code, username and password into any sign-in screen you show — so a demo does
+not start with retyping six digits.
 
-A flow that signs people in itself calls `startSignedOut()` on mount: the
-fiction starts empty, but the autofill still knows who you picked. Set
-`ownsSignIn: true` in your `meta.ts` and the bar says so rather than looking
-like it is in charge when it is not.
+If your flow does the signing in itself, add `ownsSignIn: true`. It then starts
+signed out, but the autofill still knows who your cast is.
 
-Read `autofill` from `useSession()` and seed your fields from it — see
-`onboarding-yp/reference-school-code-join`.
+**Derive everything else from the cast. Do not hardcode a club.**
 
-**Turn autofill off before a real testing session.** Watching a young person
-type a six-digit code off a board is often the thing you are there to see.
+```ts
+const STUDENT = CLASSROOM_STUDENTS.find((s) => s.id === meta.cast?.classroomStudent)!
+const CLUB = school(STUDENT.schoolId)!
+```
+
+Then changing one line in `meta.ts` moves the whole story to a different young
+person at a different club. The first version of this repo let a viewer pick the
+person from a bar at the top, and every author would have had to write a flow
+that coped with eleven students across three clubs. The first one written did
+not. Hence: the author decides, in one place.
+
+**Turn autofill off before a real testing session** — the checkbox is in the bar
+at the top. Watching a young person type a six-digit code off a board is often
+the thing you are there to see.
 
 ## Wiring screens together
 

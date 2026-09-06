@@ -6,4 +6,7 @@ export const meta: PrototypeMeta = {
   hypothesis:
     'A mentor will find Code Classroom if it sits in the Manage Club menu they already use — but it will read as club admin rather than something for a session.',
   status: 'explored',
+
+  // Jo mentors both community clubs, so "which club?" is a real question here.
+  cast: { piAccount: 'pi-mentor-jo' },
 }
