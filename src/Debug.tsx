@@ -3,10 +3,11 @@ import { Alert, Tag } from './kit'
 import {
   CLASSROOM_STUDENTS,
   CLASS_GROUPS,
-  CLUBS,
   PI_ACCOUNTS,
   PROJECTS,
-  classesInClub,
+  SCHOOLS,
+  classesForStudent,
+  classesInSchool,
   classroomStudent,
 } from './fixtures'
 
@@ -21,7 +22,7 @@ export function Debug() {
         <h1 className="title-lg">Fixture data</h1>
         <p className="body muted">
           The fake data prototypes build on, from <code>src/fixtures</code>. Import it with{' '}
-          <code>import {'{'} CLUBS {'}'} from '../../fixtures'</code>.
+          <code>import {'{'} SCHOOLS {'}'} from '../../fixtures'</code>.
         </p>
         <p className="body muted">
           <Link to="/">← All prototypes</Link>
@@ -38,26 +39,32 @@ export function Debug() {
 
       <div className="theme-list">
         <section className="theme">
-          <h2 className="title-md theme-head">Clubs</h2>
+          <h2 className="title-md theme-head">Schools and classes</h2>
           <p className="body muted">
-            A club maps to what Code Classroom calls a school, with classes beneath it. One club
-            here runs two classes and one runs a single class, so no prototype can assume
-            one-to-one.
+            Code Classroom's container is called a <em>school</em>, whatever it actually is, and
+            classes sit beneath it. A Code Club can be either level: its own school, or one class
+            inside a real school that also runs lessons. Both are here, so no prototype can assume
+            a mentor is starting from nothing.
           </p>
-          {CLUBS.map((club) => (
-            <div className="kit-card" key={club.id}>
+          {SCHOOLS.map((school) => (
+            <div className="kit-card" key={school.id}>
               <div className="debug-row">
-                <h3 className="title-sm">{club.name}</h3>
-                <Tag text={`School code: ${club.schoolCode}`} variant="information" />
+                <h3 className="title-sm">{school.name}</h3>
+                <Tag text={`School code: ${school.schoolCode}`} variant="information" />
+                <Tag
+                  text={school.kind === 'school' ? 'A real school' : 'Code Club only'}
+                  variant={school.kind === 'school' ? 'warning' : 'default'}
+                />
               </div>
               <p className="body muted">
-                {club.country} · <code>{club.id}</code> · {club.mentorIds.length} mentor
-                {club.mentorIds.length === 1 ? '' : 's'}
+                {school.country} · <code>{school.id}</code> · {school.mentorIds.length} adult
+                {school.mentorIds.length === 1 ? '' : 's'}
               </p>
-              {classesInClub(club.id).map((group) => (
+              {classesInSchool(school.id).map((group) => (
                 <div key={group.id}>
                   <p className="body">
                     <strong>{group.name}</strong>{' '}
+                    <Tag text={group.kind === 'lesson' ? 'Lesson' : 'Code Club'} />{' '}
                     <span className="muted">
                       · {group.studentIds.length} young{' '}
                       {group.studentIds.length === 1 ? 'person' : 'people'}
@@ -66,9 +73,15 @@ export function Debug() {
                   <ul className="debug-list">
                     {group.studentIds.map((id) => {
                       const student = classroomStudent(id)
+                      const alsoIn = student
+                        ? classesForStudent(student.id).filter((g) => g.id !== group.id)
+                        : []
                       return (
                         <li key={id}>
                           {student?.name} <code>{student?.username}</code>
+                          {alsoIn.length > 0 && (
+                            <> — also in {alsoIn.map((g) => g.name).join(', ')}</>
+                          )}
                           {student?.alsoHasPiAccountId && (
                             <> — also has their own Pi account</>
                           )}
@@ -102,7 +115,7 @@ export function Debug() {
           <h2 className="title-md theme-head">Code Classroom student accounts</h2>
           <p className="body muted">
             Created by a mentor, so no email address is needed — just a username and password,
-            scoped to the club's school code. These do not work on Code Club Projects.
+            scoped to the school code. These do not work on Code Club Projects.
           </p>
           <ul className="debug-list">
             {CLASSROOM_STUDENTS.map((student) => (
@@ -115,7 +128,7 @@ export function Debug() {
             ))}
           </ul>
           <p className="body muted">
-            {CLASS_GROUPS.length} classes across {CLUBS.length} clubs.
+            {CLASS_GROUPS.length} classes across {SCHOOLS.length} schools.
           </p>
         </section>
 

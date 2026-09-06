@@ -34,8 +34,8 @@ export interface ClassroomStudent {
   id: string
   name: string
   username: string
-  /** The club (a "school", in Code Classroom's model) this account belongs to. */
-  clubId: string
+  /** The Code Classroom "school" this account belongs to. */
+  schoolId: string
   classIds: string[]
   /**
    * Whether this young person ALSO has their own Pi account. Usually unknown to
@@ -46,25 +46,45 @@ export interface ClassroomStudent {
 }
 
 /**
- * A Code Club. In Code Classroom's model a club maps to a "school", with
- * classes beneath it — hence the school code.
+ * A "school", in Code Classroom's own terminology — the container that holds
+ * classes and issues the school code. Called a school even when it is nothing
+ * of the kind, which is itself one of the findings this repo exists to surface.
  *
- * Whether one club should be one class or many is an open question (see
- * digital-code-club#1205), so the fixtures deliberately include both shapes.
+ * A Code Club can sit at either level, and BOTH happen:
+ *
+ * - A community club (a library, a village hall) is its own school, with one or
+ *   more classes beneath it.
+ * - A school-based club is one class inside a school that already exists for
+ *   formal teaching.
+ *
+ * So "does a club map to a school or to a class?" has no single answer, and a
+ * mentor onboarding flow has to cope with both — including the case where the
+ * mentor already has a Code Classroom school and is adding a club to it.
  */
-export interface Club {
+export interface School {
   id: string
   name: string
   /** What a young person types on the Code Classroom student login. */
   schoolCode: string
   country: string
+  /**
+   * Whether this exists only to run a Code Club, or is a real school that runs
+   * formal lessons and a club side by side.
+   */
+  kind: 'code-club-only' | 'school'
+  /** Pi accounts of the adults who run it. Teachers, in the school case. */
   mentorIds: string[]
 }
 
 export interface ClassGroup {
   id: string
-  clubId: string
+  schoolId: string
   name: string
+  /**
+   * Whether this class is a Code Club session or a timetabled lesson. A school
+   * can have both, sometimes containing the same young people.
+   */
+  kind: 'code-club' | 'lesson'
   studentIds: string[]
 }
 
