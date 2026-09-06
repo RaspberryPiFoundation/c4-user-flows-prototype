@@ -1,6 +1,6 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { Accordion, Tag } from './kit'
+import { Accordion } from './kit'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { NotFound } from './components/NotFound'
 import { findPrototype } from './prototypes/registry'
@@ -82,7 +82,6 @@ export function PrototypeHost() {
       <div className="prototype-banner">
         <Link to="/">← All prototypes</Link>
         <span className="prototype-banner-title">{prototype.meta.title}</span>
-        <Tag text={prototype.meta.status.replace(/-/g, ' ')} />
         <button className="link-button prototype-full-toggle" onClick={() => setFull(true)}>
           Full screen
         </button>

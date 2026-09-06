@@ -4,6 +4,14 @@
 // the folder path in registry.ts, so they can never drift out of sync with
 // where the prototype actually lives.
 
+/**
+ * Where a prototype has got to.
+ *
+ * Deliberately NOT shown anywhere in the interface. Labelling every card with
+ * "sketch" or "explored" reads as a judgement on the person who made it, and
+ * nobody needs that on their own work. It is here as data, for pulling the
+ * shortlist together when it is time to decide what goes in front of users.
+ */
 export type PrototypeStatus =
   /** Being built. Not ready for anyone else to look at. */
   | 'sketch'

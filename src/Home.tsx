@@ -20,7 +20,7 @@ function LaneCard({ lane }: { lane: Lane }) {
             <li className="proto-item" key={prototype.slug}>
               <Link to={`/p/${prototype.lane}/${prototype.slug}`}>{prototype.meta.title}</Link>
               <span className="proto-meta">
-                {prototype.meta.owner} · {prototype.meta.status.replace(/-/g, ' ')}
+                {prototype.meta.owner}
               </span>
             </li>
           ))}
