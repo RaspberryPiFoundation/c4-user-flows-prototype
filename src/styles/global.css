@@ -348,3 +348,66 @@ hr.divider {
   flex-direction: column;
   align-items: stretch;
 }
+
+/* ---------------- Identity bar (prototype tooling) ---------------- */
+/* Deliberately reads as scaffolding rather than product UI, and collapsed by
+   default so it does not compete with the flow during a testing session. */
+.identity-bar {
+  background: var(--rpf-white);
+  border-bottom: 1px solid var(--rpf-grey-150);
+  font-size: var(--fs-075);
+}
+.identity-bar > summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  cursor: pointer;
+  color: var(--rpf-text-secondary);
+}
+.identity-bar > summary::marker {
+  color: var(--rpf-grey-300);
+}
+.identity-bar-label {
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.identity-bar-summary {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.identity-bar-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  border-top: 1px solid var(--rpf-grey-150);
+  background: var(--rpf-off-white);
+}
+.identity-bar-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* ---------------- Fixture data page ---------------- */
+.debug-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.debug-list {
+  margin: 0;
+  padding-left: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-05);
+  font-size: var(--fs-075);
+  line-height: var(--lh-15);
+  color: var(--rpf-text-secondary);
+}
+.debug-list code {
+  color: var(--rpf-text);
+}
