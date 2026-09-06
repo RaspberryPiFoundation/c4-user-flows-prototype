@@ -27,6 +27,10 @@ export {
   meta as youngPersonSchoolHomeMeta,
 } from './classroom/YoungPersonSchoolHome'
 export {
+  ClassroomProjectEditor,
+  meta as classroomProjectEditorMeta,
+} from './classroom/ClassroomProjectEditor'
+export {
   YoungPersonClassPage,
   meta as youngPersonClassPageMeta,
   type WorkStatus,

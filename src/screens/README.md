@@ -36,6 +36,7 @@ chrome.
 | `YoungPersonClassPage` | Code Classroom | Yes | Yes |
 | `ProjectPage` | Code Club Projects | Yes | Yes |
 | `ProjectEditor` | Code Club Projects | Yes | Yes |
+| `ClassroomProjectEditor` | Code Classroom | Yes | Yes |
 
 "Verified" means someone has looked at the real screen. `MentorSignIn` is
 behind a login, so its details are probably wrong; correct it if you know
@@ -66,6 +67,24 @@ Two structural facts worth designing around:
 - **A mentor only sees work that has been SAVED.** "Only students who have
   saved their project will appear here." Walking round a room, a mentor cannot
   tell who has started and got stuck from who has not started at all.
+
+## The same editor, two different products
+
+`ProjectEditor` (Code Club Projects) and `ClassroomProjectEditor` (Code
+Classroom) share a layout and differ in the ways that matter:
+
+| | Code Club Projects | Code Classroom |
+| --- | --- | --- |
+| Saving | Blocked behind "log in to save" | Just works |
+| Finishing | Nothing happens | "Ready for review" hands it to the mentor |
+| Getting work out | Download the files | Mentor sees it, gives feedback |
+
+Put them side by side in a testing session and the identity problem is visible
+without anyone explaining it: the same child in the same session can keep their
+work in one place and not the other.
+
+They are two screens rather than one screen with a mode, because those
+differences are the finding and collapsing them into a prop would bury it.
 
 ## Saving is where the two identity systems collide
 

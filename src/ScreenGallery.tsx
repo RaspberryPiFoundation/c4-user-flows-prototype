@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Alert, Tag } from './kit'
 import {
+  ClassroomProjectEditor,
   EducatorClassPage,
   EducatorProjectPage,
   MentorSignIn,
@@ -12,6 +13,7 @@ import {
   StudentSignIn,
   YoungPersonClassPage,
   YoungPersonSchoolHome,
+  classroomProjectEditorMeta,
   educatorClassPageMeta,
   educatorProjectPageMeta,
   mentorSignInMeta,
@@ -76,6 +78,8 @@ export function ScreenGallery() {
   const [showErrors, setShowErrors] = useState(false)
   const [stepIndex, setStepIndex] = useState(0)
   const [panel, setPanel] = useState<'instructions' | 'save'>('instructions')
+  const [ccStep, setCcStep] = useState(0)
+  const [ready, setReady] = useState(false)
 
   const err = (message: string) => (showErrors ? message : undefined)
   const westlands = SCHOOLS[0]
@@ -226,6 +230,25 @@ export function ScreenGallery() {
             onSignUp={noop}
             onDownload={noop}
             onUpload={noop}
+          />
+        </Frame>
+
+        <Frame
+          name="Project editor (in Code Classroom)"
+          meta={classroomProjectEditorMeta}
+          breadcrumbs={['Your school', scratchGroup.name, PROJECTS[2].title]}
+          account="Log Out"
+        >
+          <ClassroomProjectEditor
+            project={PROJECTS[2]}
+            stepIndex={ccStep}
+            onStepChange={setCcStep}
+            readyForReview={ready}
+            onReadyForReviewChange={setReady}
+            onSave={noop}
+            onUpload={noop}
+            onDownload={noop}
+            onBack={noop}
           />
         </Frame>
 

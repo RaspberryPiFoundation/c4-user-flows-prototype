@@ -967,3 +967,19 @@ hr.divider {
   justify-content: center;
   padding-top: var(--space-2);
 }
+
+/* Inside Code Classroom the instructions pane is wider — there is no left
+   icon rail, because the editor is already inside the classroom chrome. */
+@media (min-width: 860px) {
+  .editor:has(.editor-panel-wide) {
+    grid-template-columns: 320px 1fr;
+  }
+}
+.editor-panel-wide {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+.editor-ready {
+  padding: var(--space-2);
+  border-bottom: 1px solid var(--rpf-grey-150);
+  background: var(--rpf-off-white);
+}
