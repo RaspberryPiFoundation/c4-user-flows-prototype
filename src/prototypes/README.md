@@ -2,9 +2,9 @@
 
 **This is where you work.** Everything else in `src/` is shared.
 
-Your `title` and `hypothesis` are what people see on the landing page, next to
-a "Try this" button — so write the hypothesis for someone deciding whether to
-click, not just for yourself.
+Your `title` is what people see on the landing page, so make it say what the
+approach is rather than what the screens are. The `hypothesis` shows on the
+prototype's own page under "Why this, and what to watch for".
 
 ## Adding one
 

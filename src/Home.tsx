@@ -1,4 +1,4 @@
-import { Alert, Button } from './kit'
+import { Alert } from './kit'
 import { THEMES, type Lane, type Theme } from './lanes'
 import { prototypesInLane } from './prototypes/registry'
 
@@ -56,22 +56,24 @@ function LaneCard({ lane }: { lane: Lane }) {
       ) : (
         <div className="proto-list">
           {prototypes.map((prototype) => (
-            <div className="proto-card" key={prototype.slug}>
-              <div className="proto-card-text">
-                <h4 className="title-sm">{prototype.meta.title}</h4>
-                {/* The hypothesis, not a description. What someone believes is
-                    more use than what the screens look like, and it is what
-                    makes a list of variants worth reading. */}
-                <p className="body muted proto-hypothesis" title={prototype.meta.hypothesis}>
-                  {prototype.meta.hypothesis}
-                </p>
-                <p className="proto-meta">{prototype.meta.owner}</p>
-              </div>
-              {/* An href rather than a click handler, so middle-click and
-                  "open in new tab" work — people compare variants side by
-                  side. */}
-              <Button type="primary" text="Try this" href={`#/p/${prototype.lane}/${prototype.slug}`} />
-            </div>
+            /* The whole row is the link, not a small button inside it — a
+               bigger target, and it matches how Code Classroom and Manage Club
+               list things. An href rather than a click handler so middle-click
+               and "open in new tab" work; people compare variants side by
+               side. */
+            <a
+              className="proto-card"
+              key={prototype.slug}
+              href={`#/p/${prototype.lane}/${prototype.slug}`}
+            >
+              <span className="proto-card-text">
+                <span className="title-sm">{prototype.meta.title}</span>
+                <span className="proto-meta">{prototype.meta.owner}</span>
+              </span>
+              <span className="proto-arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
           ))}
         </div>
       )}
