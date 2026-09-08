@@ -191,16 +191,13 @@ hr.divider {
   border-bottom: 2px solid var(--rpf-grey-150);
 }
 
+/* Stacked, always. Side by side was fine when a lane was just a heading and
+   "No prototypes yet", but once lanes list several prototypes each, two narrow
+   columns are harder to read than one full-width one. */
 .lane-list {
-  display: grid;
-  /* Single column on mobile, side by side once there is room. */
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-2);
-}
-@media (min-width: 640px) {
-  .lane-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 .lane {
