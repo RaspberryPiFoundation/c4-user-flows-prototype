@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom'
-import { Alert } from './kit'
+import { Alert, Button } from './kit'
 import { THEMES, type Lane, type Theme } from './lanes'
 import { prototypesInLane } from './prototypes/registry'
 
@@ -8,23 +7,31 @@ function LaneCard({ lane }: { lane: Lane }) {
 
   return (
     <section className="lane" aria-labelledby={`${lane.id}-title`}>
-      <h3 className="title-sm" id={`${lane.id}-title`}>
+      <h3 className="title-sm lane-heading" id={`${lane.id}-title`}>
         {lane.title}
       </h3>
 
       {prototypes.length === 0 ? (
         <p className="lane-empty">No prototypes yet</p>
       ) : (
-        <ul className="proto-list">
+        <div className="proto-list">
           {prototypes.map((prototype) => (
-            <li className="proto-item" key={prototype.slug}>
-              <Link to={`/p/${prototype.lane}/${prototype.slug}`}>{prototype.meta.title}</Link>
-              <span className="proto-meta">
-                {prototype.meta.owner}
-              </span>
-            </li>
+            <div className="proto-card" key={prototype.slug}>
+              <div className="proto-card-text">
+                <h4 className="title-sm">{prototype.meta.title}</h4>
+                {/* The hypothesis, not a description. What someone believes is
+                    more use than what the screens look like, and it is what
+                    makes a list of variants worth reading. */}
+                <p className="body muted">{prototype.meta.hypothesis}</p>
+                <p className="proto-meta">{prototype.meta.owner}</p>
+              </div>
+              {/* An href rather than a click handler, so middle-click and
+                  "open in new tab" work — people compare variants side by
+                  side. */}
+              <Button type="primary" text="Try this" href={`#/p/${prototype.lane}/${prototype.slug}`} />
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </section>
   )

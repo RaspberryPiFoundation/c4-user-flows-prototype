@@ -2,6 +2,10 @@
 
 **This is where you work.** Everything else in `src/` is shared.
 
+Your `title` and `hypothesis` are what people see on the landing page, next to
+a "Try this" button — so write the hypothesis for someone deciding whether to
+click, not just for yourself.
+
 ## Adding one
 
 ```
@@ -29,7 +33,7 @@ daily problem.
 
 | File | What for |
 | --- | --- |
-| `meta.ts` | Title, owner, hypothesis, status. Discovered automatically |
+| `meta.ts` | Title, owner, hypothesis, cast. Discovered automatically |
 | `prototype.tsx` | Your flow. Default export, no props |
 | `notes.md` | Your thinking. Shown on the prototype's own page |
 
