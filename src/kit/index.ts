@@ -18,4 +18,6 @@ export * from '@raspberrypifoundation/design-system-react'
 
 // Ours, because the design system has no equivalent.
 export { Card } from './Card'
+export { EditorCanvas } from './EditorCanvas'
 export { Placeholder } from './Placeholder'
+export { ProjectThumbnail } from './ProjectThumbnail'

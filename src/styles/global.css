@@ -943,6 +943,22 @@ hr.divider {
   display: flex;
   min-height: 0;
 }
+/* The drawn editor fills its pane and crops rather than letterboxing — a
+   still of an editor with bars down the side reads as a broken image. */
+.editor-canvas-art {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--rpf-grey-150);
+}
+
+/* Generated project artwork. Cropped to its box, like a real thumbnail. */
+.project-thumb {
+  display: block;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
 
 /* Project instructions markdown */
 .md {

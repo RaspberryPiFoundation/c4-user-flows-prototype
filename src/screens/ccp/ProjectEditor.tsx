@@ -1,4 +1,4 @@
-import { Button, Placeholder, Tag } from '../../kit'
+import { Button, EditorCanvas, Placeholder, Tag } from '../../kit'
 import type { Project } from '../../fixtures'
 import type { ScreenMeta } from '../types'
 import { Markdown } from './Markdown'
@@ -150,9 +150,9 @@ export function ProjectEditor({
           </span>
         </div>
         <div className="editor-canvas">
-          <Placeholder
+          <EditorCanvas
+            language={project.language}
             label={`${project.language} editor — blocks palette, canvas and stage`}
-            height="100%"
           />
         </div>
       </div>
