@@ -191,8 +191,8 @@ hr.divider {
 
 /* ---------------- Themes and lanes ---------------- */
 /* A "theme" is one of the areas in the GitHub story (onboarding, importing
-   projects). A "lane" is one question within a theme, for one audience.
-   Prototypes will be listed inside their lane. */
+   projects), shown as a tab. A "lane" is one question within a theme, for one
+   audience. Prototypes are listed inside their lane. */
 .theme-list {
   display: flex;
   flex-direction: column;
@@ -205,9 +205,53 @@ hr.divider {
   gap: var(--space-2);
 }
 
-.theme-head {
-  padding-bottom: var(--space-1);
+/* Themes are tabs: only one theme's lanes are on the page at a time. The strip
+   sits on a full-width rule, with the selected tab's underline drawn over it. */
+.theme-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
   border-bottom: 2px solid var(--rpf-grey-150);
+}
+.theme-tab {
+  appearance: none;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  padding: var(--space-1) var(--space-2);
+  font-family: inherit;
+  font-size: var(--fs-15);
+  line-height: var(--lh-15);
+  font-weight: var(--fw-bold);
+  color: var(--rpf-text-secondary);
+  cursor: pointer;
+}
+.theme-tab:hover {
+  color: var(--rpf-text);
+}
+.theme-tab[aria-selected='true'] {
+  color: var(--rpf-black);
+  border-bottom-color: var(--rpf-link-text);
+}
+.theme-tab:focus-visible {
+  outline: 3px solid var(--rpf-link-text);
+  outline-offset: 2px;
+}
+/* How many prototypes are behind the tab, so the unselected theme is not a
+   closed door — you can see whether it is worth opening. */
+.theme-tab-count {
+  margin-left: var(--space-1);
+  border-radius: 999px;
+  padding: 0 var(--space-1);
+  background: var(--rpf-grey-150);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-075);
+  color: var(--rpf-text-secondary);
+}
+
+.theme:focus {
+  outline: none;
 }
 
 /* Stacked, always. Side by side was fine when a lane was just a heading and
@@ -1275,52 +1319,11 @@ body.full-screen-prototype .surface-footer {
   color: var(--rpf-text);
 }
 
-/* ---------------- Landing page at scale ---------------- */
-/* With fifteen to twenty prototypes the page runs several screens, so it needs
-   somewhere to start from and cards that stay scannable. */
-.jump-to {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-2);
-  border: 1px solid var(--rpf-grey-150);
-  border-radius: var(--radius-sm);
-  background: var(--rpf-off-white);
-  font-size: var(--fs-075);
-}
-.jump-to-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-1) var(--space-2);
-}
-.jump-to-theme {
-  font-weight: var(--fw-bold);
-  min-width: 9rem;
-}
-.jump-to-lanes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-.jump-to .link-button {
-  font-size: var(--fs-075);
-}
-
 .lane-heading {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
   gap: var(--space-1) var(--space-2);
-}
-/* Focus lands here from the jump list; it should be visible but not look
-   permanently selected. */
-.lane-heading:focus {
-  outline: none;
-}
-.lane-heading:focus-visible {
-  outline: 3px solid var(--rpf-link-text);
-  outline-offset: 4px;
 }
 .lane-count {
   font-weight: var(--fw-regular);
