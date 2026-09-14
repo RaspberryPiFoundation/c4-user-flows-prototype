@@ -60,7 +60,7 @@ const CLUB = school(STUDENT.schoolId)!
 
 Get this wrong and changing the cast produces a flow that fills in one club's
 code and then rejects that club's usernames. See
-`onboarding-yp/reference-school-code-join` for the pattern.
+`import-yp/browse-projects-in-classroom` for the pattern.
 
 See `#/debug` for everyone available.
 

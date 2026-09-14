@@ -63,7 +63,7 @@ it is short, and the one rule in it matters.
 Send them a link with `?full=1&autofill=0` on the end:
 
 ```
-#/p/onboarding-yp/reference-school-code-join?full=1&autofill=0
+#/p/import-yp/browse-projects-in-classroom?full=1&autofill=0
 ```
 
 That hides everything belonging to the workbench and leaves the sign-in fields

@@ -39,10 +39,12 @@ Either way the prototype is discovered automatically and appears on the landing
 page in its lane — **no shared file needs to change**, which is what lets
 several people build at once without conflicting.
 
-Two worked examples to copy from, one per audience:
+Worked examples to copy from, one per audience:
 
-- `onboarding-mentor/reference-manage-club-route`
-- `onboarding-yp/reference-school-code-join`
+- `import-mentor/start-on-projects` — a mentor, signed out, browsing and
+  importing
+- `import-yp/browse-projects-in-classroom` — a young person, signing in with a
+  school code
 
 Both are real click-throughs. See [`src/prototypes/README.md`](src/prototypes/README.md).
 

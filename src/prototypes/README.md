@@ -57,7 +57,7 @@ you need to send:
 For a testing session, both:
 
 ```
-#/p/onboarding-yp/reference-school-code-join?full=1&autofill=0
+#/p/import-yp/browse-projects-in-classroom?full=1&autofill=0
 ```
 
 That opens clean, with nothing pre-typed — so you can watch someone read a
