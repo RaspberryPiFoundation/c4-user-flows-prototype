@@ -93,7 +93,13 @@ export function ProjectsCatalogue({ projects, alreadyAddedIds, onView, onBack }:
               onClick={onBack}
             />
           </div>
-          <h1 style={{ margin: 0, fontSize: 'var(--fs-3)', lineHeight: 'var(--lh-25)' }}>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: 'var(--fs-3)',
+              lineHeight: 'var(--lh-25)',
+            }}
+          >
             Code Classroom compatible
           </h1>
           <p className="body" style={{ margin: 0, maxWidth: '34rem' }}>
@@ -109,35 +115,46 @@ export function ProjectsCatalogue({ projects, alreadyAddedIds, onView, onBack }:
         </div>
       </div>
 
-      {/* Filter rail beside the results, as on the live page. `cc-columns` is
-          the shared rail-plus-content layout EducatorProjectPage uses — a
-          fixed rail from 720px up, stacked below it. Reusing it rather than
-          hand-rolling a grid means this page stacks on a narrow window
-          without needing a media query an inline style cannot express. */}
-      <div className="cc-columns">
-        <Card className="cc-aside">
-          <h2 className="title-sm">Filter</h2>
-          <p className="body small muted">
-            The project list automatically updates when you apply a filter.
-          </p>
-          <fieldset style={{ border: 'none', margin: 0, padding: 0 }}>
-            <legend className="body" style={{ fontWeight: 'var(--fw-bold)' }}>
-              Difficulty level
-            </legend>
-            {levels.map((level) => (
-              <CheckboxInput
-                key={level}
-                id={`level-${level}`}
-                name={`level-${level}`}
-                label={`Level ${level}`}
-                checked={chosenLevels.includes(level)}
-                onChange={(event) => toggleLevel(level, event.target.checked)}
-              />
-            ))}
-          </fieldset>
-        </Card>
+      {/* Filter rail beside the results, as on the live page. NOT the shared
+          `cc-columns` layout, which fixes the rail at 260px: the design
+          system's checkbox label carries a hardcoded min-width of 240px, and a
+          260px card only has 212px inside its padding, so every checkbox in
+          the rail overflowed it. Flex with wrap rather than a grid, so the two
+          columns still stack on a narrow window without needing a media query
+          an inline style cannot express. */}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 'var(--space-3)',
+          alignItems: 'flex-start',
+        }}
+      >
+        <div style={{ flex: '1 1 19rem', maxWidth: '22rem' }}>
+          <Card className="cc-aside">
+            <h2 className="title-sm">Filter</h2>
+            <p className="body small muted">
+              The project list automatically updates when you apply a filter.
+            </p>
+            <fieldset style={{ border: 'none', margin: 0, padding: 0 }}>
+              <legend className="body" style={{ fontWeight: 'var(--fw-bold)' }}>
+                Difficulty level
+              </legend>
+              {levels.map((level) => (
+                <CheckboxInput
+                  key={level}
+                  id={`level-${level}`}
+                  name={`level-${level}`}
+                  label={`Level ${level}`}
+                  checked={chosenLevels.includes(level)}
+                  onChange={(event) => toggleLevel(level, event.target.checked)}
+                />
+              ))}
+            </fieldset>
+          </Card>
+        </div>
 
-        <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
+        <div style={{ flex: '3 1 22rem', display: 'grid', gap: 'var(--space-2)' }}>
           <div>
             <p className="body" style={{ margin: 0, fontWeight: 'var(--fw-bold)' }}>
               {visible.length} {visible.length === 1 ? 'result' : 'results'}
@@ -150,8 +167,8 @@ export function ProjectsCatalogue({ projects, alreadyAddedIds, onView, onBack }:
                 sticky is about. Do not read its absence as an answer. */}
             {hidden > 0 && (
               <p className="body small muted" style={{ margin: 0 }}>
-                {hidden} more {hidden === 1 ? 'project is' : 'projects are'} not here, because
-                they do not run in an editor Code Classroom can embed.
+                {hidden} more {hidden === 1 ? 'project is' : 'projects are'} not here, because they
+                do not run in an editor Code Classroom can embed.
               </p>
             )}
           </div>
@@ -173,7 +190,13 @@ export function ProjectsCatalogue({ projects, alreadyAddedIds, onView, onBack }:
                 const added = alreadyAddedIds.includes(project.id)
                 return (
                   <Card key={project.id}>
-                    <div style={{ display: 'grid', gap: 'var(--space-1)', justifyItems: 'start' }}>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gap: 'var(--space-1)',
+                        justifyItems: 'start',
+                      }}
+                    >
                       {/* The live cards lead with an illustration that runs to
                           the card's edges, so it has to be pulled back out
                           through the card's own padding and its top corners

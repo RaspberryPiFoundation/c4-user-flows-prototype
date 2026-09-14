@@ -142,6 +142,16 @@ badly stretched across a large monitor. Divya asked for it and it applies to
 every prototype in the repo, not just this one — so it wants reviewing and
 merging separately from this prototype rather than riding along with it.
 
+## A design system constraint worth knowing
+
+`.rpf-input-checkbox` carries a hardcoded `min-width: 240px`. The shared
+`.cc-columns` layout fixes its rail at 260px, which leaves 212px inside a
+card's padding — so **any filter rail built with `cc-columns` and checkboxes
+overflows its own card.** The catalogue's rail here used to, by 6px. It now
+uses a flex rail with a 19rem basis instead, which also still stacks on a
+narrow window. The sibling prototype hit the same thing. Worth raising
+upstream, or worth a wider rail variant in the shared CSS.
+
 ## Five things the build exposed
 
 Not design opinions — things that fell out of making the chart actually run.
