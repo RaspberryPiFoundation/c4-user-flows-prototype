@@ -943,6 +943,28 @@ hr.divider {
   display: flex;
   min-height: 0;
 }
+/* The real editor, when it loads. It brings its own chrome inside a shadow
+   DOM, so there is nothing to style here beyond giving it the whole pane. */
+.editor-embed {
+  flex: 1 1 auto;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+.editor-embed-host {
+  flex: 1 1 auto;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+.editor-embed editor-wc {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.editor-embed-loading {
+  margin: auto;
+}
+
 /* The drawn editor fills its pane and crops rather than letterboxing — a
    still of an editor with bars down the side reads as a broken image. */
 .editor-canvas-art {
