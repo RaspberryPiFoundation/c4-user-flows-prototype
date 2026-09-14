@@ -687,6 +687,43 @@ hr.divider {
   border-bottom: none;
 }
 
+/* The class page draws its projects as a bordered, rounded group of pale rows
+   rather than as bare lines of text. Opt-in, because the same .cc-row is used
+   for plain lists elsewhere. */
+.cc-list-boxed {
+  border: 1px solid var(--rpf-grey-150);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.cc-list-boxed .cc-row {
+  padding: var(--space-2);
+  background: var(--rpf-off-white);
+}
+/* Icon and name travel together on the left; the overflow menu stays right. */
+.cc-row-main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+}
+/* A project name on the live page is bold body text, not a blue link — the
+   row's overflow menu is the action affordance. Underlined on hover and focus
+   anyway, so it does not rely on being guessable. */
+.cc-row-title {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: var(--fw-bold);
+  color: var(--rpf-text);
+  text-align: left;
+  cursor: pointer;
+}
+.cc-row-title:hover,
+.cc-row-title:focus-visible {
+  text-decoration: underline;
+}
+
 /* The educator project page puts guidance beside the student work list. */
 .cc-columns {
   display: grid;
