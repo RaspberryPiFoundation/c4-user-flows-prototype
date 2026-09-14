@@ -406,6 +406,12 @@ hr.divider {
   display: flex;
   flex-direction: column;
   width: 100%;
+  /* Capped so a screen does not stretch across a large monitor. In the
+     workbench the whole framed product sits on this measure, centred — the
+     frame already reads as a screenshot rather than a browser window, so
+     narrowing it is consistent with how it is presented. Full screen moves the
+     cap inside, onto the page content; see the full-screen block below. */
+  max-width: var(--surface-measure);
   min-height: 420px;
   overflow: hidden;
   border-radius: var(--radius-sm);
@@ -1146,6 +1152,30 @@ body.full-screen-prototype .surface {
   border: none;
   border-radius: 0;
   min-height: 100vh;
+  /* Chrome goes edge to edge, as a real product's header and nav do. */
+  max-width: none;
+}
+/* So the cap moves to the page content instead. The bars keep their own
+   full-width backgrounds and borders; only the content column is measured,
+   which is what the real sites do. */
+body.full-screen-prototype .surface-body {
+  width: 100%;
+  max-width: var(--surface-measure);
+  margin-inline: auto;
+}
+/* The bars stay full width but their contents line up with that column,
+   otherwise a breadcrumb sits alone at the far left of a wide monitor while
+   the page it describes starts halfway across. Padding rather than a wrapper,
+   so the background and the bottom border still run edge to edge, and `max()`
+   keeps the ordinary padding once the window is narrower than the measure. */
+body.full-screen-prototype .surface-topbar,
+body.full-screen-prototype .surface-breadcrumbs,
+body.full-screen-prototype .surface-nav,
+body.full-screen-prototype .surface-footer {
+  padding-inline: max(
+    var(--space-2),
+    calc((100% - var(--surface-measure)) / 2 + var(--space-3))
+  );
 }
 
 .prototype-full-toggle {
