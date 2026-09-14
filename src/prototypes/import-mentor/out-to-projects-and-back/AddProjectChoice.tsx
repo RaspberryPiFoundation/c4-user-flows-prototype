@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react'
+import { useState } from 'react'
 import { Modal, TextInput } from '../../../kit'
 import { PROJECT_TYPES, type ProjectTypeId } from './projectTypes'
 
@@ -143,107 +143,103 @@ export function AddProjectChoice({ isOpen, setIsOpen, className, onFind, onCreat
   }
 
   return (
-    // The custom property inherits down to the dialog element, which is how a
-    // narrower modal is possible without touching the shared stylesheet.
-    <div style={{ '--rpf-modal-max-inline-size': '30rem' } as CSSProperties}>
-      <Modal
-        isOpen={isOpen}
-        setIsOpen={(open) => (open ? setIsOpen(true) : close())}
-        heading={onCreateStep ? 'Create a new project' : 'Add a project'}
-        showCloseButton
-        primaryButtonText={onCreateStep ? 'Create project' : 'Continue'}
-        onClickPrimaryButton={onCreateStep ? create : forward}
-        // "Back" rather than "Cancel" on step 2: it came from a question, so
-        // returning to it is more use than dismissing. The header's X still
-        // cancels, which is how the live dialog's two buttons stay two.
-        secondaryButtonText={onCreateStep ? 'Back' : 'Cancel'}
-        onClickSecondaryButton={onCreateStep ? () => setOnCreateStep(false) : close}
-      >
-        {/* The modal's content box centres its children, so this has to claim
+    <Modal
+      isOpen={isOpen}
+      setIsOpen={(open) => (open ? setIsOpen(true) : close())}
+      heading={onCreateStep ? 'Create a new project' : 'Add a project'}
+      showCloseButton
+      primaryButtonText={onCreateStep ? 'Create project' : 'Continue'}
+      onClickPrimaryButton={onCreateStep ? create : forward}
+      // "Back" rather than "Cancel" on step 2: it came from a question, so
+      // returning to it is more use than dismissing. The header's X still
+      // cancels, which is how the live dialog's two buttons stay two.
+      secondaryButtonText={onCreateStep ? 'Back' : 'Cancel'}
+      onClickSecondaryButton={onCreateStep ? () => setOnCreateStep(false) : close}
+    >
+      {/* The modal's content box centres its children, so this has to claim
             the full width or every row sits in the middle. */}
-        <div style={{ width: '100%', display: 'grid', gap: 'var(--space-2)' }}>
-          {onCreateStep ? (
-            <>
-              <TextInput
-                id="project-name"
-                name="project-name"
-                label="Project name"
-                hint="Your project name is visible to your students."
-                fullWidth
-                value={name}
-                error={nameError}
-                onChange={(event) => {
-                  setTyped(event.target.value)
-                  setNameError(undefined)
-                }}
-              />
+      <div style={{ width: '100%', display: 'grid', gap: 'var(--space-2)' }}>
+        {onCreateStep ? (
+          <>
+            <TextInput
+              id="project-name"
+              name="project-name"
+              label="Project name"
+              hint="Your project name is visible to your students."
+              fullWidth
+              value={name}
+              error={nameError}
+              onChange={(event) => {
+                setTyped(event.target.value)
+                setNameError(undefined)
+              }}
+            />
 
+            <p
+              style={{
+                margin: 0,
+                fontWeight: 'var(--fw-bold)',
+                fontSize: 'var(--fs-1)',
+                lineHeight: 'var(--lh-15)',
+              }}
+            >
+              What kind of project do you want to make for your students?
+            </p>
+
+            <div style={{ display: 'grid', gap: 'var(--space-1)' }}>
+              {PROJECT_TYPES.map((option) => (
+                <OptionRow
+                  key={option.id}
+                  tone={option.tone}
+                  title={option.id}
+                  blurb={option.blurb}
+                  selected={type === option.id}
+                  onSelect={() => setType(option.id)}
+                />
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <p
+              style={{
+                margin: 0,
+                fontWeight: 'var(--fw-bold)',
+                fontSize: 'var(--fs-1)',
+                lineHeight: 'var(--lh-15)',
+              }}
+            >
+              What kind of project do you want to add to {className}?
+            </p>
+
+            {nudge && (
               <p
-                style={{
-                  margin: 0,
-                  fontWeight: 'var(--fw-bold)',
-                  fontSize: 'var(--fs-1)',
-                  lineHeight: 'var(--lh-15)',
-                }}
+                role="alert"
+                className="body small"
+                style={{ margin: 0, color: 'var(--alert-error)' }}
               >
-                What kind of project do you want to make for your students?
+                Pick one of these to carry on.
               </p>
+            )}
 
-              <div style={{ display: 'grid', gap: 'var(--space-1)' }}>
-                {PROJECT_TYPES.map((option) => (
-                  <OptionRow
-                    key={option.id}
-                    tone={option.tone}
-                    title={option.id}
-                    blurb={option.blurb}
-                    selected={type === option.id}
-                    onSelect={() => setType(option.id)}
-                  />
-                ))}
-              </div>
-            </>
-          ) : (
-            <>
-              <p
-                style={{
-                  margin: 0,
-                  fontWeight: 'var(--fw-bold)',
-                  fontSize: 'var(--fs-1)',
-                  lineHeight: 'var(--lh-15)',
-                }}
-              >
-                What kind of project do you want to add to {className}?
-              </p>
-
-              {nudge && (
-                <p
-                  role="alert"
-                  className="body small"
-                  style={{ margin: 0, color: 'var(--alert-error)' }}
-                >
-                  Pick one of these to carry on.
-                </p>
-              )}
-
-              <div style={{ display: 'grid', gap: 'var(--space-1)' }}>
-                {ROUTES.map((option) => (
-                  <OptionRow
-                    key={option.id}
-                    tone={option.tone}
-                    title={option.title}
-                    blurb={option.blurb}
-                    selected={choice === option.id}
-                    onSelect={() => {
-                      setChoice(option.id)
-                      setNudge(false)
-                    }}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      </Modal>
-    </div>
+            <div style={{ display: 'grid', gap: 'var(--space-1)' }}>
+              {ROUTES.map((option) => (
+                <OptionRow
+                  key={option.id}
+                  tone={option.tone}
+                  title={option.title}
+                  blurb={option.blurb}
+                  selected={choice === option.id}
+                  onSelect={() => {
+                    setChoice(option.id)
+                    setNudge(false)
+                  }}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </Modal>
   )
 }
