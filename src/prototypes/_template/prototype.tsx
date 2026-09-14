@@ -19,7 +19,7 @@ import { Surface } from '../../surfaces'
 // and belongs in notes.md.
 //
 // Derive everything else from the cast — do not hardcode a club. See
-// onboarding-yp/reference-school-code-join for how.
+// import-yp/browse-projects-in-classroom for how.
 //
 // See #/debug for everyone available.
 

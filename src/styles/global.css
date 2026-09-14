@@ -40,6 +40,25 @@ button {
   }
 }
 
+/* ---------------- Design system defaults we override ---------------- */
+/* The modal is as wide as the viewport allows by default
+   (calc(100vw - 2 * --space-10)), which suits almost nothing here: every
+   dialog in this repo is a short question or a small form, and a question
+   stretched across a large monitor reads as a page that has gone wrong.
+   Narrowed to a measure a dialog can actually be read at.
+
+   Set here rather than per prototype. Two prototypes had already reached for
+   the same override and the kit gallery wanted it too; the alternative is
+   everybody rediscovering that --rpf-modal-max-inline-size is the lever.
+
+   The design system only applies this above 30rem — below that a separate
+   mobile variable keeps a dialog near full width, which is right on a phone —
+   so this changes nothing on small screens. A dialog that genuinely needs to
+   be wider can still set the property on any ancestor. */
+:root {
+  --rpf-modal-max-inline-size: 30rem;
+}
+
 /* ---------------- App shell ---------------- */
 /* Deliberately neutral chrome. This site is a hub for prototypes, not an
    imitation of any one product, so it does not fake a Code Club or Code
@@ -366,8 +385,11 @@ hr.divider {
   align-items: flex-start;
   gap: var(--space-2);
 }
-/* Form inputs and other block-level examples get their own line. */
-.demo-stage > * {
+/* Form inputs and other block-level examples get their own line.
+   Dialogs are excluded: they are overlaid rather than laid out in the stage,
+   and they carry their own measure — flattening them to the stage's width
+   made the gallery show a modal far wider than any modal in a prototype. */
+.demo-stage > *:not(dialog) {
   max-width: 100%;
 }
 
