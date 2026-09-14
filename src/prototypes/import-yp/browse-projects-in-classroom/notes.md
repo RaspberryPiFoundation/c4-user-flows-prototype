@@ -29,9 +29,23 @@ not — and Code Classroom currently serves neither.
 **What is proposed, and what is real.** Everything from "Add a project" onwards
 is proposed; nothing like it exists. Specifically:
 
-- `AddProjectChoices.tsx` — the fork, the project-type chooser, and the
-  confirmation
-- `ProjectLibrary.tsx` — the catalogue, inside Code Classroom
+- `AddProjectChoices.tsx` — the fork, the project-type modal, and the
+  confirmation. Both dialogs share one row component and one shape —
+  select, then confirm — so adding a project is one kind of question asked
+  twice rather than two screens to learn. The cost is a click: route, confirm,
+  language, confirm. Worth watching whether that reads as deliberate or as
+  being asked the same thing twice
+- `ProjectLibrary.tsx` — the catalogue, inside Code Classroom, laid out as
+  tiles to match projects.raspberrypi.org's own project cards (checked against
+  the Nature list: 16px radius, hairline border, full-bleed image, then a level
+  tag, title, one-line description and an action). If this is going to stand in
+  for the catalogue it has to be recognisable as the catalogue — a young person
+  who has browsed projects at home should meet the same thing here
+- `ClassProjects.tsx` — the class page split into **Assigned to you** and
+  **Created by you**, copied from `screens/classroom/YoungPersonClassPage`
+  rather than propped, because the shared screen has no notion of where a
+  project came from — today it cannot, since everything in a class was put
+  there by an adult
 - `ClassroomHome.tsx` and `UpdatePassword.tsx` — these exist in the real
   product but have never been built in `screens/`, and **nobody has checked
   them against the real thing.** Treat the details as wrong.
@@ -64,6 +78,63 @@ at all, a from-scratch project needs a step that is not a step
 (`projectTypes.ts`). "Start from scratch" does not fit the screen it lands on,
 and that is a real gap, not a prototype shortcut.
 
+**Matching the mentor's own modal.** The type chooser is built to the real
+teacher-facing "Create a new project" dialog: same three types in the same
+order, the product's own descriptions, the coloured tiles, a project name
+field, and Cancel / Create project in the footer. A young person and a mentor
+adding a project should be doing recognisably the same thing — if the two
+diverge, a mentor cannot help from memory when a child is stuck halfway.
+
+Two deliberate departures. The question drops "for your students", which is the
+only copy that could not survive the change of audience. And the browse branch
+reuses the same dialog without the name field, because it is choosing a filter
+rather than creating anything.
+
+**The status vocabulary has no word for your own work.** Splitting the list
+made this obvious. A project's status is "Ready for you", "Sent for feedback"
+or "Complete" — and "Ready for you" means *an adult set this up and you have
+not started it*, which is nonsense on something you made yourself thirty
+seconds ago. Rather than show something wrong, a freshly created project
+carries no tag at all. Whether it should have one, and what it would say, is a
+real question this raises and does not answer.
+
+**Every step needs a way out, and two did not have one.** The confirmation
+screen offered "Open the project" and "Add another project" and nothing else,
+and the project details page offered only "Start project" and "Add to a class" —
+so a young person who changed their mind at either point was stuck. The
+breadcrumbs look like an escape and are not; they are chrome. Both are fixed:
+the confirmation is a dialog that closes back to the class, and details has a
+Back. Worth remembering when adding a step — the fiction has no browser Back.
+
+**The confirmation is deliberately celebratory.** Adding a project of your own
+is the one thing in this flow a young person cannot do today, and landing it on
+a quiet left-aligned panel would waste the only moment in the journey that is
+genuinely theirs — so it is centred, with the project's thumbnail so the thing
+they made is a thing rather than a line of text. Watch whether it reads as a
+reward or as a speed bump between them and the editor.
+
+A from-scratch project has no thumbnail, because there is nothing in it yet.
+The placeholder says so rather than pretending otherwise, which makes the same
+gap visible here as in the editor.
+
+**Where the action lives.** Starting a project of your own sits inside
+"Created by you", not beside the class — top right of the panel when there is
+a list, mirroring the mentor's own "Add project" button, and inside the empty
+state as an invitation when there is not. One action, in the section it
+belongs to.
+
+The cost is real and worth watching: a young person sitting on "Assigned to
+you" is not offered it at all. Whether that loses more in discoverability than
+it gains in tidiness is exactly the sort of thing a session answers and an
+argument does not.
+
+**Which section opens first.** Someone who has just made a project and lands on
+"Assigned to you" cannot see the thing they made; the count going up is not
+much of a clue. So the page opens on "Created by you" when there is anything in
+it. That works here because anything created was created moments ago — a real
+product would need to key this off recency, or a young person returning next
+week would land away from newly assigned work.
+
 **2. "Blocks, Python or Web" and the catalogue disagree.** The chooser uses
 Code Classroom's words; the catalogue is labelled Scratch, Python and HTML.
 Someone who picks Blocks lands on a list of things called Scratch and has to
@@ -92,6 +163,9 @@ Two buttons, one outcome.
 - **Whether "my class" means anything to them.** The copy is Code Classroom's
   own — class, teacher, school — for a Saturday club in a community centre.
   Adding a project to "my class" may read as homework.
+- **Which section they look at first, and whether "Created by you" is where
+  they expect their own work.** Also whether the split makes the class feel
+  like two places rather than one.
 - **Whether a mentor would want this.** Young people adding their own projects
   changes what the mentor sees, and "Ready for review" starts meaning something
   different. This prototype does not resolve that — it makes it visible.

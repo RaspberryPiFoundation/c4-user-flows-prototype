@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Card } from '../../../kit'
+import { Modal, Placeholder, TextInput } from '../../../kit'
 import { PROJECT_TYPES, type ProjectTypeId } from './projectTypes'
 
 // PROPOSED, all three. Nothing in Code Classroom lets a young person add a
@@ -28,10 +28,17 @@ import { PROJECT_TYPES, type ProjectTypeId } from './projectTypes'
  * Swap the glyph by changing the `name` passed below — `list_alt`, `draw`,
  * `explore`, `widgets` and `menu_book` are all in the same set.
  */
-const ICON_SIZE = 40
-const ICON_FONT = `${ICON_SIZE}px "Material Symbols Sharp"`
+const ICON_FONT = '40px "Material Symbols Sharp"'
 
-function OptionIcon({ name }: { name: string }) {
+function OptionIcon({
+  name,
+  size = 40,
+  colour = 'var(--rpf-text)',
+}: {
+  name: string
+  size?: number
+  colour?: string
+}) {
   // Material Symbols renders the glyph via a ligature, so until the webfont
   // arrives the browser shows the literal word — "construction" sitting above
   // "Start from scratch". It is brief, but a young person reading it mid-
@@ -39,7 +46,8 @@ function OptionIcon({ name }: { name: string }) {
   // the font comes from Google Fonts over whatever connection the venue has.
   //
   // So: hold the glyph back until the font is ready, in a box of the final
-  // size, which also means no layout shift when it lands.
+  // size, which also means no layout shift when it lands. One size is checked
+  // for all of them — a loaded font is loaded at every size.
   const [ready, setReady] = useState(() => document.fonts?.check(ICON_FONT) ?? true)
 
   useEffect(() => {
@@ -58,12 +66,12 @@ function OptionIcon({ name }: { name: string }) {
       className="material-symbols-sharp"
       aria-hidden="true"
       style={{
-        fontSize: `${ICON_SIZE}px`,
+        fontSize: `${size}px`,
         lineHeight: 1,
-        color: 'var(--rpf-text)',
+        color: colour,
         display: 'inline-block',
-        minWidth: `${ICON_SIZE}px`,
-        height: `${ICON_SIZE}px`,
+        minWidth: `${size}px`,
+        height: `${size}px`,
         visibility: ready ? 'visible' : 'hidden',
       }}
     >
@@ -72,116 +80,358 @@ function OptionIcon({ name }: { name: string }) {
   )
 }
 
-/** "What do you want to start?" — the fork this prototype exists to test. */
-export function StartChooser({
-  onFromScratch,
-  onBrowse,
-  onBack,
+/**
+ * One selectable row in a choice dialog: icon, title, description, radio.
+ *
+ * Shared by both modals on purpose. The fork and the type chooser are the same
+ * kind of question asked twice, and if they looked like two different patterns
+ * a young person would have to learn the screen twice.
+ *
+ * `tone` puts the icon in a coloured tile, which the language rows use because
+ * the colour is carrying the brand. The fork has no brand to carry, so its
+ * icons are plain and black.
+ */
+function ChoiceRow({
+  name,
+  value,
+  selected,
+  onSelect,
+  glyph,
+  tone,
+  title,
+  description,
 }: {
-  onFromScratch: () => void
-  onBrowse: () => void
-  onBack: () => void
+  name: string
+  value: string
+  selected: boolean
+  onSelect: () => void
+  glyph: string
+  tone?: 'orange' | 'green' | 'purple'
+  title: string
+  description: string
 }) {
   return (
-    <div className="section-stack">
-      <div className="cc-actions">
-        <Button type="secondary" size="small" text="Back" onClick={onBack} />
+    <label
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 'var(--space-2)',
+        padding: 'var(--space-2)',
+        borderRadius: 'var(--radius-sm)',
+        background: 'var(--rpf-white)',
+        cursor: 'pointer',
+        // Two border widths would shift the row by a pixel when selected, so
+        // the width is constant and only the colour changes.
+        border: `2px solid ${selected ? 'var(--rpf-text)' : 'var(--rpf-grey-150)'}`,
+      }}
+    >
+      <input
+        type="radio"
+        name={name}
+        value={value}
+        checked={selected}
+        onChange={onSelect}
+        // Visually hidden, not `display: none` — the row is the control, but
+        // the radio still has to be reachable by keyboard and announced as one
+        // of a group.
+        style={{
+          position: 'absolute',
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden',
+          clip: 'rect(0 0 0 0)',
+          whiteSpace: 'nowrap',
+        }}
+      />
+      {tone ? (
+        <span
+          className={`cc-tile cc-tile-${tone}`}
+          aria-hidden="true"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <OptionIcon name={glyph} size={24} colour="var(--rpf-white)" />
+        </span>
+      ) : (
+        <OptionIcon name={glyph} size={32} />
+      )}
+      <span>
+        <strong>{title}</strong>
+        <span className="body small muted" style={{ display: 'block' }}>
+          {description}
+        </span>
+      </span>
+    </label>
+  )
+}
+
+export type StartChoice = 'scratch' | 'browse'
+
+const START_CHOICES: Array<{
+  id: StartChoice
+  glyph: string
+  title: string
+  description: string
+}> = [
+  {
+    id: 'scratch',
+    glyph: 'construction',
+    title: 'Start from scratch',
+    description: 'An empty project. You decide what it does — no instructions to follow.',
+  },
+  {
+    id: 'browse',
+    glyph: 'library_books',
+    title: 'Browse Code Club projects',
+    description: 'Pick something with step-by-step instructions, made by the Raspberry Pi Foundation.',
+  },
+]
+
+/**
+ * "What do you want to start?" — the fork this prototype exists to test.
+ *
+ * A dialog rather than a page, and the same select-then-confirm shape as the
+ * language step that follows it, so adding a project is one consistent kind of
+ * question rather than two unrelated screens.
+ *
+ * The cost is a click: you pick a route, then confirm, then pick a language.
+ * Worth watching whether that reads as deliberate or as being asked the same
+ * thing twice.
+ */
+export function StartChoiceModal({
+  selected,
+  onSelect,
+  onContinue,
+  onCancel,
+}: {
+  selected: StartChoice
+  onSelect: (choice: StartChoice) => void
+  onContinue: () => void
+  onCancel: () => void
+}) {
+  return (
+    <Modal
+      isOpen
+      setIsOpen={(open) => {
+        if (!open) onCancel()
+      }}
+      heading="Add a project"
+      showCloseButton
+      secondaryButtonText="Cancel"
+      onClickSecondaryButton={onCancel}
+      primaryButtonText="Continue"
+      onClickPrimaryButton={onContinue}
+    >
+      <fieldset style={{ border: 'none', margin: 0, padding: 0 }}>
+        <legend className="body" style={{ fontWeight: 700, padding: 0 }}>
+          What do you want to start?
+        </legend>
+
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'var(--space-1)',
+            marginTop: 'var(--space-1)',
+          }}
+        >
+          {START_CHOICES.map((choice) => (
+            <ChoiceRow
+              key={choice.id}
+              name="start-choice"
+              value={choice.id}
+              selected={choice.id === selected}
+              onSelect={() => onSelect(choice.id)}
+              glyph={choice.glyph}
+              title={choice.title}
+              description={choice.description}
+            />
+          ))}
+        </div>
+      </fieldset>
+    </Modal>
+  )
+}
+
+/**
+ * "What kind of project?" — built to match the real teacher-facing
+ * "Create a new project" modal in Code Classroom: a dialog rather than a page,
+ * the three types as selectable rows with a coloured tile and the product's
+ * own descriptions, and Cancel / confirm in the footer.
+ *
+ * Matching it matters more than it looks. A young person adding a project and
+ * a mentor adding a project should be doing recognisably the same thing — if
+ * the two diverge, the mentor cannot help from memory when a child is stuck.
+ *
+ * Two deliberate departures from the real modal:
+ *
+ * - The question drops "for your students". The rest of the copy is the real
+ *   copy, but a young person is not making this for anyone else, and leaving
+ *   it in would be nonsense rather than a useful tension to test.
+ * - The browse branch reuses the same dialog without the name field, because
+ *   it is choosing a filter, not creating anything. Same pattern, honest about
+ *   doing something different.
+ */
+export function ProjectTypeModal({
+  heading,
+  confirmText,
+  selected,
+  onSelect,
+  name,
+  onNameChange,
+  onConfirm,
+  onCancel,
+}: {
+  heading: string
+  confirmText: string
+  selected: ProjectTypeId
+  onSelect: (type: ProjectTypeId) => void
+  /** Omit both to hide the name field — the browse branch does not name anything. */
+  name?: string
+  onNameChange?: (value: string) => void
+  onConfirm: () => void
+  onCancel: () => void
+}) {
+  const showName = name !== undefined && onNameChange !== undefined
+
+  return (
+    <Modal
+      isOpen
+      setIsOpen={(open) => {
+        if (!open) onCancel()
+      }}
+      heading={heading}
+      showCloseButton
+      secondaryButtonText="Cancel"
+      onClickSecondaryButton={onCancel}
+      primaryButtonText={confirmText}
+      onClickPrimaryButton={onConfirm}
+    >
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+        {showName && (
+          <div>
+            <TextInput
+              id="project-name"
+              name="project-name"
+              label="Project name"
+              hint="Your project name is visible to your mentor."
+              fullWidth
+              value={name}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                onNameChange(event.target.value)
+              }
+            />
+          </div>
+        )}
+
+        <fieldset style={{ border: 'none', margin: 0, padding: 0 }}>
+          <legend className="body" style={{ fontWeight: 700, padding: 0 }}>
+            What kind of project do you want to make?
+          </legend>
+
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 'var(--space-1)',
+              marginTop: 'var(--space-1)',
+            }}
+          >
+            {PROJECT_TYPES.map((type) => (
+              <ChoiceRow
+                key={type.id}
+                name="project-type"
+                value={type.id}
+                selected={type.id === selected}
+                onSelect={() => onSelect(type.id)}
+                glyph={type.glyph}
+                tone={type.tone}
+                title={type.id}
+                description={type.blurb}
+              />
+            ))}
+          </div>
+        </fieldset>
       </div>
+    </Modal>
+  )
+}
 
-      <h1 className="title-lg">What do you want to start?</h1>
-
-      {/* Side by side, so the two routes read as a choice between equals
-          rather than a first option and a fallback. `auto-fit` with a minimum
-          means they drop back to stacked on a narrow screen without a media
-          query — which matters, because a club often runs on tablets.
-
-          `.kit-card` is already a flex column, so grid stretches the two to
-          the same height; `marginTop: auto` then lines the buttons up along
-          the bottom whatever the copy does. */}
+/**
+ * "Project created" — then open it, add another, or close.
+ *
+ * A dialog rather than a page, for the same reason as the two steps before it,
+ * and for one more: as a page it was a dead end. "Open the project" and "Add
+ * another project" were the only ways out, and a young person who wanted
+ * neither — who just wanted to look at their class — had nowhere to go. The
+ * breadcrumbs are not real navigation here. Closing the dialog now puts them
+ * back on the class page, with the thing they just made visible in it.
+ *
+ * Deliberately celebratory inside. Adding a project of your own is the one
+ * thing in this flow a young person cannot do today, and landing it on a quiet
+ * confirmation would waste the only moment in the journey that is genuinely
+ * theirs. The thumbnail is there so the thing they made is a thing, not a line
+ * of text.
+ *
+ * Worth watching whether it reads as a reward or as a speed bump between them
+ * and the editor.
+ */
+export function ProjectCreated({
+  projectTitle,
+  isOwnProject,
+  onView,
+  onAddAnother,
+  onClose,
+}: {
+  projectTitle: string
+  /** From scratch, rather than picked out of the catalogue. */
+  isOwnProject: boolean
+  onView: () => void
+  onAddAnother: () => void
+  /** Back to the class, wanting neither of the other two. */
+  onClose: () => void
+}) {
+  return (
+    <Modal
+      isOpen
+      setIsOpen={(open) => {
+        if (!open) onClose()
+      }}
+      heading={isOwnProject ? `${projectTitle} is ready` : `${projectTitle} is in your class`}
+      showCloseButton
+      secondaryButtonText="Add another project"
+      onClickSecondaryButton={onAddAnother}
+      primaryButtonText="Open the project"
+      onClickPrimaryButton={onView}
+    >
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(16rem, 1fr))',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
           gap: 'var(--space-2)',
         }}
       >
-        <Card>
-          <OptionIcon name="construction" />
-          <h2 className="title-sm">Start from scratch</h2>
-          <p className="body muted">
-            An empty project. You decide what it does — no instructions to follow.
-          </p>
-          <div style={{ marginTop: 'auto' }}>
-            <Button type="primary" text="Start from scratch" onClick={onFromScratch} />
-          </div>
-        </Card>
+        <OptionIcon name="celebration" size={48} />
 
-        <Card>
-          <OptionIcon name="library_books" />
-          <h2 className="title-sm">Browse Code Club projects</h2>
-          <p className="body muted">
-            Pick something with step-by-step instructions, made by the Raspberry Pi Foundation.
-          </p>
-          <div style={{ marginTop: 'auto' }}>
-            <Button type="secondary" text="Browse projects" onClick={onBrowse} />
-          </div>
-        </Card>
-      </div>
-    </div>
-  )
-}
-
-/** "Choose project type: Blocks, Python or Web." Both branches pass through it. */
-export function ProjectTypeChooser({
-  heading,
-  onChoose,
-  onBack,
-}: {
-  heading: string
-  onChoose: (type: ProjectTypeId) => void
-  onBack: () => void
-}) {
-  return (
-    <div className="section-stack">
-      <div className="cc-actions">
-        <Button type="secondary" size="small" text="Back" onClick={onBack} />
-      </div>
-
-      <h1 className="title-lg">{heading}</h1>
-
-      {PROJECT_TYPES.map((type) => (
-        <Card key={type.id}>
-          <h2 className="title-sm">{type.id}</h2>
-          <p className="body muted">{type.blurb}</p>
-          <Button type="secondary" text={`Choose ${type.id}`} onClick={() => onChoose(type.id)} />
-        </Card>
-      ))}
-    </div>
-  )
-}
-
-/** "Project created" — then view it, or add another. */
-export function ProjectCreated({
-  projectTitle,
-  onView,
-  onAddAnother,
-}: {
-  projectTitle: string
-  onView: () => void
-  onAddAnother: () => void
-}) {
-  return (
-    <div className="section-stack">
-      <Card>
-        <h1 className="title-md">{projectTitle} is in your class</h1>
-        <p className="body muted">
-          Your work saves as you go, and your mentor can see it.
+        <p className="body muted" style={{ margin: 0, maxWidth: '28rem' }}>
+          {isOwnProject
+            ? 'It is yours. Your work saves as you go, and your mentor can see it.'
+            : 'Your work saves as you go, and your mentor can see it.'}
         </p>
-        <div className="cc-actions">
-          <Button type="primary" text="Open the project" onClick={onView} />
-          <Button type="secondary" text="Add another project" onClick={onAddAnother} />
+
+        {/* A thumbnail so the thing they just made is a thing they can see.
+            Grey-boxed like every other image in this repo — for a project from
+            the catalogue this would be its real artwork, and for one started
+            from scratch there is nothing to show yet, which is itself worth
+            noticing. */}
+        <div style={{ width: '100%', maxWidth: '18rem' }}>
+          <Placeholder
+            label={isOwnProject ? 'Empty project — nothing made yet' : 'Project thumbnail'}
+            height={140}
+          />
         </div>
-      </Card>
-    </div>
+      </div>
+    </Modal>
   )
 }

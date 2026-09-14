@@ -16,18 +16,23 @@ import {
   RoleChooser,
   SchoolCodeEntry,
   StudentSignIn,
-  YoungPersonClassPage,
   YoungPersonSchoolHome,
   type WorkStatus,
 } from '../../../screens'
 import { Surface } from '../../../surfaces'
 import { useSession } from '../../../session'
+import { ClassProjects } from './ClassProjects'
 import { ClassroomHome } from './ClassroomHome'
 import { UpdatePassword } from './UpdatePassword'
 import { ProjectLibrary } from './ProjectLibrary'
-import { ProjectCreated, ProjectTypeChooser, StartChooser } from './AddProjectChoices'
+import {
+  ProjectCreated,
+  ProjectTypeModal,
+  StartChoiceModal,
+  type StartChoice,
+} from './AddProjectChoices'
 import { WorkbenchControls, type Conditions } from './WorkbenchControls'
-import { fromScratchProject, type ProjectTypeId } from './projectTypes'
+import { defaultProjectName, fromScratchProject, type ProjectTypeId } from './projectTypes'
 import { meta } from './meta'
 
 // Everything comes from the one young person named in meta.ts. Change the cast
@@ -86,7 +91,11 @@ export default function CreateOrBrowseInClassroom() {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
+  const [startChoice, setStartChoice] = useState<StartChoice>('scratch')
   const [chosenType, setChosenType] = useState<ProjectTypeId>('Blocks')
+  const [projectName, setProjectName] = useState(defaultProjectName('Blocks'))
+  // Once someone types their own name, changing the type must not wipe it.
+  const [nameEdited, setNameEdited] = useState(false)
   const [viewingId, setViewingId] = useState<string>()
   const [openProjectId, setOpenProjectId] = useState<string>()
   const [stepIndex, setStepIndex] = useState(0)
@@ -105,12 +114,16 @@ export default function CreateOrBrowseInClassroom() {
     setPassword(autofill.password)
   }, [autofill.schoolCode, autofill.username, autofill.password])
 
-  const classProjects = [
-    ...(conditions.leaderMadeProject
-      ? MENTOR_SET_UP.map(({ projectId, status }) => ({ project: project(projectId)!, status }))
-      : []),
-    ...added.map((item) => ({ project: item, status: 'ready-for-you' as WorkStatus })),
-  ]
+  // Kept apart rather than merged, because where a project came from is now
+  // the thing the screen is organised around.
+  const assignedProjects = conditions.leaderMadeProject
+    ? MENTOR_SET_UP.map(({ projectId, status }) => ({ project: project(projectId)!, status }))
+    : []
+  const createdProjects = added.map((item) => ({
+    project: item,
+    status: 'ready-for-you' as WorkStatus,
+  }))
+  const classProjects = [...assignedProjects, ...createdProjects]
 
   const classes = conditions.inAClass ? CLASSES : []
   const openProject =
@@ -316,24 +329,20 @@ export default function CreateOrBrowseInClassroom() {
     return (
       <Surface id="classroom" account="Log Out" breadcrumbs={['Your school', CLASS.name]}>
         <div className="section-stack">
-          <YoungPersonClassPage classGroup={CLASS} projects={classProjects} onOpenProject={open} />
+          <ClassProjects
+            classGroup={CLASS}
+            assigned={assignedProjects}
+            created={createdProjects}
+            initialTab={createdProjects.length > 0 ? 'created' : 'assigned'}
+            onOpenProject={open}
+            onAddProject={() => setStep('start-choice')}
+          />
 
-          {/* The proposal starts here: one route out of "wait to be given
-              something". Kept in this folder so nothing shared changes. */}
-          <Card>
-            <h2 className="title-sm">Want to make something else?</h2>
-            <p className="body muted">
-              Start a project of your own, or pick one with instructions to follow.
-            </p>
-            <Button type="primary" text="Add a project" onClick={() => setStep('start-choice')} />
-          </Card>
 
           <Note>
             {added.length > 0
-              ? `${added.length} of these ${STUDENT.name.split(' ')[0]} added. Today that is impossible — a class holds only what an adult put there, and this list is the difference the proposal makes.`
-              : classProjects.length === 0
-                ? 'Nothing here yet. Today this is where a young person stops until an adult does something — the button below is the whole proposal.'
-                : 'Everything above the button is real, and every project in that list was created by an adult. The button is the proposal.'}
+              ? `"Created by you" holds ${added.length} that ${STUDENT.name.split(' ')[0]} made. Today that section could not exist — a class holds only what an adult put there.`
+              : 'Today there is one undifferentiated list, and everything in it was put there by an adult. The second tab is the proposal: a place for your own work, and the only route into it.'}
           </Note>
         </div>
       </Surface>
@@ -341,23 +350,35 @@ export default function CreateOrBrowseInClassroom() {
   }
 
   if (step === 'start-choice') {
+    // On the class page, as the language dialog is — you can still see what
+    // you are adding to while you decide.
     return (
-      <Surface
-        id="classroom"
-        account="Log Out"
-        breadcrumbs={['Your school', CLASS.name, 'Add a project']}
-      >
+      <Surface id="classroom" account="Log Out" breadcrumbs={['Your school', CLASS.name]}>
         <div className="section-stack">
-          <StartChooser
-            onFromScratch={() => setStep('type-from-scratch')}
-            onBrowse={() => setStep('type-browse')}
-            onBack={() => setStep('class')}
+          <ClassProjects
+            classGroup={CLASS}
+            assigned={assignedProjects}
+            created={createdProjects}
+            initialTab={createdProjects.length > 0 ? 'created' : 'assigned'}
+            onOpenProject={open}
+            onAddProject={() => setStep('start-choice')}
           />
+
+          <StartChoiceModal
+            selected={startChoice}
+            onSelect={setStartChoice}
+            onContinue={() =>
+              setStep(startChoice === 'scratch' ? 'type-from-scratch' : 'type-browse')
+            }
+            onCancel={() => setStep('class')}
+          />
+
           <Note>
             The fork this prototype exists to test. "From scratch" is something Code Classroom
             has never offered a young person; "browse" is Code Club Projects' whole catalogue,
-            reached without leaving. Watch which one someone reaches for, and whether the two
-            read as equals.
+            reached without leaving. Watch which one someone reaches for, whether the two read as
+            equals, and whether being asked twice in a row — route, then language — feels like
+            one decision or two.
           </Note>
         </div>
       </Surface>
@@ -366,29 +387,58 @@ export default function CreateOrBrowseInClassroom() {
 
   if (step === 'type-from-scratch' || step === 'type-browse') {
     const fromScratch = step === 'type-from-scratch'
+
+    // The modal sits ON the class page, as the real one does — a dialog over
+    // the projects list, not a page of its own. Keeping the page behind it is
+    // half the point: you can still see what you are adding to.
     return (
-      <Surface
-        id="classroom"
-        account="Log Out"
-        breadcrumbs={['Your school', CLASS.name, 'Add a project']}
-      >
+      <Surface id="classroom" account="Log Out" breadcrumbs={['Your school', CLASS.name]}>
         <div className="section-stack">
-          <ProjectTypeChooser
-            heading={fromScratch ? 'What do you want to build with?' : 'What kind of project?'}
-            onChoose={(type) => {
+          <ClassProjects
+            classGroup={CLASS}
+            assigned={assignedProjects}
+            created={createdProjects}
+            initialTab={createdProjects.length > 0 ? 'created' : 'assigned'}
+            onOpenProject={open}
+            onAddProject={() => setStep('start-choice')}
+          />
+
+          <ProjectTypeModal
+            heading={fromScratch ? 'Create a new project' : 'Find a project'}
+            confirmText={fromScratch ? 'Create project' : 'Show projects'}
+            selected={chosenType}
+            onSelect={(type) => {
               setChosenType(type)
+              if (!nameEdited) setProjectName(defaultProjectName(type))
+            }}
+            name={fromScratch ? projectName : undefined}
+            onNameChange={
+              fromScratch
+                ? (value) => {
+                    setProjectName(value)
+                    setNameEdited(true)
+                  }
+                : undefined
+            }
+            onConfirm={() => {
               if (fromScratch) {
-                addProject(fromScratchProject(type, added.length + 1))
+                addProject(fromScratchProject(chosenType, projectName, added.length + 1))
+                // Ready for the next one, if they loop round again.
+                setProjectName(defaultProjectName(chosenType))
+                setNameEdited(false)
               } else {
                 setStep('browse')
               }
             }}
-            onBack={() => setStep('start-choice')}
+            onCancel={() => setStep('start-choice')}
           />
+
           <Note>
-            The same question on both branches, which is why it is one screen used twice. Worth
-            watching whether it means the same thing in each: on the left it decides what you
-            build with, on the right it filters a catalogue.
+            Built to match the mentor's own "Create a new project" modal — same three types, same
+            descriptions, same shape. A young person and a mentor adding a project should be doing
+            recognisably the same thing, or a mentor cannot help from memory when someone is
+            stuck. The question drops "for your students", which is the only copy that could not
+            survive the change of audience.
           </Note>
         </div>
       </Surface>
@@ -430,6 +480,13 @@ export default function CreateOrBrowseInClassroom() {
         breadcrumbs={['Your school', CLASS.name, viewing.title]}
       >
         <div className="section-stack">
+          {/* The same dead end the success screen had: `ProjectPage` offers
+              only "Start project" and "Add to a class", so without this a
+              young person who looked at a project and did not want it could
+              not get back to the list. */}
+          <div className="cc-actions">
+            <Button type="secondary" size="small" text="Back" onClick={() => setStep('browse')} />
+          </div>
           <ProjectPage
             project={viewing}
             onStart={() => addProject(viewing)}
@@ -448,22 +505,35 @@ export default function CreateOrBrowseInClassroom() {
   }
 
   if (step === 'created' && openProject) {
+    // Over the class page, so closing lands somewhere real — and so the thing
+    // they just made is already visible behind the dialog.
     return (
-      <Surface
-        id="classroom"
-        account="Log Out"
-        breadcrumbs={['Your school', CLASS.name, openProject.title]}
-      >
+      <Surface id="classroom" account="Log Out" breadcrumbs={['Your school', CLASS.name]}>
         <div className="section-stack">
+          <ClassProjects
+            classGroup={CLASS}
+            assigned={assignedProjects}
+            created={createdProjects}
+            initialTab={createdProjects.length > 0 ? 'created' : 'assigned'}
+            onOpenProject={open}
+            onAddProject={() => setStep('start-choice')}
+          />
+
           <ProjectCreated
             projectTitle={openProject.title}
+            isOwnProject={added.some(
+              (item) => item.id === openProject.id && item.starterCode === '',
+            )}
             onView={() => open(openProject.id)}
             onAddAnother={() => setStep('start-choice')}
+            onClose={() => setStep('class')}
           />
+
           <Note>
-            "Add another" goes back to the fork, not to the class page — the flow diagram loops
-            here. Worth checking whether someone who just made one thing wants to make a second
-            immediately, or whether this is a step nobody uses.
+            "Add another" goes back to the fork, and closing goes back to the class — which it
+            has to, because as a page this was a dead end with only two ways out. Worth checking
+            whether someone who just made one thing wants to make a second immediately, or
+            whether that button is one nobody uses.
           </Note>
         </div>
       </Surface>
