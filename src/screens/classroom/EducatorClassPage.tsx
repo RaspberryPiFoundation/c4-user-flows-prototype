@@ -13,6 +13,12 @@ interface Props {
   classGroup: ClassGroup
   projects: Project[]
   memberCount: number
+  /**
+   * The blurb under the class title. Optional because a class need not have
+   * one — the designs show the space, and an empty class simply has no text
+   * there rather than a placeholder.
+   */
+  description?: string
   onAddProject: () => void
   onOpenProject: (projectId: string) => void
   onCopyLink: () => void
@@ -54,6 +60,7 @@ export function EducatorClassPage({
   classGroup,
   projects,
   memberCount,
+  description,
   onAddProject,
   onOpenProject,
   onCopyLink,
@@ -63,82 +70,89 @@ export function EducatorClassPage({
   onSettings,
 }: Props) {
   return (
-    <div className="section-stack">
-      <h1 className="title-lg">{classGroup.name}</h1>
-
-      <div className="cc-actions">
-        {/* Primary on the live page. Getting young people into the class is
-            the job a mentor comes here to do. */}
-        <Button
-          type="primary"
-          icon="group"
-          text={`Class members (${memberCount})`}
-          onClick={onClassMembers}
-        />
-        <Button type="secondary" icon="content_copy" text="Copy link" onClick={onCopyLink} />
-        <Button
-          type="secondary"
-          icon="settings"
-          iconOnly
-          aria-label="Class settings"
-          onClick={onSettings ?? (() => {})}
-        />
-      </div>
-
-      <Card>
-        <div className="cc-section-head">
-          <div>
-            <h2 className="title-sm">Projects</h2>
-            <p className="body muted">
-              Projects are shared with students and contain starter code created by a teacher.
-            </p>
-          </div>
-          <Button
-            type="primary"
-            icon="add"
-            iconPosition="right"
-            text="Add project"
-            onClick={onAddProject}
-          />
+    <>
+      <div className="cc-page-header">
+        <div className="cc-page-title">
+          <h1 className="title-lg">{classGroup.name}</h1>
+          {description && <p className="cc-page-desc">{description}</p>}
         </div>
 
-        {projects.length === 0 ? (
-          <p className="lane-empty">No projects yet</p>
-        ) : (
-          <ul className="cc-list cc-list-boxed">
-            {projects.map((project) => {
-              const hidden = hiddenProjectIds.includes(project.id)
-              return (
-                <li className="cc-row" key={project.id}>
-                  <span className="cc-row-main">
-                    {hidden && (
-                      // Labelled rather than aria-hidden: the icon is the only
-                      // thing on the row carrying this, so it has to be read.
-                      <span
-                        className="material-symbols-sharp"
-                        role="img"
-                        aria-label="Hidden from students"
-                      >
-                        visibility_off
-                      </span>
-                    )}
-                    <button className="cc-row-title" onClick={() => onOpenProject(project.id)}>
-                      {project.title}
-                    </button>
-                  </span>
-                  <Button
-                    type="tertiary"
-                    icon="more_vert"
-                    iconOnly
-                    aria-label={`More options for ${project.title}`}
-                    onClick={() => onProjectMenu?.(project.id)}
-                  />
-                </li>
-              )
-            })}
-          </ul>
-        )}
-      </Card>
-    </div>
+        <div className="cc-actions">
+          {/* Primary on the live page. Getting young people into the class is
+              the job a mentor comes here to do. */}
+          <Button
+            type="primary"
+            icon="group"
+            text={`Class members (${memberCount})`}
+            onClick={onClassMembers}
+          />
+          <Button type="secondary" icon="content_copy" text="Copy link" onClick={onCopyLink} />
+          <Button
+            type="secondary"
+            icon="settings"
+            iconOnly
+            aria-label="Class settings"
+            onClick={onSettings ?? (() => {})}
+          />
+        </div>
+      </div>
+
+      <div className="cc-page-main">
+        <Card>
+          <div className="cc-section-head">
+            <div>
+              <h2 className="title-sm">Projects</h2>
+              <p className="body muted">
+                Projects are shared with students and contain starter code created by a teacher.
+              </p>
+            </div>
+            <Button
+              type="primary"
+              icon="add"
+              iconPosition="right"
+              text="Add project"
+              onClick={onAddProject}
+            />
+          </div>
+
+          {projects.length === 0 ? (
+            <p className="lane-empty">No projects yet</p>
+          ) : (
+            <ul className="cc-list cc-list-boxed">
+              {projects.map((project) => {
+                const hidden = hiddenProjectIds.includes(project.id)
+                return (
+                  <li className="cc-row" key={project.id}>
+                    <span className="cc-row-main">
+                      {hidden && (
+                        // Labelled rather than aria-hidden: the icon is the only
+                        // thing on the row carrying this, so it has to be read.
+                        <span
+                          className="material-symbols-sharp"
+                          role="img"
+                          aria-label="Hidden from students"
+                        >
+                          visibility_off
+                        </span>
+                      )}
+                      <button className="cc-row-title" onClick={() => onOpenProject(project.id)}>
+                        {project.title}
+                      </button>
+                    </span>
+                    <Button
+                      type="tertiary"
+                      icon="more_vert"
+                      iconOnly
+                      aria-label={`More options for ${project.title}`}
+                      onClick={() => onProjectMenu?.(project.id)}
+                    />
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+        </Card>
+      </div>
+    </>
   )
 }

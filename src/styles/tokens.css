@@ -21,10 +21,14 @@
   --fs-15: 20px;
   --fs-2: 24px;
   --fs-3: 32px;
+  /* Code Classroom page titles: font-size-4 / line-height-3-5 in the Code
+     Editor Figma file. */
+  --fs-4: 40px;
   --lh-1: 16px;
   --lh-15: 24px;
   --lh-2: 32px;
   --lh-25: 40px;
+  --lh-35: 56px;
   --fw-regular: 400;
   --fw-bold: 700;
 
@@ -33,6 +37,7 @@
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;
+  --space-4: 32px;
   --space-5: 40px;
   --space-7: 56px;
 

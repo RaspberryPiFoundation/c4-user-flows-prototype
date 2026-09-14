@@ -17,6 +17,7 @@
   --surface-bar-text: var(--rpf-text);
   --surface-accent: var(--rpf-text);
   --surface-nav: var(--rpf-white);
+  --surface-header: var(--rpf-white);
   --surface-nav-border: var(--rpf-grey-150);
   /* How wide a product page is allowed to get. Screens read badly stretched
      across a large monitor — line lengths go past what anyone scans and a
@@ -43,11 +44,17 @@
   --surface-page: var(--rpf-white);
 }
 
-/* classroom.raspberrypi.org — the sign-in is deep maroon; the signed-in app is
-   behind a login so this is a guess. */
+/* classroom.raspberrypi.org. The sign-in is deep maroon. The signed-in app was
+   a guess until the Code Editor Figma file was read for the class and school
+   pages — these are its values now, not an approximation:
+   editor-color-theme for the accent, editor-color-layer-accent for the page.
+
+   The pages sit on that warm off-white, with the title block on a white band
+   above it. `--surface-header` is what paints the band. */
 .surface-classroom {
-  --surface-accent: hsl(340, 78%, 36%);
-  --surface-page: var(--rpf-off-white);
+  --surface-accent: #cd2355;
+  --surface-page: #fbf9f6;
+  --surface-header: var(--rpf-white);
 }
 
 /* my.raspberrypi.org — raspberry page with a light grey card and a navy

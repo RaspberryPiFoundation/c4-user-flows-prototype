@@ -546,6 +546,11 @@ hr.divider {
   flex: 1 0 auto;
   padding: var(--space-3);
 }
+/* Code Classroom pages are built as two full-width bands — a white title block
+   over content on the page colour — so they pad their own bands instead. */
+.surface-classroom > .surface-body {
+  padding: 0;
+}
 /* Pi Accounts and the Code Classroom sign-in are a coloured page with one
    centred card. */
 .surface-body.centred {
@@ -561,16 +566,39 @@ hr.divider {
 
 .surface-footer {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  justify-content: space-between;
-  padding: var(--space-1) var(--space-2);
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2);
   background: var(--rpf-white);
   border-top: 1px solid var(--rpf-grey-150);
   font-size: var(--fs-075);
   line-height: var(--lh-1);
   color: var(--rpf-text-secondary);
+}
+.surface-footer-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  justify-content: space-between;
+}
+.surface-footer-concern {
+  display: flex;
+  align-items: center;
+  gap: var(--space-05);
+}
+/* The flag sits at body size beside 12px text, so it needs bringing down. */
+.surface-footer-concern .material-symbols-sharp {
+  font-size: var(--fs-1);
+}
+.surface-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-05) var(--space-2);
+}
+.surface-footer-links > span {
+  font-weight: var(--fw-bold);
+  text-decoration: underline;
 }
 
 /* ---------------- Surface gallery ---------------- */
@@ -704,15 +732,37 @@ hr.divider {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--space-1);
   padding: var(--space-1) var(--space-2);
   background: var(--surface-nav);
   border-bottom: 1px solid var(--surface-nav-border);
   font-size: var(--fs-075);
 }
+.surface-crumb {
+  display: flex;
+  align-items: center;
+}
+/* Bold and underlined, the weight the Code Editor designs give it. Code
+   Classroom has no nav bar, so the breadcrumb is the navigation. */
+.surface-breadcrumbs .link-button {
+  font-weight: var(--fw-bold);
+  text-decoration: underline;
+}
+.surface-crumb[aria-current='page'],
+.surface-crumb > span[aria-current='page'] {
+  font-weight: var(--fw-bold);
+}
 .surface-crumb-sep {
-  color: var(--rpf-grey-300);
-  margin-right: var(--space-1);
+  color: var(--rpf-grey-500);
+  font-size: var(--fs-1);
+}
+
+/* The breadcrumb sits directly above the white title band on Code Classroom,
+   so the two read as one block rather than two stacked bars. */
+.surface-classroom .surface-breadcrumbs {
+  padding: var(--space-2) var(--space-3) 0;
+  background: var(--surface-header);
+  border-bottom: none;
+  font-size: var(--fs-1);
 }
 .surface-account {
   color: var(--rpf-text-secondary);
@@ -725,12 +775,23 @@ hr.divider {
   gap: var(--space-1);
 }
 
+/* Heading and blurb on the left, the section's one action hard right — the
+   Code Editor designs put them on the same row. The text block needs an
+   explicit basis of 0: left to size itself it takes the full width and pushes
+   the button onto its own line however much room there is. */
 .cc-section-head {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: var(--space-2);
+  gap: var(--space-3);
+}
+.cc-section-head > :first-child {
+  flex: 1 1 0;
+  min-width: 200px;
+}
+.cc-section-head > :last-child {
+  flex: 0 0 auto;
 }
 
 .cc-list {
@@ -761,9 +822,12 @@ hr.divider {
   border-radius: var(--radius-sm);
   overflow: hidden;
 }
+/* White rows, not pale ones: the Code Editor designs draw the group as a white
+   panel divided by hairlines. */
 .cc-list-boxed .cc-row {
-  padding: var(--space-2);
-  background: var(--rpf-off-white);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2);
+  background: var(--rpf-white);
+  min-height: 48px;
 }
 /* Icon and name travel together on the left; the overflow menu stays right. */
 .cc-row-main {
@@ -1369,3 +1433,108 @@ body.full-screen-prototype .surface-footer {
   color: var(--rpf-grey-500);
 }
 
+/* ---------------- Code Classroom page header ---------------- */
+/* The white band carrying the title, and the content band below it. */
+.cc-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-3) var(--space-4);
+  background: var(--surface-header);
+  border-bottom: 1px solid var(--surface-nav-border);
+}
+.cc-page-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-3);
+}
+
+/* The title band's contents: breadcrumb, then title and description, then the
+   page actions. Taken from the Code Editor designs — 40px/56 title, 20px
+   description held to a readable measure, actions on their own row. */
+.cc-page-title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.cc-page-title h1 {
+  font-size: var(--fs-4);
+  line-height: var(--lh-35);
+  margin: 0;
+}
+.cc-page-desc {
+  margin: 0;
+  max-width: 800px;
+  font-size: var(--fs-15);
+  line-height: var(--lh-15);
+}
+/* Title on the left, actions hard right on the same row — the school page.
+   The class page stacks them instead, which is why this is its own class. */
+.cc-page-titlebar {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: space-between;
+}
+.cc-page-titlebar .cc-page-title {
+  flex: 1 1 320px;
+}
+
+/* "Code Classroom home" — a back control, not a breadcrumb. The school page is
+   the top of the tree, so there is nothing to put a trail above. Drawn as a
+   grey chip in the designs rather than as a bare link. */
+.cc-back-button {
+  align-self: flex-start;
+}
+.cc-back-button.rpf-button,
+.cc-back-button .rpf-button {
+  background: var(--rpf-off-white);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  color: var(--rpf-text);
+}
+
+/* Two columns on the school page: the login code card, then the class list. */
+.cc-split {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+.cc-split-aside {
+  flex: 1 1 280px;
+  max-width: 400px;
+}
+.cc-split-main {
+  flex: 3 1 420px;
+  min-width: 0;
+}
+
+/* The school login code card. The code itself is the largest thing on the
+   page after the title — a mentor reads it out across a room. */
+.cc-code-value {
+  margin: 0;
+  font-size: var(--fs-3);
+  line-height: var(--lh-25);
+  font-weight: var(--fw-bold);
+}
+.cc-code-copy {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-1);
+}
+.cc-code-link {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 2px solid var(--rpf-grey-150);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) 14px;
+  background: var(--rpf-white);
+  font: inherit;
+  color: var(--rpf-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

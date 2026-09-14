@@ -23,6 +23,10 @@ export {
   type StudentWork,
 } from './classroom/EducatorProjectPage'
 export {
+  EducatorSchoolHome,
+  meta as educatorSchoolHomeMeta,
+} from './classroom/EducatorSchoolHome'
+export {
   YoungPersonSchoolHome,
   meta as youngPersonSchoolHomeMeta,
 } from './classroom/YoungPersonSchoolHome'
