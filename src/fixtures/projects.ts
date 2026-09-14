@@ -173,6 +173,91 @@ export const PROJECTS: Project[] = [
       '',
     ].join('\n'),
   },
+  // The two below exist so an import flow can be tested against a project
+  // that CANNOT be imported. Everything above runs in an editor Code Classroom
+  // can embed; these need a Raspberry Pi and something plugged into it, so a
+  // young person cannot open them inside a class however well they suit a
+  // club session. One Scratch and one Python, so a filter has visible work to
+  // do in either technology.
+  //
+  // Physical computing is a real and sizeable part of the live catalogue, and
+  // it is exactly what the "should we only allow embedded editor projects?"
+  // question on the Code Classroom FigJam is about.
+  {
+    id: 'rain-or-shine',
+    title: 'Rain or Shine',
+    language: 'Scratch',
+    ages: '9–13',
+    level: 2,
+    usableInClassroom: false,
+    intro: [
+      'Build a weather station that records rainfall and shows it on screen.',
+      '',
+      'You will need a **Raspberry Pi** and a rain sensor connected to its pins.',
+      '',
+      'You will:',
+      '',
+      '- Wire a sensor to the `GPIO` pins',
+      '- Read the sensor from Scratch',
+      '- Draw a chart of what you collect',
+    ].join('\n'),
+    steps: [
+      {
+        title: 'What you will make',
+        body: [
+          'A **weather station** that notices when it is raining and keeps a record.',
+          '',
+          'This project needs hardware: a Raspberry Pi and a rain sensor.',
+        ].join('\n'),
+      },
+      {
+        title: 'Wire up the sensor',
+        body: 'Connect the sensor to the `GPIO` pins, following the diagram.',
+      },
+    ],
+    starterCode: '// Scratch starter project — GPIO sensor blocks\n',
+  },
+  {
+    id: 'door-watcher',
+    title: 'Door Watcher',
+    language: 'Python',
+    ages: '10–14',
+    level: 3,
+    usableInClassroom: false,
+    intro: [
+      'Make an alarm that tells you when someone opens a door.',
+      '',
+      'You will need a **Raspberry Pi** and a motion sensor.',
+      '',
+      'You will:',
+      '',
+      '- Read a sensor with `gpiozero`',
+      '- Play a sound when it triggers',
+    ].join('\n'),
+    steps: [
+      {
+        title: 'What you will make',
+        body: [
+          'A **door alarm**, built from a Raspberry Pi and a motion sensor.',
+          '',
+          'The code runs on the Pi itself, not in a browser.',
+        ].join('\n'),
+      },
+      {
+        title: 'Read the sensor',
+        body: 'Use `gpiozero` to tell when the sensor has been triggered.',
+      },
+    ],
+    starterCode: [
+      '# Door Watcher',
+      '# Runs on a Raspberry Pi with a motion sensor attached.',
+      '',
+      'from gpiozero import MotionSensor',
+      '',
+      'sensor = MotionSensor(4)',
+      '',
+    ].join('\n'),
+  },
 ]
 
 export function project(id: string): Project | undefined {

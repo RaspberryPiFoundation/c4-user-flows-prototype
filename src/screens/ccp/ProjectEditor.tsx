@@ -152,7 +152,7 @@ export function ProjectEditor({
         <div className="editor-canvas">
           <Placeholder
             label={`${project.language} editor — blocks palette, canvas and stage`}
-            height={240}
+            height="100%"
           />
         </div>
       </div>

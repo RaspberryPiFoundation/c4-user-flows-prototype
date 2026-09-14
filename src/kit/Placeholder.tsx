@@ -1,8 +1,12 @@
 interface PlaceholderProps {
   /** What the real thing would be, e.g. "Project thumbnail". */
   label?: string
-  /** Height in pixels. Defaults to a shallow block. */
-  height?: number
+  /**
+   * Height. A number is pixels; a string is any CSS length, so '100%'
+   * stands in for something that fills whatever it is given — a code editor,
+   * say. Defaults to a shallow block.
+   */
+  height?: number | string
   /** Stretch to fill the available width. Defaults to true. */
   fullWidth?: boolean
 }

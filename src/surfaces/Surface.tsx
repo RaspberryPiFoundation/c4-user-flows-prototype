@@ -26,6 +26,17 @@ interface SurfaceProps {
    * are. The last item is the current page and is not a link.
    */
   breadcrumbs?: string[]
+  /**
+   * What happens when a crumb is clicked, by its index in `breadcrumbs`.
+   *
+   * Pass this and the earlier crumbs become working controls; leave it out and
+   * they are plain text. Deliberately NOT optional-with-a-default-destination:
+   * this is the only navigation Code Classroom has, so where a crumb goes is
+   * the prototype's decision, the same as every other callback here. It used
+   * to be a hardcoded link to the screens gallery, which took anyone who
+   * clicked it out of the flow they were being tested on.
+   */
+  onCrumb?: (index: number) => void
   /** Right-hand top bar item: "Your Account" for an educator, "Log Out" for a young person. */
   account?: string
 }
@@ -46,6 +57,7 @@ export function Surface({
   badge,
   layout,
   breadcrumbs,
+  onCrumb,
   account,
 }: SurfaceProps) {
   const surface = SURFACES[id]
@@ -74,8 +86,12 @@ export function Surface({
               {index > 0 && <span className="surface-crumb-sep">/</span>}
               {index === breadcrumbs.length - 1 ? (
                 <span aria-current="page">{crumb}</span>
+              ) : onCrumb ? (
+                <button className="link-button" onClick={() => onCrumb(index)}>
+                  {crumb}
+                </button>
               ) : (
-                <a href="#/screens">{crumb}</a>
+                <span>{crumb}</span>
               )}
             </span>
           ))}

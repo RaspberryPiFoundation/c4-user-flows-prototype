@@ -18,6 +18,15 @@
   --surface-accent: var(--rpf-text);
   --surface-nav: var(--rpf-white);
   --surface-nav-border: var(--rpf-grey-150);
+  /* How wide a product page is allowed to get. Screens read badly stretched
+     across a large monitor — line lengths go past what anyone scans and a
+     two-column layout drifts apart. Applied in global.css to the framed
+     surface in the workbench, and to the page content in full screen, where
+     the chrome goes edge to edge as it does in the real products.
+
+     A prototype that genuinely needs a wider or narrower page can override
+     this on its own <Surface> wrapper rather than changing it here. */
+  --surface-measure: 1100px;
 }
 
 /* codeclub.org — raspberry accent on the pale green page the dashboard

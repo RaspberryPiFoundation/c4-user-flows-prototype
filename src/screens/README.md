@@ -69,6 +69,13 @@ Two structural facts worth designing around:
 - **A mentor only sees work that has been SAVED.** "Only students who have
   saved their project will appear here." Walking round a room, a mentor cannot
   tell who has started and got stuck from who has not started at all.
+- **Visibility is per project, and the class page shows it.** Each row on
+  `EducatorClassPage` can carry a crossed-out eye, which is how a mentor tells
+  a project nobody can see yet from one that is live. Pass `hiddenProjectIds`
+  if your flow has a notion of visibility. Any flow that puts a project into a
+  class inherits some visibility state whether it decides one or not — and
+  `EducatorProjectPage` only offers "Hide from students", so where "show" lives
+  is an open question rather than a settled one.
 
 ## Where mentor onboarding actually starts
 

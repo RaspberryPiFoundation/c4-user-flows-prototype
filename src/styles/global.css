@@ -406,6 +406,12 @@ hr.divider {
   display: flex;
   flex-direction: column;
   width: 100%;
+  /* Capped so a screen does not stretch across a large monitor. In the
+     workbench the whole framed product sits on this measure, centred — the
+     frame already reads as a screenshot rather than a browser window, so
+     narrowing it is consistent with how it is presented. Full screen moves the
+     cap inside, onto the page content; see the full-screen block below. */
+  max-width: var(--surface-measure);
   min-height: 420px;
   overflow: hidden;
   border-radius: var(--radius-sm);
@@ -681,6 +687,43 @@ hr.divider {
   border-bottom: none;
 }
 
+/* The class page draws its projects as a bordered, rounded group of pale rows
+   rather than as bare lines of text. Opt-in, because the same .cc-row is used
+   for plain lists elsewhere. */
+.cc-list-boxed {
+  border: 1px solid var(--rpf-grey-150);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.cc-list-boxed .cc-row {
+  padding: var(--space-2);
+  background: var(--rpf-off-white);
+}
+/* Icon and name travel together on the left; the overflow menu stays right. */
+.cc-row-main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+}
+/* A project name on the live page is bold body text, not a blue link — the
+   row's overflow menu is the action affordance. Underlined on hover and focus
+   anyway, so it does not rely on being guessable. */
+.cc-row-title {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: var(--fw-bold);
+  color: var(--rpf-text);
+  text-align: left;
+  cursor: pointer;
+}
+.cc-row-title:hover,
+.cc-row-title:focus-visible {
+  text-decoration: underline;
+}
+
 /* The educator project page puts guidance beside the student work list. */
 .cc-columns {
   display: grid;
@@ -707,7 +750,12 @@ hr.divider {
      there is room, which is how the real editor lays out. */
   grid-template-columns: 1fr;
   gap: var(--space-2);
-  min-height: 420px;
+  /* The editor IS the page it is on, not a panel sitting in the middle of one.
+     Sized from the viewport so it fills a large monitor, with 420px kept as a
+     floor for short windows. `flex: 1` alone would not do it: in the workbench
+     the surface is only as tall as its content, so there is no spare height to
+     grow into. */
+  min-height: max(420px, 68vh);
 }
 @media (min-width: 860px) {
   .editor {
@@ -824,6 +872,10 @@ hr.divider {
 .editor-canvas {
   flex: 1 1 auto;
   padding: var(--space-2);
+  /* So the thing standing in for the editor can stretch to the whole pane
+     rather than sitting as a short box with dead space beneath it. */
+  display: flex;
+  min-height: 0;
 }
 
 /* Project instructions markdown */
@@ -1146,6 +1198,30 @@ body.full-screen-prototype .surface {
   border: none;
   border-radius: 0;
   min-height: 100vh;
+  /* Chrome goes edge to edge, as a real product's header and nav do. */
+  max-width: none;
+}
+/* So the cap moves to the page content instead. The bars keep their own
+   full-width backgrounds and borders; only the content column is measured,
+   which is what the real sites do. */
+body.full-screen-prototype .surface-body {
+  width: 100%;
+  max-width: var(--surface-measure);
+  margin-inline: auto;
+}
+/* The bars stay full width but their contents line up with that column,
+   otherwise a breadcrumb sits alone at the far left of a wide monitor while
+   the page it describes starts halfway across. Padding rather than a wrapper,
+   so the background and the bottom border still run edge to edge, and `max()`
+   keeps the ordinary padding once the window is narrower than the measure. */
+body.full-screen-prototype .surface-topbar,
+body.full-screen-prototype .surface-breadcrumbs,
+body.full-screen-prototype .surface-nav,
+body.full-screen-prototype .surface-footer {
+  padding-inline: max(
+    var(--space-2),
+    calc((100% - var(--surface-measure)) / 2 + var(--space-3))
+  );
 }
 
 .prototype-full-toggle {
