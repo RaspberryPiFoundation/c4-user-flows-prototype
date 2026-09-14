@@ -1,8 +1,11 @@
 import type { Project } from '../../../fixtures'
 
-// Code Classroom offers three kinds of project. The fixtures use the language
-// names Code Club Projects uses, so the two have to be mapped — and the
-// mapping is not neat, which is itself worth knowing:
+// The three kinds of project Code Classroom offers, matching the real
+// "Create a new project" modal in the teacher flow — same names, same order,
+// same descriptions. Copy is the real copy.
+//
+// The fixtures use the language names Code Club Projects uses, so the two have
+// to be mapped, and the mapping is not neat:
 //
 //   Blocks -> Scratch   the young person sees "Blocks", the catalogue says "Scratch"
 //   Python -> Python    the only one where both products agree
@@ -17,17 +20,50 @@ export interface ProjectType {
   id: ProjectTypeId
   /** What the project fixtures call it. */
   language: Project['language']
+  /** The real product's description, from the teacher's create-project modal. */
   blurb: string
+  /**
+   * Tile colour. Orange, green and purple approximate the real modal's orange,
+   * teal and purple — these are the repo's existing tile tones rather than
+   * exact matches, because the screens are grey-box and the pattern is the
+   * point, not the hex value.
+   */
+  tone: 'orange' | 'green' | 'purple'
+  /** Material Symbols glyph sitting in the tile. */
+  glyph: string
 }
 
 export const PROJECT_TYPES: ProjectType[] = [
-  { id: 'Blocks', language: 'Scratch', blurb: 'Snap blocks together to make things move and talk.' },
-  { id: 'Python', language: 'Python', blurb: 'Write code that asks questions and makes decisions.' },
-  { id: 'Web', language: 'HTML', blurb: 'Build a page with words, pictures and links.' },
+  {
+    id: 'Blocks',
+    language: 'Scratch',
+    blurb: 'Based on the open-source Scratch editor',
+    tone: 'orange',
+    glyph: 'extension',
+  },
+  {
+    id: 'Python',
+    language: 'Python',
+    blurb: 'Wide range of built-in libraries',
+    tone: 'green',
+    glyph: 'terminal',
+  },
+  {
+    id: 'Web',
+    language: 'HTML',
+    blurb: 'HTML, CSS, and JavaScript',
+    tone: 'purple',
+    glyph: 'code',
+  },
 ]
 
 export function projectType(id: ProjectTypeId): ProjectType {
   return PROJECT_TYPES.find((type) => type.id === id)!
+}
+
+/** The name the real modal pre-fills, e.g. "Blocks project". */
+export function defaultProjectName(type: ProjectTypeId): string {
+  return `${type} project`
 }
 
 /**
@@ -39,11 +75,11 @@ export function projectType(id: ProjectTypeId): ProjectType {
  * that is not an instruction. That mismatch is a finding, not a workaround —
  * see notes.md.
  */
-export function fromScratchProject(type: ProjectTypeId, index: number): Project {
+export function fromScratchProject(type: ProjectTypeId, name: string, index: number): Project {
   const { language } = projectType(type)
   return {
     id: `scratch-${type.toLowerCase()}-${index}`,
-    title: `My ${type} project`,
+    title: name.trim() || defaultProjectName(type),
     language,
     level: 1,
     ages: '',
