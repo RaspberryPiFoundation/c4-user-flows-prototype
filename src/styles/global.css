@@ -750,7 +750,12 @@ hr.divider {
      there is room, which is how the real editor lays out. */
   grid-template-columns: 1fr;
   gap: var(--space-2);
-  min-height: 420px;
+  /* The editor IS the page it is on, not a panel sitting in the middle of one.
+     Sized from the viewport so it fills a large monitor, with 420px kept as a
+     floor for short windows. `flex: 1` alone would not do it: in the workbench
+     the surface is only as tall as its content, so there is no spare height to
+     grow into. */
+  min-height: max(420px, 68vh);
 }
 @media (min-width: 860px) {
   .editor {
@@ -867,6 +872,10 @@ hr.divider {
 .editor-canvas {
   flex: 1 1 auto;
   padding: var(--space-2);
+  /* So the thing standing in for the editor can stretch to the whole pane
+     rather than sitting as a short box with dead space beneath it. */
+  display: flex;
+  min-height: 0;
 }
 
 /* Project instructions markdown */
