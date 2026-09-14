@@ -132,4 +132,21 @@ export interface Project {
   landingTask?: { title: string; body: string }
   steps: ProjectStep[]
   starterCode: string
+  /**
+   * Whether this project can run inside Code Classroom — whether it uses an
+   * editor Code Classroom can embed.
+   *
+   * Not everything can. A Scratch project that drives a Raspberry Pi needs
+   * hardware attached, and a download-only resource has no editor at all, so
+   * neither works in a class however well it suits a club. That is the whole
+   * question behind "should we only allow embedded editor projects?" on the
+   * Code Classroom FigJam, and an import flow could not put it in front of
+   * anyone until a project existed that genuinely does not import.
+   *
+   * OPTIONAL, and absent means usable — read it as `usableInClassroom !==
+   * false`. Most projects are usable, so stating it on every fixture would be
+   * noise; and prototypes build their own Project objects for work a young
+   * person invents, which is always an editor project.
+   */
+  usableInClassroom?: boolean
 }

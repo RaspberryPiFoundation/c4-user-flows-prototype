@@ -181,29 +181,22 @@ question can actually be tested. Note the trap it creates: after importing, the
 project page still only offers "Hide from students" — a mentor looking for
 "show to students" will not find it where they landed.
 
-**3. Nothing in the fixtures is now excluded, so the sticky's question is no
-longer visible.** "CCP page filtered by embedded editor projects" covers
-Scratch, Python and HTML — settled by Divya, September 2026. An earlier version
-of this prototype guessed Python and HTML only, which dropped the Scratch
-projects and so dropped most of what a club actually runs. That was wrong, and
-the category now shows all four fixtures.
+**3. The category really is shorter than the catalogue, and the sticky's
+question is testable.** "CCP page filtered by embedded editor projects" is now
+read from `usableInClassroom` on each project rather than guessed from its
+language — two earlier versions of this got it wrong in opposite directions,
+first dropping Scratch and then excluding nothing at all.
 
-The consequence is worth stating plainly: `Project['language']` has exactly
-those three values, so **the filter can no longer exclude anything**, and the
-pink sticky's question — "can we connect projects that aren't editor
-projects?" — cannot be seen in this flow any more. It is still a live question.
-The real catalogue has physical computing projects, third-party editor
-projects and PDF-only projects that would not import. Testing what a mentor
-does when the thing they want is not importable needs a non-editor project in
-`src/fixtures`, which is shared and not this prototype's to change.
+The field and two physical computing projects (`rain-or-shine`,
+`door-watcher`) were added to `src/fixtures` for exactly this. They need a
+Raspberry Pi and something plugged into it, so a young person cannot open them
+inside a class however well they suit a club session — which is what Sarah's
+pink sticky, *"can we connect projects that aren't editor projects?"*, is
+about. The catalogue says on screen that two are missing and why.
 
-The code for the "some projects are not here" message is kept and marked
-unreachable, so it starts working the moment such a fixture exists. **Do not
-read its absence as evidence that everything imports.**
-
-Which also leaves a question about the category itself: if almost everything
-qualifies, what is a "Code Classroom compatible" category actually for? A
-filter that excludes nothing is a filter nobody needs.
+So a session can now watch the thing that matters: **what a mentor does when
+the project they wanted is not there.** That was impossible while the filter
+excluded nothing.
 
 **4. The product boundary moved, and the chart is now wrong about where it
 sits.** The chart puts "choose new or existing class" and everything after it

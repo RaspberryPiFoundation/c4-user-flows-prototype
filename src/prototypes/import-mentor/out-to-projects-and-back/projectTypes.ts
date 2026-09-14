@@ -8,28 +8,19 @@ import type { Project, ProjectStep } from '../../../fixtures'
  * "CCP page filtered by embedded editor projects" — the chart's own words for
  * the catalogue the mentor browses.
  *
- * All three: Scratch as well as Python and HTML. Settled by Divya, September
- * 2026, rather than guessed — an earlier version of this file left Scratch out
- * on the assumption that "embedded editor" meant the Code Editor's own
- * languages, which would have dropped most of what a Code Club runs.
+ * Reads `usableInClassroom` from the fixtures. Two earlier versions of this
+ * guessed: first that "embedded editor" meant Python and HTML only, which
+ * wrongly dropped Scratch; then that every language qualified, which made the
+ * filter exclude nothing and quietly took the question off the table. The
+ * answer belongs per project, not per language — a Scratch project driving a
+ * Raspberry Pi does not import however Scratch it is.
  *
- * Worth knowing what this costs the prototype. `Project['language']` has
- * exactly these three values, so the filter can no longer exclude anything in
- * the fixtures — which means the question on the "can we connect projects that
- * aren't editor projects?" sticky is no longer visible in this flow. It is
- * still a real question: the live catalogue has physical computing and
- * third-party-editor projects that would not import. Seeing that happen needs a
- * non-editor project in `src/fixtures`, which is shared and not this
- * prototype's to change. See notes.md.
+ * So the category is genuinely shorter than the whole catalogue again, and the
+ * "can we connect projects that aren't editor projects?" sticky is something a
+ * session can watch rather than something the notes apologise for.
  */
-export const EMBEDDED_EDITOR_LANGUAGES: Array<Project['language']> = [
-  'Scratch',
-  'Python',
-  'HTML',
-]
-
 export function isEmbeddedEditorProject(project: Project): boolean {
-  return EMBEDDED_EDITOR_LANGUAGES.includes(project.language)
+  return project.usableInClassroom !== false
 }
 
 /**

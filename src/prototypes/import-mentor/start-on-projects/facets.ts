@@ -1,32 +1,26 @@
 import type { Project } from '../../../fixtures'
 
-// What the project selector filters on. Two of these are properties the
-// fixtures do not have, so they are stood in for here — read the warnings.
+// What the project selector filters on. Compatibility is a real field on the
+// fixtures now; interest is still stood in for here — read the warning.
 
 /**
- * Which projects can be used inside Code Classroom. **PROPOSED, and invented.**
+ * Which projects can be used inside Code Classroom.
  *
- * Sarah's flow chart turns on a filter called "can be used in my code
- * classroom", and her sticky says why it should exist: *"Should we only allow
- * them to add embedded editor projects? Think yes — we know that having
- * separate tabs is pain for younger users."*
+ * Reads `usableInClassroom` from the fixtures, which is the real thing rather
+ * than a guess. An earlier version of this file invented the answer, because
+ * the fixtures had no such field and a filter that excluded nothing could not
+ * be tested — the field and two physical computing projects were added for
+ * exactly this. Absent means usable; see the field's comment in
+ * `src/fixtures/types.ts`.
  *
- * So compatibility is a property of a PROJECT, not of a language: on the live
- * site a Scratch project that drives a Raspberry Pi, or one that only ships as
- * a PDF, will not run inside a class however Scratch it is. `src/fixtures` has
- * no such field, and fixtures are shared and not this prototype's to change.
- *
- * **The assignment is invented.** One Scratch project is marked incompatible
- * purely so the filter and the compatibility tag have visible work to do;
- * without it every fixture qualifies, the filter removes nothing, and the
- * central mechanic of this flow cannot be tested. Nothing about the real Rock
- * Band project says it would not import. The honest fix is a
- * `usableInClassroom` field in the fixtures.
+ * Sarah's sticky is the reason any of it exists: *"Should we only allow them
+ * to add embedded editor projects? Think yes — we know that having separate
+ * tabs is pain for younger users."* Note whose problem that is. The filter
+ * looks like a convenience for the mentor and is really about the young
+ * person's session.
  */
-const NOT_COMPATIBLE = new Set(['rock-band'])
-
 export function usableInClassroom(project: Project): boolean {
-  return !NOT_COMPATIBLE.has(project.id)
+  return project.usableInClassroom !== false
 }
 
 /**

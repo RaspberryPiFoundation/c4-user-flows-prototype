@@ -159,12 +159,11 @@ export function ProjectsCatalogue({ projects, alreadyAddedIds, onView, onBack }:
             <p className="body" style={{ margin: 0, fontWeight: 'var(--fw-bold)' }}>
               {visible.length} {visible.length === 1 ? 'result' : 'results'}
             </p>
-            {/* UNREACHABLE with today's fixtures, and kept on purpose. The
-                category now covers all three languages the fixtures have, so
-                nothing is excluded and this never renders. It becomes correct
-                the moment a project that cannot be embedded exists — which is
-                what the "can we connect projects that aren't editor projects?"
-                sticky is about. Do not read its absence as an answer. */}
+            {/* Reachable, and the point. The fixtures carry two physical
+                computing projects that need a Raspberry Pi, so the category
+                really is shorter than the catalogue — which is what makes the
+                "can we connect projects that aren't editor projects?" sticky
+                something a session can watch. */}
             {hidden > 0 && (
               <p className="body small muted" style={{ margin: 0 }}>
                 {hidden} more {hidden === 1 ? 'project is' : 'projects are'} not here, because they

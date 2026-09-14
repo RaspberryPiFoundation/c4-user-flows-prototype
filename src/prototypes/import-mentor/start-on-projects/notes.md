@@ -171,33 +171,29 @@ flex rail with a 19rem basis instead, which also still stacks on a narrow
 window. Worth raising upstream, or worth a wider rail variant in the shared
 CSS.
 
-## The thing to fix before this is tested properly
+## What the filter actually excludes
 
-**`facets.ts` invents two project properties, and one of them matters.**
+`usableInClassroom` is a real field on the fixtures, and two projects carry it
+as `false`: **Rain or Shine** (Scratch, needs a Raspberry Pi and a rain sensor)
+and **Door Watcher** (Python, needs a Pi and a motion sensor). Ticking the
+filter takes the catalogue from six projects to four.
 
-**Compatibility, which matters.** Sarah's sticky is clear about why the filter
-should exist — *"should we only allow them to add embedded editor projects?
-Think yes, we know that having separate tabs is pain for younger users"* — and
-that is a per-**project** property, not a per-language one. A Scratch project
-that drives a Raspberry Pi, or one that only ships as a PDF, will not run in a
-class however Scratch it is.
+That matters more than it sounds. An earlier version of this prototype invented
+which project was incompatible, because the fixtures had no such field — so the
+filter either excluded nothing, or excluded something for no reason anyone could
+defend. Neither could be put in front of a mentor: a filter that visibly lies is
+worse than no filter. The field and the two hardware projects were added to
+`src/fixtures` to fix that, which is the one change in this work that reaches
+outside a prototype folder.
 
-`src/fixtures` has no such field, and fixtures are shared. So this prototype
-marks one Scratch project (Rock Band) as incompatible purely so the filter and
-the tag have visible work to do. **Nothing about the real Rock Band says it
-would not import.** Without that invention every fixture qualifies, the filter
-removes nothing, and the central mechanic of this flow cannot be tested.
+Physical computing is a real and sizeable part of the live catalogue, so the
+exclusion is the honest kind. **The question a session can now answer is what a
+mentor does when the project they wanted is not in the list** — and whether
+"Code Classroom only" tells them enough to work out why.
 
-The honest fix is a `usableInClassroom` field in the fixtures plus a project or
-two that genuinely is not — a shared change, and a small one. Worth doing
-before this goes in front of a mentor, because a filter that visibly lies is
-worse than no filter.
-
-**Interest, which does not matter much.** The fixtures carry no interest
-either, so the Interest group is populated from the live page's own list with
-one guess per project. Nothing in the flow branches on it; it is there so the
-technology-versus-interest question can be watched at all. Being wrong here
-costs nothing.
+Interest is still invented (see `facets.ts`). Nothing branches on it; it exists
+so the technology-versus-interest question can be watched at all, and being
+wrong about which project is about Space costs nothing.
 
 ## What I'd want to watch in testing
 
