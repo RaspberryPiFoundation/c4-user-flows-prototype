@@ -829,6 +829,23 @@ hr.divider {
   background: var(--rpf-white);
   min-height: 48px;
 }
+/* The student class list gives its rows more height than the educator one —
+   60px against 48px. */
+.cc-list-boxed .cc-row-tall {
+  min-height: 60px;
+}
+
+/* A list's own controls — sorting, filtering — sit right-aligned above it. */
+.cc-list-controls {
+  display: flex;
+  justify-content: flex-end;
+}
+.cc-list-controls .rpf-input-field,
+.cc-list-controls .rpf-select-input {
+  width: 240px;
+  max-width: 100%;
+}
+
 /* Icon and name travel together on the left; the overflow menu stays right. */
 .cc-row-main {
   display: flex;
