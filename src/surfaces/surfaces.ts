@@ -33,6 +33,16 @@ export interface SurfaceInfo {
   layout: 'app' | 'centred'
   /** One line on what this surface is for, shown in the gallery. */
   note: string
+  /**
+   * Whether the footer carries the "Do you have a safeguarding concern?" line
+   * and the full link set, rather than the short one.
+   *
+   * On only where a design has been read: Code Classroom, from the Code Editor
+   * Figma file. The other products very likely have it too, but nobody has
+   * checked, and a footer invented from a sister product is the kind of detail
+   * that quietly becomes "what the product looks like".
+   */
+  safeguardingFooter?: boolean
 }
 
 export const SURFACES: Record<SurfaceId, SurfaceInfo> = {
@@ -64,6 +74,7 @@ export const SURFACES: Record<SurfaceId, SurfaceInfo> = {
     nav: [],
     layout: 'app',
     note: 'Mentor and young-person facing. Student accounts work only here. Navigation is by breadcrumb, not a nav bar.',
+    safeguardingFooter: true,
   },
   'pi-accounts': {
     id: 'pi-accounts',

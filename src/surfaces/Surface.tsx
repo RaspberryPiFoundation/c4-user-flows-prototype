@@ -64,6 +64,31 @@ export function Surface({
   const navItems = nav ?? surface.nav
   const effectiveLayout = layout ?? surface.layout
 
+  const crumbs = breadcrumbs && breadcrumbs.length > 0 && (
+    <nav className="surface-breadcrumbs" aria-label="Breadcrumb">
+      {breadcrumbs.map((crumb, index) => (
+        <span className="surface-crumb" key={crumb}>
+          {index > 0 && (
+            /* A chevron, not a slash — Code Classroom's breadcrumb in the Code
+               Editor designs. Decorative: the list order already says it. */
+            <span aria-hidden="true" className="material-symbols-sharp surface-crumb-sep">
+              chevron_right
+            </span>
+          )}
+          {index === breadcrumbs.length - 1 ? (
+            <span aria-current="page">{crumb}</span>
+          ) : onCrumb ? (
+            <button className="link-button" onClick={() => onCrumb(index)}>
+              {crumb}
+            </button>
+          ) : (
+            <span>{crumb}</span>
+          )}
+        </span>
+      ))}
+    </nav>
+  )
+
   return (
     <div className={`surface surface-${id}`}>
       <div className="surface-topbar">
@@ -79,24 +104,7 @@ export function Surface({
         )}
       </div>
 
-      {breadcrumbs && breadcrumbs.length > 0 && (
-        <nav className="surface-breadcrumbs" aria-label="Breadcrumb">
-          {breadcrumbs.map((crumb, index) => (
-            <span key={crumb}>
-              {index > 0 && <span className="surface-crumb-sep">/</span>}
-              {index === breadcrumbs.length - 1 ? (
-                <span aria-current="page">{crumb}</span>
-              ) : onCrumb ? (
-                <button className="link-button" onClick={() => onCrumb(index)}>
-                  {crumb}
-                </button>
-              ) : (
-                <span>{crumb}</span>
-              )}
-            </span>
-          ))}
-        </nav>
-      )}
+      {crumbs}
 
       {effectiveLayout !== 'centred' && navItems.length > 0 && (
         <nav className="surface-nav" aria-label={`${surface.name} navigation`}>
@@ -116,8 +124,37 @@ export function Surface({
       </div>
 
       <div className="surface-footer">
-        <span>Raspberry Pi Foundation UK registered charity 1129409</span>
-        <span>Help · Terms &amp; Conditions · Safeguarding · Privacy</span>
+        {surface.safeguardingFooter ? (
+          <>
+            <div className="surface-footer-row">
+              <span className="surface-footer-concern">
+                <span aria-hidden="true" className="material-symbols-sharp">
+                  flag
+                </span>
+                Do you have a safeguarding concern? <strong>Contact us</strong>
+              </span>
+              <span className="surface-footer-links">
+                <span>Help</span>
+                <span>Terms &amp; Conditions</span>
+                <span>Safeguarding</span>
+                <span>Accessibility</span>
+                <span>Privacy</span>
+                <span>Cookies</span>
+              </span>
+            </div>
+            <span>Raspberry Pi Foundation UK registered charity 1129409</span>
+          </>
+        ) : (
+          <div className="surface-footer-row">
+            <span>Raspberry Pi Foundation UK registered charity 1129409</span>
+            <span className="surface-footer-links">
+              <span>Help</span>
+              <span>Terms &amp; Conditions</span>
+              <span>Safeguarding</span>
+              <span>Privacy</span>
+            </span>
+          </div>
+        )}
       </div>
     </div>
   )

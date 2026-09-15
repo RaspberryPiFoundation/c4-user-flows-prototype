@@ -1,4 +1,4 @@
-import { Button, Placeholder } from '../../kit'
+import { Button, ProjectThumbnail } from '../../kit'
 import type { Project } from '../../fixtures'
 import type { ScreenMeta } from '../types'
 import { Markdown } from './Markdown'
@@ -47,7 +47,7 @@ export function ProjectPage({ project, onStart, onImport }: Props) {
           </div>
         </div>
         <div className="ccp-hero-art">
-          <Placeholder label="Project illustration" height={150} />
+          <ProjectThumbnail seed={project.id} language={project.language} height={150} />
         </div>
       </div>
 
@@ -69,7 +69,7 @@ export function ProjectPage({ project, onStart, onImport }: Props) {
             </div>
             <div className="ccp-task-body">
               <Markdown source={project.landingTask.body} />
-              <Placeholder label="Project preview" height={120} />
+              <ProjectThumbnail seed={`${project.id}-preview`} language={project.language} height={120} />
             </div>
           </section>
         )}

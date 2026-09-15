@@ -6,6 +6,7 @@ import {
   ManageClub,
   MentorDashboard,
   EducatorClassPage,
+  EducatorSchoolHome,
   EducatorProjectPage,
   MentorSignIn,
   ProjectEditor,
@@ -20,6 +21,7 @@ import {
   manageClubMeta,
   mentorDashboardMeta,
   educatorClassPageMeta,
+  educatorSchoolHomeMeta,
   educatorProjectPageMeta,
   mentorSignInMeta,
   projectEditorMeta,
@@ -209,6 +211,7 @@ export function ScreenGallery() {
             classGroup={scratchGroup}
             projects={classProjects}
             memberCount={scratchGroup.studentIds.length}
+            description="Our Thursday after-school Code Club. We work through Scratch projects at our own pace — come along whenever you can."
             onAddProject={noop}
             onOpenProject={noop}
             onCopyLink={noop}
@@ -229,6 +232,18 @@ export function ScreenGallery() {
             onHideFromStudents={noop}
             onCopyLink={noop}
             onOpenWork={noop}
+          />
+        </Frame>
+
+        <Frame name="School home (mentor)" meta={educatorSchoolHomeMeta} account="Your Account">
+          <EducatorSchoolHome
+            school={westlands}
+            classes={classesInSchool(westlands.id)}
+            joinLink={`rpf.io/student/${westlands.schoolCode.replace(/-/g, '')}`}
+            onOpenClass={noop}
+            onCreateClass={noop}
+            onManageMembers={noop}
+            onCopyLink={noop}
           />
         </Frame>
 

@@ -546,6 +546,11 @@ hr.divider {
   flex: 1 0 auto;
   padding: var(--space-3);
 }
+/* Code Classroom pages are built as two full-width bands — a white title block
+   over content on the page colour — so they pad their own bands instead. */
+.surface-classroom > .surface-body {
+  padding: 0;
+}
 /* Pi Accounts and the Code Classroom sign-in are a coloured page with one
    centred card. */
 .surface-body.centred {
@@ -561,16 +566,39 @@ hr.divider {
 
 .surface-footer {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  justify-content: space-between;
-  padding: var(--space-1) var(--space-2);
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2);
   background: var(--rpf-white);
   border-top: 1px solid var(--rpf-grey-150);
   font-size: var(--fs-075);
   line-height: var(--lh-1);
   color: var(--rpf-text-secondary);
+}
+.surface-footer-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  justify-content: space-between;
+}
+.surface-footer-concern {
+  display: flex;
+  align-items: center;
+  gap: var(--space-05);
+}
+/* The flag sits at body size beside 12px text, so it needs bringing down. */
+.surface-footer-concern .material-symbols-sharp {
+  font-size: var(--fs-1);
+}
+.surface-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-05) var(--space-2);
+}
+.surface-footer-links > span {
+  font-weight: var(--fw-bold);
+  text-decoration: underline;
 }
 
 /* ---------------- Surface gallery ---------------- */
@@ -704,15 +732,37 @@ hr.divider {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--space-1);
   padding: var(--space-1) var(--space-2);
   background: var(--surface-nav);
   border-bottom: 1px solid var(--surface-nav-border);
   font-size: var(--fs-075);
 }
+.surface-crumb {
+  display: flex;
+  align-items: center;
+}
+/* Bold and underlined, the weight the Code Editor designs give it. Code
+   Classroom has no nav bar, so the breadcrumb is the navigation. */
+.surface-breadcrumbs .link-button {
+  font-weight: var(--fw-bold);
+  text-decoration: underline;
+}
+.surface-crumb[aria-current='page'],
+.surface-crumb > span[aria-current='page'] {
+  font-weight: var(--fw-bold);
+}
 .surface-crumb-sep {
-  color: var(--rpf-grey-300);
-  margin-right: var(--space-1);
+  color: var(--rpf-grey-500);
+  font-size: var(--fs-1);
+}
+
+/* The breadcrumb sits directly above the white title band on Code Classroom,
+   so the two read as one block rather than two stacked bars. */
+.surface-classroom .surface-breadcrumbs {
+  padding: var(--space-2) var(--space-3) 0;
+  background: var(--surface-header);
+  border-bottom: none;
+  font-size: var(--fs-1);
 }
 .surface-account {
   color: var(--rpf-text-secondary);
@@ -725,12 +775,23 @@ hr.divider {
   gap: var(--space-1);
 }
 
+/* Heading and blurb on the left, the section's one action hard right — the
+   Code Editor designs put them on the same row. The text block needs an
+   explicit basis of 0: left to size itself it takes the full width and pushes
+   the button onto its own line however much room there is. */
 .cc-section-head {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: var(--space-2);
+  gap: var(--space-3);
+}
+.cc-section-head > :first-child {
+  flex: 1 1 0;
+  min-width: 200px;
+}
+.cc-section-head > :last-child {
+  flex: 0 0 auto;
 }
 
 .cc-list {
@@ -761,10 +822,30 @@ hr.divider {
   border-radius: var(--radius-sm);
   overflow: hidden;
 }
+/* White rows, not pale ones: the Code Editor designs draw the group as a white
+   panel divided by hairlines. */
 .cc-list-boxed .cc-row {
-  padding: var(--space-2);
-  background: var(--rpf-off-white);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2);
+  background: var(--rpf-white);
+  min-height: 48px;
 }
+/* The student class list gives its rows more height than the educator one —
+   60px against 48px. */
+.cc-list-boxed .cc-row-tall {
+  min-height: 60px;
+}
+
+/* A list's own controls — sorting, filtering — sit right-aligned above it. */
+.cc-list-controls {
+  display: flex;
+  justify-content: flex-end;
+}
+.cc-list-controls .rpf-input-field,
+.cc-list-controls .rpf-select-input {
+  width: 240px;
+  max-width: 100%;
+}
+
 /* Icon and name travel together on the left; the overflow menu stays right. */
 .cc-row-main {
   display: flex;
@@ -810,18 +891,63 @@ hr.divider {
 }
 
 /* ---------------- Project editor (two pane) ---------------- */
+/* The editor IS the page, edge to edge and the full height of the window —
+   the real one has no margin and nothing else on screen beside it.
+   Selected with :has() rather than a layout prop so it applies wherever an
+   editor is rendered, including in prototypes this rule cannot reach into. */
+.surface:has(.editor) {
+  max-width: none;
+  height: 100vh;
+  /* Breaks out of whatever column it was placed in — the workbench card, the
+     gallery list — so the editor is the size of the window there too, not just
+     in full screen. Without this it inherits an 800px card and the editor gets
+     a portrait sliver to draw in. */
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  border-radius: 0;
+  border-inline: none;
+}
+.surface:has(.editor) > .surface-body {
+  display: flex;
+  padding: 0;
+  /* flex-basis 0 with min-height 0, or the body refuses to shrink below its
+     content and the footer is pushed off the bottom. */
+  flex: 1 1 0;
+  min-height: 0;
+}
+/* Every wrapper between the body and the editor has to stretch too, however
+   many there are. `:has(.editor)` matches exactly those ancestors and nothing
+   else. A flex item with no grow shrinks to its content, so a single
+   unstretched wrapper is enough to leave the editor a fraction of the window —
+   and there can be more than one: a screen wraps its editor in a
+   `.section-stack`, and a prototype wraps the screen in another. */
+.surface:has(.editor) > .surface-body :has(.editor) {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+/* Full screen normally measures the content column; the editor is the one page
+   that must not be, or it sits in a 1100px strip on a wide monitor. */
+body.full-screen-prototype .surface:has(.editor) > .surface-body {
+  max-width: none;
+  margin-inline: 0;
+}
+
 .editor {
   display: grid;
   /* Stacked on small screens; rail, instructions and editor side by side once
      there is room, which is how the real editor lays out. */
   grid-template-columns: 1fr;
   gap: var(--space-2);
-  /* The editor IS the page it is on, not a panel sitting in the middle of one.
-     Sized from the viewport so it fills a large monitor, with 420px kept as a
-     floor for short windows. `flex: 1` alone would not do it: in the workbench
-     the surface is only as tall as its content, so there is no spare height to
-     grow into. */
-  min-height: max(420px, 68vh);
+  flex: 1 1 auto;
+  min-width: 0;
+  /* A floor for short windows, and nothing more. `100%` here resolved against
+     the wrapper and then grew past it, pushing the editor taller than the
+     window so the palette and stage were clipped instead of fitted. Height
+     comes from the flex parent now. */
+  min-height: 420px;
 }
 @media (min-width: 860px) {
   .editor {
@@ -911,6 +1037,10 @@ hr.divider {
   background: var(--rpf-white);
   border: 1px solid var(--rpf-grey-150);
   border-radius: var(--radius-sm);
+  /* Or the grid row grows to fit the canvas instead of the canvas fitting the
+     row, and the editor spills past the bottom of the window. */
+  min-height: 0;
+  overflow: hidden;
 }
 @media (min-width: 860px) {
   .editor-main {
@@ -937,11 +1067,62 @@ hr.divider {
 }
 .editor-canvas {
   flex: 1 1 auto;
-  padding: var(--space-2);
+  padding: 0;
+  /* The drawing is fitted rather than cropped, so this shows through around
+     it; matching its own base keeps the margin from reading as a gap. */
+  background: #f9f9f9;
   /* So the thing standing in for the editor can stretch to the whole pane
      rather than sitting as a short box with dead space beneath it. */
   display: flex;
   min-height: 0;
+}
+/* The real editor, when it loads. It brings its own chrome inside a shadow
+   DOM, so there is nothing to style here beyond giving it the whole pane. */
+.editor-embed {
+  flex: 1 1 auto;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+.editor-embed-host {
+  flex: 1 1 auto;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+.editor-embed editor-wc {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.editor-embed-loading {
+  margin: auto;
+}
+
+/* The drawn editor fills its pane and crops rather than letterboxing — a
+   still of an editor with bars down the side reads as a broken image. */
+/* Taken out of flow, so the drawing fills the pane instead of deciding how
+   tall it is. An SVG in normal flow reports a height from its own aspect
+   ratio whenever its parent has no definite one — and `height: 100%` against
+   an indefinite parent resolves to exactly that — which pushed the pane past
+   the bottom of the window and clipped the palette and stage. */
+.editor-canvas {
+  position: relative;
+}
+.editor-canvas-art {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  /* Explicit, not `inset` with `auto` sizes: an SVG has an intrinsic aspect
+     ratio, so it takes its height from its width and ignores the bottom inset. */
+  width: calc(100% - 2 * var(--space-2));
+  height: calc(100% - 2 * var(--space-2));
+}
+
+/* Generated project artwork. Cropped to its box, like a real thumbnail. */
+.project-thumb {
+  display: block;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
 }
 
 /* Project instructions markdown */
@@ -1331,3 +1512,108 @@ body.full-screen-prototype .surface-footer {
   color: var(--rpf-grey-500);
 }
 
+/* ---------------- Code Classroom page header ---------------- */
+/* The white band carrying the title, and the content band below it. */
+.cc-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-3) var(--space-4);
+  background: var(--surface-header);
+  border-bottom: 1px solid var(--surface-nav-border);
+}
+.cc-page-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-3);
+}
+
+/* The title band's contents: breadcrumb, then title and description, then the
+   page actions. Taken from the Code Editor designs — 40px/56 title, 20px
+   description held to a readable measure, actions on their own row. */
+.cc-page-title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.cc-page-title h1 {
+  font-size: var(--fs-4);
+  line-height: var(--lh-35);
+  margin: 0;
+}
+.cc-page-desc {
+  margin: 0;
+  max-width: 800px;
+  font-size: var(--fs-15);
+  line-height: var(--lh-15);
+}
+/* Title on the left, actions hard right on the same row — the school page.
+   The class page stacks them instead, which is why this is its own class. */
+.cc-page-titlebar {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: space-between;
+}
+.cc-page-titlebar .cc-page-title {
+  flex: 1 1 320px;
+}
+
+/* "Code Classroom home" — a back control, not a breadcrumb. The school page is
+   the top of the tree, so there is nothing to put a trail above. Drawn as a
+   grey chip in the designs rather than as a bare link. */
+.cc-back-button {
+  align-self: flex-start;
+}
+.cc-back-button.rpf-button,
+.cc-back-button .rpf-button {
+  background: var(--rpf-off-white);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  color: var(--rpf-text);
+}
+
+/* Two columns on the school page: the login code card, then the class list. */
+.cc-split {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+.cc-split-aside {
+  flex: 1 1 280px;
+  max-width: 400px;
+}
+.cc-split-main {
+  flex: 3 1 420px;
+  min-width: 0;
+}
+
+/* The school login code card. The code itself is the largest thing on the
+   page after the title — a mentor reads it out across a room. */
+.cc-code-value {
+  margin: 0;
+  font-size: var(--fs-3);
+  line-height: var(--lh-25);
+  font-weight: var(--fw-bold);
+}
+.cc-code-copy {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-1);
+}
+.cc-code-link {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 2px solid var(--rpf-grey-150);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) 14px;
+  background: var(--rpf-white);
+  font: inherit;
+  color: var(--rpf-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

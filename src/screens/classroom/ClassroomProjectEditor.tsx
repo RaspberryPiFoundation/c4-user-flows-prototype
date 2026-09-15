@@ -1,4 +1,4 @@
-import { Button, CheckboxInput, Placeholder, Tag } from '../../kit'
+import { Button, CheckboxInput, EditorEmbed, Tag } from '../../kit'
 import type { Project } from '../../fixtures'
 import { Markdown } from '../ccp/Markdown'
 import type { ScreenMeta } from '../types'
@@ -111,9 +111,10 @@ export function ClassroomProjectEditor({
           </div>
 
           <div className="editor-canvas">
-            <Placeholder
-              label={`${project.language} editor — blocks palette, canvas and stage`}
-              height="100%"
+            <EditorEmbed
+              language={project.language}
+              code={project.starterCode}
+              label={`${project.language} editor`}
             />
           </div>
         </div>

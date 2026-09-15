@@ -37,33 +37,48 @@ interface Props {
  * adult. There is no "start something of your own" here — which is exactly
  * the question the Code Classroom FigJam is asking, and exactly what a Code
  * Club session is often about.
+ *
+ * Page furniture inferred from the educator pages, as on
+ * `YoungPersonSchoolHome` — see the note there.
  */
 export function YoungPersonClassPage({ classGroup, projects, onOpenProject }: Props) {
   return (
-    <div className="section-stack">
-      <h1 className="title-lg">{classGroup.name}</h1>
+    <>
+      <div className="cc-page-header">
+        <div className="cc-page-title">
+          <h1 className="title-lg">{classGroup.name}</h1>
+        </div>
+      </div>
 
-      <Card>
-        <h2 className="title-sm">Projects</h2>
-        <p className="body muted">
-          Projects are shared with students and contain starter code created by a teacher.
-        </p>
+      <div className="cc-page-main">
+        <Card>
+          <div className="cc-section-head">
+            <div>
+              <h2 className="title-sm">Projects</h2>
+              <p className="body muted">
+                Projects are shared with students and contain starter code created by a teacher.
+              </p>
+            </div>
+          </div>
 
-        {projects.length === 0 ? (
-          <p className="lane-empty">No projects yet</p>
-        ) : (
-          <ul className="cc-list">
-            {projects.map(({ project, status }) => (
-              <li className="cc-row" key={project.id}>
-                <button className="link-button" onClick={() => onOpenProject(project.id)}>
-                  {project.title}
-                </button>
-                <Tag text={STATUS_LABEL[status]} variant={STATUS_VARIANT[status]} />
-              </li>
-            ))}
-          </ul>
-        )}
-      </Card>
-    </div>
+          {projects.length === 0 ? (
+            <p className="lane-empty">No projects yet</p>
+          ) : (
+            <ul className="cc-list cc-list-boxed">
+              {projects.map(({ project, status }) => (
+                <li className="cc-row" key={project.id}>
+                  <span className="cc-row-main">
+                    <button className="link-button" onClick={() => onOpenProject(project.id)}>
+                      {project.title}
+                    </button>
+                  </span>
+                  <Tag text={STATUS_LABEL[status]} variant={STATUS_VARIANT[status]} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+      </div>
+    </>
   )
 }

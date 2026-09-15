@@ -32,6 +32,7 @@ chrome.
 | `SchoolCodeEntry` | Pi Accounts, badged Code Classroom | Yes | Yes |
 | `StudentSignIn` | Pi Accounts, badged Code Classroom | Yes | Yes |
 | `MentorSignIn` | Pi Accounts | Yes | **No** — built from the pattern |
+| `EducatorSchoolHome` | Code Classroom | Yes | Yes |
 | `EducatorClassPage` | Code Classroom | Yes | Yes |
 | `EducatorProjectPage` | Code Classroom | Yes | Yes |
 | `YoungPersonSchoolHome` | Code Classroom | Yes | Yes |
@@ -50,6 +51,18 @@ Errors use the design system `Alert`, wrapped in `role="alert"` so they are
 announced. The screens do not also mark the individual field — if a variant
 wants that, pass a short message to the input's own `error` prop as well as
 showing the alert.
+
+## Code Classroom pages are built as two bands
+
+A white block carrying the breadcrumb, the title, the description and the page
+actions, then the content below it on a warm off-white. `EducatorSchoolHome`
+and `EducatorClassPage` are built from the Code Editor Figma file and render
+`.cc-page-header` and `.cc-page-main` themselves rather than relying on the
+surface to pad them.
+
+If you write another Code Classroom screen, follow the same two blocks — a page
+that puts everything on one background will sit next to these in a flow and
+look like a different product.
 
 ## Code Classroom has no navigation
 
