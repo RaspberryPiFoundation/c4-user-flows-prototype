@@ -1,7 +1,7 @@
 import { useEffect, useState, type CSSProperties } from 'react'
 import { Alert, Button, Card, ProgressBar } from '../../../kit'
 import { schoolsForMentor, type ClassGroup, type School } from '../../../fixtures'
-import { EducatorClassPage } from '../../../screens'
+import { ClassPageWithBanner } from './ClassPageWithBanner'
 import { Surface } from '../../../surfaces'
 import { meta } from './meta'
 import { DashboardWithClassroom } from './DashboardWithClassroom'
@@ -58,6 +58,27 @@ const SECTION: CSSProperties = {
   marginTop: 'var(--space-2)',
 }
 
+/**
+ * The card layout both of this flow's own screens use: one narrow card
+ * centred on the page colour, everything inside it, actions bottom right.
+ *
+ * Shared between the confirm screen and the created screen so the two look
+ * like one route rather than two prototypes. Not in kit/ — a prototype adds to
+ * its own folder.
+ */
+const PAGE: CSSProperties = {
+  display: 'flex',
+  justifyContent: 'center',
+  padding: 'var(--space-4) var(--space-2)',
+}
+const COLUMN: CSSProperties = { width: '100%', maxWidth: 760 }
+const CARD_STACK: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 'var(--space-2)',
+}
+const ACTIONS: CSSProperties = { justifyContent: 'flex-end', marginTop: 'var(--space-2)' }
+
 export default function DashboardPrimaryAction() {
   const [step, setStep] = useState<Step>('dashboard')
   /** Clubs that have been through setup, so the button changes on return. */
@@ -65,6 +86,8 @@ export default function DashboardPrimaryAction() {
   const [activeClubId, setActiveClubId] = useState<string>(CLUBS[0].id)
   /** What a route we have not built would have done. */
   const [notice, setNotice] = useState<string>()
+  /** Whether the mentor has asked how members get added. */
+  const [showHowTo, setShowHowTo] = useState(false)
 
   const club = CLUBS.find((c) => c.id === activeClubId) ?? CLUBS[0]
   const classes = [autoClass(club)]
@@ -123,16 +146,10 @@ export default function DashboardPrimaryAction() {
   if (step === 'confirm') {
     return (
       <Surface id="code-club" account="Your Account">
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            padding: 'var(--space-4) var(--space-2)',
-          }}
-        >
-          <div style={{ width: '100%', maxWidth: 760 }}>
+        <div style={PAGE}>
+          <div style={COLUMN}>
             <Card>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+              <div style={CARD_STACK}>
                 <h1 className="title-lg">Set up Code Classroom for {club.name}?</h1>
 
                 <div style={SECTION}>
@@ -169,10 +186,7 @@ export default function DashboardPrimaryAction() {
                     between the list and the buttons. Left out for now — what it
                     should show has not been designed. */}
 
-                <div
-                  className="cc-actions"
-                  style={{ justifyContent: 'flex-end', marginTop: 'var(--space-2)' }}
-                >
+                <div className="cc-actions" style={ACTIONS}>
                   <Button type="secondary" text="Not now" onClick={() => setStep('dashboard')} />
                   <Button
                     type="primary"
@@ -202,38 +216,58 @@ export default function DashboardPrimaryAction() {
     )
   }
 
+  // Same card as the confirm screen, so arriving here reads as the other side
+  // of the question rather than a different product. The title moves inside
+  // the card, the list keeps the tight heading spacing, and the one action
+  // sits bottom right where "Set up Code Classroom" was a moment ago.
   if (step === 'created') {
     return (
       <Surface id="code-club" account="Your Account">
-        <div className="section-stack">
-          <h1 className="title-lg">Your Code Classroom account has been created</h1>
+        <div style={PAGE}>
+          <div style={COLUMN}>
+            <Card>
+              <div style={CARD_STACK}>
+                <h1 className="title-lg">Your Code Classroom account has been created</h1>
 
-          <Card>
-            <h2 className="title-sm">What was set up</h2>
-            {whatYouGet}
-            <p className="body muted">
-              You sign in with the same Raspberry Pi account you use for Code Club — there is no new
-              password to remember.
-            </p>
-            <p className="body muted">
-              Not set up: an account for each young person at your club. Nothing on codeclub.org
-              knows who they are, so that part cannot be done for you.
-            </p>
-            <Button
-              type="primary"
-              text="Go to Code Classroom"
-              onClick={() => setStep('classroom')}
-            />
-          </Card>
+                <div style={SECTION}>
+                  <h2 className="title-sm">What was set up</h2>
+                  {whatYouGet}
+                </div>
+
+                <p className="body muted">
+                  You sign in with the same Raspberry Pi account you use for Code Club — there is
+                  no new password to remember.
+                </p>
+                <p className="body muted">
+                  Not set up: an account for each young person at your club. Nothing on
+                  codeclub.org knows who they are, so that part cannot be done for you.
+                </p>
+
+                <div className="cc-actions" style={ACTIONS}>
+                  <Button
+                    type="primary"
+                    text="Go to Code Classroom"
+                    onClick={() => setStep('classroom')}
+                  />
+                </div>
+              </div>
+            </Card>
+          </div>
         </div>
       </Surface>
     )
   }
 
-  // Where a mentor lands: the real Code Classroom page, in the empty state a
-  // mentor who has just been set up would actually find. Code Classroom has no
-  // educator home page to land on instead — you arrive at a class and move by
-  // breadcrumb — so this is the product as it is, not a proposal.
+  // Where a mentor lands: the real Code Classroom class page, in the empty
+  // state a mentor who has just been set up would actually find.
+  //
+  // The alert above it is THIS PROTOTYPE'S ADDITION and is not in the product.
+  // Setup makes a school, a code and a class and then stops — the creators are
+  // the one thing it cannot do, because nothing on codeclub.org knows who they
+  // are. A mentor who does not realise that leaves with a class nobody can get
+  // into, and finds out in front of a room of young people. So the blocker is
+  // stated on arrival, and the alert offers the next step rather than just
+  // naming the problem.
   if (step === 'classroom') {
     return (
       <Surface
@@ -249,10 +283,49 @@ export default function DashboardPrimaryAction() {
             text="Back to codeclub.org"
             onClick={() => setStep('dashboard')}
           />
-          <EducatorClassPage
+          <ClassPageWithBanner
             classGroup={classes[0]}
             projects={[]}
             memberCount={0}
+            banner={
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                <Alert
+                  type="information"
+                  title="Your class has no members yet"
+                  actions={[
+                    { label: 'How do I add members?', onClick: () => setShowHowTo(true) },
+                  ]}
+                >
+                  Setting up made the class, but not the creators in it. Until you create their
+                  accounts nobody can sign in — the club code on its own is not enough.
+                </Alert>
+
+                {showHowTo && (
+                  <Card>
+                    <h2 className="title-sm">Adding members</h2>
+                    <ol className="disclaimer-list">
+                      <li>
+                        Open <strong>Class members</strong> at the top of this page.
+                      </li>
+                      <li>
+                        Create a username and a password for each creator. No email addresses,
+                        and nothing for a parent to sign up to.
+                      </li>
+                      <li>
+                        Give them the club code <strong>{club.schoolCode}</strong> with the
+                        username and password you made for them, and they can sign in.
+                      </li>
+                    </ol>
+                    <p className="body muted">
+                      Step 2 is not built in this prototype. What it actually takes to create a
+                      set of accounts — one at a time, or in a batch, and who writes the
+                      passwords down — is its own question, and this flow stops at the point
+                      where it becomes one.
+                    </p>
+                  </Card>
+                )}
+              </div>
+            }
             onAddProject={() =>
               setNotice(
                 'Not built here — getting a Code Club project into Code Classroom is the importing lane’s question.',
@@ -261,11 +334,13 @@ export default function DashboardPrimaryAction() {
             onOpenProject={() => {}}
             onCopyLink={() =>
               setNotice(
-                'Copy link shares the class. It skips the club code screen, but a young person still needs an account you made for them.',
+                'Copy link shares the class. It skips the club code screen, but a creator still needs an account you made for them.',
               )
             }
             onClassMembers={() =>
-              setNotice('No members yet. You have not created any accounts.')
+              setNotice(
+                'Not built here — creating the accounts is the step this flow stops at. See "How do I add members?" above.',
+              )
             }
           />
         </div>

@@ -56,6 +56,15 @@ the route being copied; adding a step would test a different thing.
 - Automatic setup infers **one** class from the club's session time. Westlands
   really runs a Scratch group and a Python group — the same honest limit as the
   prototype this copies.
+- **The "no members yet" alert is not in the product.** The class page itself
+  is the real, verified screen; the alert sitting between its two bands is this
+  prototype's addition, and so is the "Adding members" panel behind it. The
+  class page is copied into this folder as `ClassPageWithBanner` purely to open
+  a seam between the title band and the content — one added prop, nothing else
+  changed.
+- **The steps in that panel are not a screen either.** Step 2, creating the
+  accounts, has no screen anywhere in this repo. The panel says so rather than
+  implying a flow exists behind it.
 
 ## What I'd want to watch in testing
 
@@ -78,7 +87,17 @@ the route being copied; adding a step would test a different thing.
   "Code Classroom's word, not ours", which was the prototype apologising for
   the product. Without the aside the screen is a fairer test of whether the
   word actually lands, but it also means nobody is warned. This is the sharpest
-  edge on the screen.
+  edge on the screen, and the school page at the end says it again, in the
+  title, at full size.
+- **Whether anyone opens "How do I add members?"** The alert names the blocker
+  on arrival; the action behind it is the test of whether naming it is enough.
+  If people read the alert and still press "Add project" first, the alert is
+  decoration.
+- **Whether the alert reads as help or as failure.** "Your class has no members
+  yet" arrives seconds after a screen that said setup was done. It is either
+  the obvious next step or evidence that the one-press promise was oversold —
+  and which of those it is, is the most useful thing a session could tell us
+  about this whole route.
 
 ## What we learned
 
