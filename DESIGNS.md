@@ -27,6 +27,15 @@ You need a Figma seat with Dev Mode access to open the Figma links.
   rather than trying to extract text.
 - **The blocks editor is in a shadow DOM**, so page-text extraction will not
   reach it. Screenshot it.
+- **The real editor cannot load Scratch from here, and the blocker is not in
+  this repo.** `editor-ui` embeds fine as a web component and Python runs
+  locally through Pyodide, but Scratch loads in an iframe keyed to a project
+  the editor API holds, and `editor-api.raspberrypi.org` answers with
+  `Access-Control-Allow-Origin: https://projects.raspberrypi.org`. So the
+  project fetch is refused from localhost and from wherever this deploys. It
+  would need the editor team to allow this prototype's origin. Until then the
+  blocks editor is `EditorCanvas`, drawn from a screenshot of the Neil the Seal
+  starter.
 - **`MentorSignIn` is not verified** — it is behind a login and was built from
   the pattern. Correct it if you can see the real thing.
 - **The Code Classroom pages are two bands.** A white block carrying the

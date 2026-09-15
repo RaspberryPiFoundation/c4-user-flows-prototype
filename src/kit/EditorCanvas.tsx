@@ -1,20 +1,25 @@
 /**
  * A still of the code editor, drawn in SVG.
  *
- * The biggest grey box in the repo was the editor canvas, and it sat in the
- * middle of the screen every import flow ends on. The real thing cannot be
- * embedded — the live blocks editor is inside a shadow DOM, and this repo does
- * not add dependencies — so this is a picture of one.
+ * Used for Scratch, where the real editor cannot be embedded, and as the
+ * fallback anywhere `EditorEmbed` cannot reach the CDN. Python and HTML get
+ * the real editor instead — see `EditorEmbed`.
  *
- * It does not pretend to work. Nothing here is clickable and there is no code
- * you can read closely; at a glance it says "this is where the editor is",
- * which is all the surrounding flow needs it to say. A prototype that needs a
- * working editor is asking a different question and should say so in its notes.
+ * The blocks half is drawn from a screenshot of the live editor (the Neil the
+ * Seal starter on Code Club Projects), so the parts a mentor would recognise
+ * are the real parts: Scratch's own category colours in the real order, real
+ * Motion block labels, the Code/Costumes/Sounds tabs, a stage over a sprite
+ * tray, and a snapped-together stack of the blocks the instructions ask for.
+ *
+ * It still does not pretend to work — nothing here is clickable. The aim is
+ * that it reads as THIS editor rather than as some editor, because in a
+ * stakeholder review a generic grey rectangle is what gets noticed.
  *
  * Drawn PORTRAIT, because the editor pane in this workbench is portrait
  * (roughly 290x510) — the real editor is wide, but art drawn wide letterboxes
  * into a tall pane and a still with bars down the side reads as a broken
- * image. It crops rather than letterboxes if the pane is a different shape.
+ * image. So it follows the narrow-window layout the real editor uses, with the
+ * stage above the palette rather than beside it.
  */
 
 interface Props {
@@ -23,8 +28,23 @@ interface Props {
   label: string
 }
 
-const BLOCK_COLOURS = ['#4C97FF', '#9966FF', '#CF63CF', '#FFAB19', '#40BF4A']
+/* Scratch's own category colours, so a mentor who knows Scratch recognises
+   the palette at a glance rather than reading it. */
+const MOTION = '#4C97FF'
+const LOOKS = '#9966FF'
 const SYNTAX = ['#C678DD', '#61AFEF', '#98C379', '#E5C07B', '#56B6C2']
+
+const CATEGORIES: Array<[string, string]> = [
+  ['Motion', MOTION],
+  ['Looks', LOOKS],
+  ['Sound', '#CF63CF'],
+  ['Events', '#FFBF00'],
+  ['Control', '#FFAB19'],
+  ['Sensing', '#5CB1D6'],
+  ['Operators', '#40BF4A'],
+  ['Variables', '#FF8C1A'],
+  ['My Blocks', '#FF6680'],
+]
 
 export function EditorCanvas({ language, label }: Props) {
   return (
@@ -42,79 +62,135 @@ export function EditorCanvas({ language, label }: Props) {
 }
 
 function BlocksEditor() {
+  /* The Motion palette, in the order the real editor lists it. Real labels
+     rather than grey bars: at a glance the difference between "a picture of an
+     editor" and "a picture of THE editor" is mostly the words. */
+  const palette: Array<[string, string]> = [
+    ['move 10 steps', MOTION],
+    ['turn ↻ 15 degrees', MOTION],
+    ['turn ↺ 15 degrees', MOTION],
+    ['go to random position', MOTION],
+    ['go to x: 55 y: -50', MOTION],
+    ['glide 1 secs to x: 55', MOTION],
+    ['point in direction 90', MOTION],
+    ['change x by 10', MOTION],
+    ['set x to 55', MOTION],
+  ]
+
   return (
     <>
-      <rect width="200" height="340" fill="#F4F4F4" />
+      <rect width="200" height="340" fill="#F2F2F2" />
 
-      {/* Stage on top, as the editor lays out when the window is narrow. */}
-      <rect width="200" height="126" fill="#FFFFFF" />
-      <rect x="10" y="10" width="180" height="82" rx="4" fill="#E8F4FF" />
-      <ellipse cx="100" cy="84" rx="82" ry="12" fill="#9BD35A" />
-      <circle cx="152" cy="30" r="11" fill="#FFFFFF" opacity="0.8" />
-      <circle cx="163" cy="32" r="8" fill="#FFFFFF" opacity="0.8" />
-      {/* Two sprites having the conversation most projects are built around. */}
-      <g>
-        <circle cx="74" cy="66" r="13" fill="#FFAB19" />
-        <circle cx="70" cy="63" r="2.6" fill="#1A1A1A" />
-        <circle cx="79" cy="63" r="2.6" fill="#1A1A1A" />
-        <circle cx="126" cy="70" r="10" fill="#CF63CF" />
-        <circle cx="123" cy="68" r="2.2" fill="#1A1A1A" />
-        <circle cx="130" cy="68" r="2.2" fill="#1A1A1A" />
-      </g>
-      {/* Sprite tray. */}
+      {/* ---- Stage, on top, as the editor lays out when the window is narrow. */}
+      <rect width="200" height="150" fill="#FFFFFF" />
+      {/* Green flag and stop, and the layout controls beside them. */}
+      <polygon points="9,8 9,18 17,13" fill="#45993D" />
+      <circle cx="26" cy="13" r="5" fill="#EC5959" />
+      <rect x="168" y="8" width="10" height="10" rx="2" fill="#E6E6E6" />
+      <rect x="182" y="8" width="10" height="10" rx="2" fill="#E6E6E6" />
+
+      {/* The stage itself: a road scene with a title card, which is what a
+          Code Club Scratch starter almost always looks like. */}
+      <rect x="8" y="24" width="184" height="86" rx="3" fill="#8CCBEA" />
+      <rect x="8" y="58" width="184" height="34" fill="#9E9E9E" />
+      <rect x="8" y="73" width="184" height="3" fill="#F5D33F" />
+      <rect x="8" y="92" width="184" height="18" fill="#7FB84E" />
+      <rect x="8" y="24" width="184" height="13" fill="#1C2E8A" />
+      <rect x="66" y="28" width="68" height="5" rx="2.5" fill="#FFFFFF" opacity="0.9" />
+      {/* Two sprites on the road. */}
+      <ellipse cx="72" cy="66" rx="12" ry="7" fill="#7E8C99" />
+      <circle cx="63" cy="64" r="2" fill="#1A1A1A" />
+      <rect x="126" y="52" width="9" height="15" rx="3" fill="#E8A33D" />
+      <circle cx="130.5" cy="48" r="5" fill="#F2C48D" />
+
+      {/* Sprite tray. Neil is selected, so his tile carries the ring. */}
+      <rect x="8" y="116" width="128" height="28" rx="3" fill="#FFFFFF" stroke="#E0E0E0" />
       {[0, 1, 2, 3].map((i) => (
         <rect
           key={i}
-          x={12 + i * 28}
-          y="98"
+          x={12 + i * 31}
+          y="120"
           width="24"
-          height="22"
+          height="20"
           rx="3"
           fill="#F7F7F7"
-          stroke="#E0E0E0"
+          stroke={i === 0 ? '#4C97FF' : '#E8E8E8'}
+          strokeWidth={i === 0 ? 2 : 1}
         />
       ))}
-      <line x1="0" y1="126" x2="200" y2="126" stroke="#E0E0E0" strokeWidth="1" />
+      {/* Stage / Backdrops column. */}
+      <rect x="142" y="116" width="50" height="28" rx="3" fill="#FFFFFF" stroke="#E0E0E0" />
+      <rect x="150" y="121" width="34" height="11" rx="2" fill="#8CCBEA" />
+      <rect x="150" y="135" width="20" height="3" rx="1.5" fill="#D9D9D9" />
 
-      {/* Category rail. */}
-      <rect y="126" width="28" height="214" fill="#FFFFFF" />
-      {BLOCK_COLOURS.map((colour, i) => (
-        <g key={colour}>
-          <circle cx="14" cy={146 + i * 34} r="7" fill={colour} />
-          <rect x="5" y={156 + i * 34} width="18" height="3" rx="1.5" fill="#E4E4E4" />
+      {/* ---- Code / Costumes / Sounds. */}
+      <rect y="150" width="200" height="16" fill="#E9F0F8" />
+      <rect x="6" y="150" width="46" height="16" rx="3" fill="#FFFFFF" />
+      <text x="15" y="161" fill="#575E75" fontSize="7" fontWeight="700">
+        Code
+      </text>
+      <text x="60" y="161" fill="#8A8F9E" fontSize="7">
+        Costumes
+      </text>
+      <text x="108" y="161" fill="#8A8F9E" fontSize="7">
+        Sounds
+      </text>
+
+      {/* ---- Category rail: the nine block groups, in the real order. */}
+      <rect y="166" width="30" height="174" fill="#FFFFFF" />
+      {/* Nine categories have to fit 174 units without "My Blocks" dropping off
+          the bottom or "Operators" spilling out of a 30-wide rail. */}
+      {CATEGORIES.map(([name, colour], i) => (
+        <g key={name}>
+          <circle cx="15" cy={175 + i * 18} r="4.6" fill={colour} />
+          <text x="15" y={186 + i * 18} fill="#575E75" fontSize="4" textAnchor="middle">
+            {name}
+          </text>
         </g>
       ))}
 
-      {/* Palette of draggable blocks. */}
-      <rect x="28" y="126" width="54" height="214" fill="#FCFCFC" />
-      <line x1="82" y1="126" x2="82" y2="340" stroke="#E8E8E8" strokeWidth="1" />
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <rect
-          key={i}
-          x="34"
-          y={140 + i * 30}
-          width={40 - (i % 3) * 5}
-          height="17"
-          rx="4"
-          fill={BLOCK_COLOURS[i % BLOCK_COLOURS.length]}
-          opacity="0.9"
-        />
+      {/* ---- Palette. */}
+      <rect x="30" y="166" width="86" height="174" fill="#FCFCFC" />
+      <line x1="116" y1="166" x2="116" y2="340" stroke="#E8E8E8" strokeWidth="1" />
+      <text x="35" y="176" fill="#575E75" fontSize="6" fontWeight="700">
+        Motion
+      </text>
+      {palette.map(([label, colour], i) => (
+        <g key={label}>
+          <rect x="35" y={181 + i * 17} width="76" height="13" rx="4" fill={colour} />
+          <text x="40" y={190 + i * 17} fill="#FFFFFF" fontSize="5.4">
+            {label}
+          </text>
+        </g>
       ))}
 
-      {/* Script area, with one stack snapped together. */}
-      <g transform="translate(98 144)">
+      {/* ---- Workspace, with one stack snapped together. The blocks are the
+             ones the instructions panel is asking for. */}
+      <rect x="116" y="166" width="84" height="174" fill="#F9F9F9" />
+      <g transform="translate(126 180)">
         <path
-          d="M0 8 a10 8 0 0 1 20 0 h50 a4 4 0 0 1 4 4 v12 a4 4 0 0 1 -4 4 h-66 a4 4 0 0 1 -4 -4 Z"
+          d="M0 8 a9 7 0 0 1 18 0 h32 a4 4 0 0 1 4 4 v10 a4 4 0 0 1 -4 4 h-50 a4 4 0 0 1 -4 -4 Z"
           fill="#FFBF00"
         />
-        {[0, 1, 2, 3, 4].map((i) => (
-          <path
-            key={i}
-            d={`M0 ${30 + i * 24} h10 a3 3 0 0 0 6 0 h${44 - (i % 3) * 9}
-                a4 4 0 0 1 4 4 v13 a4 4 0 0 1 -4 4 h-${44 - (i % 3) * 9}
-                a3 3 0 0 1 -6 0 h-10 a4 4 0 0 1 -4 -4 v-13 a4 4 0 0 1 4 -4 Z`}
-            fill={BLOCK_COLOURS[i % BLOCK_COLOURS.length]}
-          />
+        <text x="6" y="20" fill="#FFFFFF" fontSize="5.4">
+          when ⚑ clicked
+        </text>
+        {[
+          ['go to x: 0 y: -40', MOTION],
+          ['point in direction 90', MOTION],
+          ['show', LOOKS],
+        ].map(([label, colour], i) => (
+          <g key={label}>
+            <path
+              d={`M0 ${28 + i * 19} h9 a3 3 0 0 0 6 0 h${39 - i * 2}
+                  a4 4 0 0 1 4 4 v11 a4 4 0 0 1 -4 4 h-${39 - i * 2}
+                  a3 3 0 0 1 -6 0 h-9 a4 4 0 0 1 -4 -4 v-11 a4 4 0 0 1 4 -4 Z`}
+              fill={colour}
+            />
+            <text x="5" y={39 + i * 19} fill="#FFFFFF" fontSize="5.2">
+              {label}
+            </text>
+          </g>
         ))}
       </g>
     </>
