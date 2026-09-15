@@ -60,8 +60,13 @@ export function EditorCanvas({ language, label }: Props) {
   return (
     <svg
       className="editor-canvas-art"
-      viewBox="0 0 340 290"
-      preserveAspectRatio="xMidYMid slice"
+      viewBox="0 0 560 290"
+      /* `meet`, not `slice`. The pane's shape varies a lot — the classroom
+         editor adds a "Ready for review" row, prototypes add their own
+         controls — and cropping a drawing this dense loses the tabs and half
+         the sprite tray. Fitting the whole thing in leaves a margin instead,
+         which the pane's own background absorbs. */
+      preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label={label}
       focusable="false"
@@ -98,10 +103,10 @@ function BlocksEditor() {
 
   return (
     <>
-      <rect width="340" height="290" fill="#F9F9F9" />
+      <rect width="560" height="290" fill="#F9F9F9" />
 
       {/* ---- Code / Costumes / Sounds. */}
-      <rect width="340" height="15" fill="#E9F0F8" />
+      <rect width="560" height="15" fill="#E9F0F8" />
       <rect x="4" width="42" height="15" rx="3" fill="#FFFFFF" />
       <text x="12" y="10.5" fill="#575E75" fontSize="6.4" fontWeight="700">
         Code
@@ -139,8 +144,9 @@ function BlocksEditor() {
         </g>
       ))}
 
-      {/* ---- Workspace. */}
-      <rect x="122" y="15" width="100" height="275" fill="#F9F9F9" />
+      {/* ---- Workspace. The widest part of the real editor, and the part that
+             takes the extra room when the window is wide. */}
+      <rect x="122" y="15" width="318" height="275" fill="#F9F9F9" />
       <g transform="translate(140 40)">
         <path
           d="M0 9 a10 8 0 0 1 20 0 h38 a4 4 0 0 1 4 4 v11 a4 4 0 0 1 -4 4 h-58 a4 4 0 0 1 -4 -4 Z"
@@ -165,9 +171,13 @@ function BlocksEditor() {
       </g>
       {/* Zoom controls, bottom right of the workspace as in the real editor. */}
       {[0, 1, 2].map((i) => (
-        <circle key={i} cx="210" cy={246 + i * 15} r="5" fill="#E9E9E9" />
+        <circle key={i} cx="428" cy={246 + i * 15} r="5" fill="#E9E9E9" />
       ))}
 
+      {/* ---- Stage and sprites, moved to the right of the wider workspace.
+             Translated rather than recoordinated, so the panel stays one
+             readable block. */}
+      <g transform="translate(218 0)">
       {/* ---- Stage and sprites. */}
       <rect x="222" y="15" width="118" height="275" fill="#FFFFFF" />
       <line x1="222" y1="15" x2="222" y2="290" stroke="#E8E8E8" strokeWidth="1" />
@@ -236,6 +246,7 @@ function BlocksEditor() {
       {/* Add sprite / add backdrop. */}
       <circle cx="322" cy="222" r="8" fill="#855CD6" />
       <circle cx="322" cy="242" r="8" fill="#855CD6" />
+      </g>
     </>
   )
 }
@@ -262,10 +273,10 @@ function TextEditor() {
 
   return (
     <>
-      <rect width="340" height="290" fill="#282C34" />
+      <rect width="560" height="290" fill="#282C34" />
 
       {/* Tab bar, so it reads as an editor rather than a terminal. */}
-      <rect width="340" height="17" fill="#21252B" />
+      <rect width="560" height="17" fill="#21252B" />
       <rect width="62" height="17" fill="#282C34" />
       <rect x="10" y="7" width="38" height="4" rx="2" fill="#ABB2BF" opacity="0.8" />
 
@@ -300,11 +311,11 @@ function TextEditor() {
       <rect x="132" y={28 + 13 * 17} width="1.6" height="8" fill="#FFFFFF" />
 
       {/* Output beside the code, which is where it sits at this width. */}
-      <rect x="216" y="17" width="124" height="273" fill="#21252B" />
-      <line x1="216" y1="17" x2="216" y2="290" stroke="#181A1F" strokeWidth="2" />
-      <rect x="226" y="28" width="40" height="4" rx="2" fill="#ABB2BF" opacity="0.6" />
-      {[64, 92, 48, 78, 56].map((width, i) => (
-        <rect key={i} x="226" y={44 + i * 14} width={width} height="5" rx="2.5" fill="#98C379" />
+      <rect x="380" y="17" width="180" height="273" fill="#21252B" />
+      <line x1="380" y1="17" x2="380" y2="290" stroke="#181A1F" strokeWidth="2" />
+      <rect x="392" y="28" width="40" height="4" rx="2" fill="#ABB2BF" opacity="0.6" />
+      {[96, 132, 72, 112, 84].map((width, i) => (
+        <rect key={i} x="392" y={44 + i * 14} width={width} height="5" rx="2.5" fill="#98C379" />
       ))}
     </>
   )

@@ -915,6 +915,19 @@ hr.divider {
   flex: 1 1 0;
   min-height: 0;
 }
+/* Every wrapper between the body and the editor has to stretch too, however
+   many there are. `:has(.editor)` matches exactly those ancestors and nothing
+   else. A flex item with no grow shrinks to its content, so a single
+   unstretched wrapper is enough to leave the editor a fraction of the window —
+   and there can be more than one: a screen wraps its editor in a
+   `.section-stack`, and a prototype wraps the screen in another. */
+.surface:has(.editor) > .surface-body :has(.editor) {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
 /* Full screen normally measures the content column; the editor is the one page
    that must not be, or it sits in a 1100px strip on a wide monitor. */
 body.full-screen-prototype .surface:has(.editor) > .surface-body {
@@ -930,8 +943,11 @@ body.full-screen-prototype .surface:has(.editor) > .surface-body {
   gap: var(--space-2);
   flex: 1 1 auto;
   min-width: 0;
-  /* Fills the body it was given. The 420px floor stays for short windows. */
-  min-height: max(420px, 100%);
+  /* A floor for short windows, and nothing more. `100%` here resolved against
+     the wrapper and then grew past it, pushing the editor taller than the
+     window so the palette and stage were clipped instead of fitted. Height
+     comes from the flex parent now. */
+  min-height: 420px;
 }
 @media (min-width: 860px) {
   .editor {
@@ -1051,7 +1067,10 @@ body.full-screen-prototype .surface:has(.editor) > .surface-body {
 }
 .editor-canvas {
   flex: 1 1 auto;
-  padding: var(--space-2);
+  padding: 0;
+  /* The drawing is fitted rather than cropped, so this shows through around
+     it; matching its own base keeps the margin from reading as a gap. */
+  background: #f9f9f9;
   /* So the thing standing in for the editor can stretch to the whole pane
      rather than sitting as a short box with dead space beneath it. */
   display: flex;
@@ -1081,16 +1100,22 @@ body.full-screen-prototype .surface:has(.editor) > .surface-body {
 
 /* The drawn editor fills its pane and crops rather than letterboxing — a
    still of an editor with bars down the side reads as a broken image. */
-/* Both dimensions set, so the SVG fills the pane and crops. Given only a
-   width it reports an intrinsic height from its own aspect ratio and pushes
-   the pane taller than the window. */
+/* Taken out of flow, so the drawing fills the pane instead of deciding how
+   tall it is. An SVG in normal flow reports a height from its own aspect
+   ratio whenever its parent has no definite one — and `height: 100%` against
+   an indefinite parent resolves to exactly that — which pushed the pane past
+   the bottom of the window and clipped the palette and stage. */
+.editor-canvas {
+  position: relative;
+}
 .editor-canvas-art {
-  flex: 1 1 auto;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--rpf-grey-150);
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  /* Explicit, not `inset` with `auto` sizes: an SVG has an intrinsic aspect
+     ratio, so it takes its height from its width and ignores the bottom inset. */
+  width: calc(100% - 2 * var(--space-2));
+  height: calc(100% - 2 * var(--space-2));
 }
 
 /* Generated project artwork. Cropped to its box, like a real thumbnail. */
