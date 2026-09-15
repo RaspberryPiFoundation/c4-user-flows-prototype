@@ -891,18 +891,47 @@ hr.divider {
 }
 
 /* ---------------- Project editor (two pane) ---------------- */
+/* The editor IS the page, edge to edge and the full height of the window —
+   the real one has no margin and nothing else on screen beside it.
+   Selected with :has() rather than a layout prop so it applies wherever an
+   editor is rendered, including in prototypes this rule cannot reach into. */
+.surface:has(.editor) {
+  max-width: none;
+  height: 100vh;
+  /* Breaks out of whatever column it was placed in — the workbench card, the
+     gallery list — so the editor is the size of the window there too, not just
+     in full screen. Without this it inherits an 800px card and the editor gets
+     a portrait sliver to draw in. */
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  border-radius: 0;
+  border-inline: none;
+}
+.surface:has(.editor) > .surface-body {
+  display: flex;
+  padding: 0;
+  /* flex-basis 0 with min-height 0, or the body refuses to shrink below its
+     content and the footer is pushed off the bottom. */
+  flex: 1 1 0;
+  min-height: 0;
+}
+/* Full screen normally measures the content column; the editor is the one page
+   that must not be, or it sits in a 1100px strip on a wide monitor. */
+body.full-screen-prototype .surface:has(.editor) > .surface-body {
+  max-width: none;
+  margin-inline: 0;
+}
+
 .editor {
   display: grid;
   /* Stacked on small screens; rail, instructions and editor side by side once
      there is room, which is how the real editor lays out. */
   grid-template-columns: 1fr;
   gap: var(--space-2);
-  /* The editor IS the page it is on, not a panel sitting in the middle of one.
-     Sized from the viewport so it fills a large monitor, with 420px kept as a
-     floor for short windows. `flex: 1` alone would not do it: in the workbench
-     the surface is only as tall as its content, so there is no spare height to
-     grow into. */
-  min-height: max(420px, 68vh);
+  flex: 1 1 auto;
+  min-width: 0;
+  /* Fills the body it was given. The 420px floor stays for short windows. */
+  min-height: max(420px, 100%);
 }
 @media (min-width: 860px) {
   .editor {
@@ -992,6 +1021,10 @@ hr.divider {
   background: var(--rpf-white);
   border: 1px solid var(--rpf-grey-150);
   border-radius: var(--radius-sm);
+  /* Or the grid row grows to fit the canvas instead of the canvas fitting the
+     row, and the editor spills past the bottom of the window. */
+  min-height: 0;
+  overflow: hidden;
 }
 @media (min-width: 860px) {
   .editor-main {
@@ -1048,9 +1081,13 @@ hr.divider {
 
 /* The drawn editor fills its pane and crops rather than letterboxing — a
    still of an editor with bars down the side reads as a broken image. */
+/* Both dimensions set, so the SVG fills the pane and crops. Given only a
+   width it reports an intrinsic height from its own aspect ratio and pushes
+   the pane taller than the window. */
 .editor-canvas-art {
   flex: 1 1 auto;
   width: 100%;
+  height: 100%;
   min-height: 0;
   border-radius: var(--radius-sm);
   border: 1px solid var(--rpf-grey-150);
